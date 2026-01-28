@@ -11,7 +11,7 @@ dialSetDefinitions:
     # 'applyOnDataSets' can take a list or a wildcard
     applyOnDataSets: ["*"]
     parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_TrueDeltaPT.txt"
-    applyCondition: "[IsSignal] == 1"
+    applyCondition: "[true_category] == 0 & [true_category] == 1 & [true_category] == 3 & [true_category] == 4"
     printDialsSummary: true
 
 parameterLimits:

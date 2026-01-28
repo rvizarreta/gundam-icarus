@@ -1,0 +1,34 @@
+- name: "ICARUS_NuMI_1muNp0pi"
+
+  isEnabled: true
+
+  #selectedDataEntry: "FakeDataFromMC"
+  selectedDataEntry: "TrueDeltaPTLinearScaled"
+
+  showSelectedEventCount: true
+
+  mc:
+    tree: "events/full/selected"
+    filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+    # - MC POT: 1.0900766e+21
+    # - POT to normalize: 2.500616E+20
+    # - Flux weight
+    #   - Is CosmicSlice (Category==11), applying 0.71202822; avergae flux weight
+    #   - If not, i.e., neutrino-matched slice, apply flux weight, "CVWgt"
+    nominalWeightFormula: "(is_data ? 4069800.0/48568533.0 : 1.6193e+19/1.675278148079016e+21 )"
+
+  data:
+    # data from the same MC
+    - name: "FakeDataFromMC"
+      tree: "events/full/selected"
+      nominalWeightFormula: "(is_data ? 4069800.0/48568533.0 : 1.6193e+19/1.675278148079016e+21 ) "
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+
+    # data from the same MC
+    - name: "TrueDeltaPTLinearScaled"
+      tree: "events/full/selected"
+      nominalWeightFormula: "(is_data ? 4069800.0/48568533.0 : 1.6193e+19/1.675278148079016e+21 ) "
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"

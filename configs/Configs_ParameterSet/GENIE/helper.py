@@ -9,28 +9,28 @@ for name in knobNames:
   if 'MFP' in name or 'Fr' in name:
     IsEnabled = 'false'
 
-  output = '''- parameterName: "%s"
+  output = '''- parameterName: "GENIEReWeight_SBN_v1_multisigma_%s"
   isEnabled: %s
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "%s"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_%s"
+      applyCondition: "[is_nu]==1"
 '''%(name, IsEnabled, name)
   print(output)
 
 knobNames = knoblist.GENIEMorphKnobNames
 
 for name in knobNames:
-  output = '''- parameterName: "%s"
+  output = '''- parameterName: "GENIEReWeight_SBN_v1_multisigma_%s"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "%s"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_%s"
       useMirrorDial: true
       mirrorLowEdge: -1
       mirrorHighEdge: 1
-      applyCondition: "[IsData]==0"
+      applyCondition: "[is_nu]==1"
 '''%(name, name)
   print(output)

@@ -1,444 +1,444 @@
-- parameterName: "ZExpPCAB1"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB1"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "ZExpPCAB1"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB1"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "ZExpPCAB2"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB2"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "ZExpPCAB2"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB2"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "ZExpPCAB3"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB3"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "ZExpPCAB3"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB3"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "ZExpPCAB4"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB4"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "ZExpPCAB4"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB4"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "RPA_CCQE"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_RPA_CCQE"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "RPA_CCQE"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_RPA_CCQE"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "CoulombCCQE"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_CoulombCCQE"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "CoulombCCQE"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_CoulombCCQE"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NormCCMEC"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NormCCMEC"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NormCCMEC"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NormCCMEC"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NormNCMEC"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NormNCMEC"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NormNCMEC"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NormNCMEC"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "MaNCEL"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_MaNCEL"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "MaNCEL"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_MaNCEL"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "EtaNCEL"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_EtaNCEL"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "EtaNCEL"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_EtaNCEL"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "MaCCRES"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_MaCCRES"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "MaCCRES"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_MaCCRES"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "MvCCRES"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_MvCCRES"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "MvCCRES"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_MvCCRES"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "MaNCRES"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_MaNCRES"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "MaNCRES"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_MaNCRES"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "MvNCRES"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_MvNCRES"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "MvNCRES"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_MvNCRES"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvpCC1pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpCC1pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvpCC1pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpCC1pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvpCC2pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpCC2pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvpCC2pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpCC2pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvpNC1pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpNC1pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvpNC1pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpNC1pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvpNC2pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpNC2pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvpNC2pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpNC2pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvnCC1pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnCC1pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvnCC1pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnCC1pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvnCC2pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnCC2pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvnCC2pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnCC2pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvnNC1pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnNC1pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvnNC1pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnNC1pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvnNC2pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnNC2pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvnNC2pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnNC2pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvbarpCC1pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpCC1pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvbarpCC1pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpCC1pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvbarpCC2pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpCC2pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvbarpCC2pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpCC2pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvbarpNC1pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpNC1pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvbarpNC1pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpNC1pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvbarpNC2pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpNC2pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvbarpNC2pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpNC2pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvbarnCC1pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnCC1pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvbarnCC1pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnCC1pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvbarnCC2pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnCC2pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvbarnCC2pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnCC2pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvbarnNC1pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnNC1pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvbarnNC1pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnNC1pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NonRESBGvbarnNC2pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnNC2pi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NonRESBGvbarnNC2pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnNC2pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "RDecBR1gamma"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_RDecBR1gamma"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "RDecBR1gamma"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_RDecBR1gamma"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "RDecBR1eta"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_RDecBR1eta"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "RDecBR1eta"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_RDecBR1eta"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NormCCCOH"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NormCCCOH"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NormCCCOH"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NormCCCOH"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "NormNCCOH"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NormNCCOH"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "NormNCCOH"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NormNCCOH"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "AhtBY"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_AhtBY"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "AhtBY"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_AhtBY"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "BhtBY"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_BhtBY"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "BhtBY"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_BhtBY"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "CV1uBY"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_CV1uBY"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "CV1uBY"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_CV1uBY"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "CV2uBY"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_CV2uBY"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "CV2uBY"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_CV2uBY"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "MFP_pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_MFP_pi"
   isEnabled: false
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "MFP_pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_MFP_pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "FrCEx_pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_FrCEx_pi"
   isEnabled: false
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "FrCEx_pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrCEx_pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "FrInel_pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_FrInel_pi"
   isEnabled: false
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "FrInel_pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrInel_pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "FrAbs_pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_FrAbs_pi"
   isEnabled: false
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "FrAbs_pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrAbs_pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "FrPiProd_pi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_FrPiProd_pi"
   isEnabled: false
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "FrPiProd_pi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrPiProd_pi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "MFP_N"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_MFP_N"
   isEnabled: false
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "MFP_N"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_MFP_N"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "FrCEx_N"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_FrCEx_N"
   isEnabled: false
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "FrCEx_N"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrCEx_N"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "FrInel_N"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_FrInel_N"
   isEnabled: false
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "FrInel_N"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrInel_N"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "FrAbs_N"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_FrAbs_N"
   isEnabled: false
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "FrAbs_N"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrAbs_N"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "FrPiProd_N"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_FrPiProd_N"
   isEnabled: false
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "FrPiProd_N"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrPiProd_N"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "CC1piTPi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_CC1piTPi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "CC1piTPi"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_CC1piTPi"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "LowQ2Suppression"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_LowQ2Suppression"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "LowQ2Suppression"
-      applyCondition: "[IsData]==0"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_LowQ2Suppression"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "VecFFCCQEshape"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "VecFFCCQEshape"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape"
       useMirrorDial: true
       mirrorLowEdge: -1
       mirrorHighEdge: 1
-      applyCondition: "[IsData]==0"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "DecayAngMEC"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_DecayAngMEC"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "DecayAngMEC"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_DecayAngMEC"
       useMirrorDial: true
       mirrorLowEdge: -1
       mirrorHighEdge: 1
-      applyCondition: "[IsData]==0"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "Theta_Delta2Npi"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_Theta_Delta2Npi"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "Theta_Delta2Npi"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_Theta_Delta2Npi"
       useMirrorDial: true
       mirrorLowEdge: -1
       mirrorHighEdge: 1
-      applyCondition: "[IsData]==0"
+      applyCondition: "[is_nu]==1"
 
-- parameterName: "ThetaDelta2NRad"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_ThetaDelta2NRad"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "ThetaDelta2NRad"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ThetaDelta2NRad"
       useMirrorDial: true
       mirrorLowEdge: -1
       mirrorHighEdge: 1
-      applyCondition: "[IsData]==0"
+      applyCondition: "[is_nu]==1"
 

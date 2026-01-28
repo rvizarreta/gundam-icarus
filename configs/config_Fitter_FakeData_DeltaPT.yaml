@@ -29,7 +29,7 @@ fitterEngineConfig:
     enableEventMcThrow: false
 
     dataSetList: "${GUNDAM_CONFIG_DIR}/Configs_DataSetList/dataSetListConfig.yaml"
-    plotGeneratorConfig: "${GUNDAM_CONFIG_DIR}/Configs_PlotGenerator/plotConfigs_DeltaPT.yaml"
+    #plotGeneratorConfig: "${GUNDAM_CONFIG_DIR}/Configs_PlotGenerator/plotConfigs_DeltaPT.yaml"
 
   # listing local configs 
 

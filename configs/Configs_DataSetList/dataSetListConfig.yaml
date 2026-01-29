@@ -2,8 +2,8 @@
 
   isEnabled: true
 
-  #selectedDataEntry: "FakeDataFromMC"
-  selectedDataEntry: "TrueDeltaPTLinearScaled"
+  selectedDataEntry: "FakeDataFromMC"
+  #selectedDataEntry: "TrueDeltaPTLinearScaled"
 
   showSelectedEventCount: true
 

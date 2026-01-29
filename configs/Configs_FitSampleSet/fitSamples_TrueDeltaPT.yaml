@@ -7,8 +7,8 @@ fitSampleList:
     #selectionCuts: "TrueE>0.3" # (numu+numubar) but Enu>0.3 GeV
     #selectionCuts: "TrueE>0.3 && TruePDG>0." # (numu) but Enu>0.3 GeV
 
-    dataSets: ["ICARUSNuMI_1mu2p0pi_true"]
-    parameterSetName: "Template Parameter TrueDeltaPT"
+    dataSets: ["ICARUS_NuMI_1muNp0pi"]
+    parameterSetName: "Template Parameter true_dpT"
     yAxis: "#frac{d #sigma}{d #delta p_{T}} #frac{cm^{2}}{(GeV/c)Ar}"
     normaliseParameterList:
       - name: "Constant flux"

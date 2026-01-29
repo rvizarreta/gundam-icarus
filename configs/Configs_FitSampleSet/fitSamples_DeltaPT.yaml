@@ -2,5 +2,5 @@ fitSampleList:
   - name: "signal_DeltaPT"
     isEnabled: true
     binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_DeltaPT.txt"
-    selectionCuts: "true_category == 0"
+    selectionCuts: "category == 0"
     dataSets: ["ICARUS_NuMI_1muNp0pi"]

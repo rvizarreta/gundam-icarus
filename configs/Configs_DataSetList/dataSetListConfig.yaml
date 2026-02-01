@@ -23,8 +23,7 @@
     # data from the same MC
     - name: "FakeDataFromMC"
       tree: "events/full/signal"
-      #nominalWeightFormula: "(is_data ? 4069800.0/48568533.0 : 1.6193e+19/1.675278148079016e+21 ) "
-      nominalWeightFormula: "1./1."
+      nominalWeightFormula: "(is_data ? 4069800.0/48568533.0 : 1.6193e+19/1.675278148079016e+21 ) "
       #nominalWeightFormula: "2.22e19 / 1.47e20"
       filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"

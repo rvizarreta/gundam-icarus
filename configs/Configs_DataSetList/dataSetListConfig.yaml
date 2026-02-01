@@ -16,8 +16,9 @@
     # - Flux weight
     #   - Is CosmicSlice (Category==11), applying 0.71202822; avergae flux weight
     #   - If not, i.e., neutrino-matched slice, apply flux weight, "CVWgt"
-    nominalWeightFormula: "(is_data ? 4069800.0/48568533.0 : 1.6193e+19/1.675278148079016e+21 )"
+    #nominalWeightFormula: "(is_data ? 4069800.0/48568533.0 : 1.6193e+19/1.675278148079016e+21 )"
     #nominalWeightFormula: "2.22e19 / 1.47e20"
+    nominalWeightFormula: "1.0/1.0"
 
   data:
     # data from the same MC

@@ -3,13 +3,14 @@ fitSampleList:
     isEnabled: true
     binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_TrueMuonP.txt"
 
-    selectionCuts: "" # (numu+numubar)
+    selectionCuts: "(category==0) || (category==1) || (category==3) || (category==4)"
+    # (numu+numubar)
     #selectionCuts: "TrueE>0.3" # (numu+numubar) but Enu>0.3 GeV
     #selectionCuts: "TrueE>0.3 && TruePDG>0." # (numu) but Enu>0.3 GeV
 
     dataSets: ["ICARUSNuMI_1mu2p0pi_true"]
     parameterSetName: "Template Parameter TrueMuonP"
-    yAxis: "#frac{d #sigma}{d p_{#mu}} #frac{cm^{2}}{Ar GeV/c}"
+    yAxis: "#frac{d #sigma}{d p_{#mu}} #frac{cm^{2}}{Ar MeV/c}"
     normaliseParameterList:
       - name: "Constant flux"
         isEnabled: true

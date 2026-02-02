@@ -30,7 +30,7 @@ fitSampleList:
         ### Using MC value assumed from sbn-doc-33224, converted to N NUCLEONS instead of N Nuclei
         # USING N Ar NUCLEI
         # Let's assume a 0.2% uncertainty for now... (NOTE: **if** my math is right we may need to scale up by 0.2% in data...)
-        #meanValue: 4.714056E30
-        #stdDev: 9.4281120e+27
-        meanValue: 1.6597791530583497e+32
-        stdDev: 3.319558306116699e+29
+        meanValue: 4.714056E30
+        stdDev: 9.4281120e+27
+        #meanValue: 1.6597791530583497e+32
+        #stdDev: 3.319558306116699e+29

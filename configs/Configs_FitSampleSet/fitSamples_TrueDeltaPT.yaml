@@ -14,14 +14,17 @@ fitSampleList:
       - name: "Constant flux"
         isEnabled: true
 
-        meanValue: 6.2760039e+11 # (numu+numubar)/cm^2, g3chase applied, POT = 8.0746178e+20
-        stdDev: 7.9037791e+10 # sqrt(9.2^2 + 8.6^2) = 12.59%
+        #meanValue: 6.2760039e+11 # (numu+numubar)/cm^2, g3chase applied, POT = 8.0746178e+20
+        #stdDev: 7.9037791e+10 # sqrt(9.2^2 + 8.6^2) = 12.59%
 
         #meanValue: 2.7161302e+11 # (numu+numubar)/cm^2, g3chase applied, POT = 8.0746178e+20, but Enu>0.3 GeV
         #stdDev: 3.1299073e+10 # sqrt(7.67^2 + 8.6^2) = 11.52%
 
         #meanValue: 1.7514826e+11 # (numu)/cm^2, g3chase applied, POT = 8.0746178e+20, but Enu>0.3 GeV
         #stdDev: 2.2263101e+10 # sqrt(9.36^2 + 8.6^2) = 12.71%
+
+        meanValue: 1.142e+11  # (numu+numubar)/cm², POT = 1.47e20
+        stdDev: 1.436e+10     # 12.59% uncertainty
 
       - name: "Number of targets"
         ### Using MC value assumed from sbn-doc-33224, converted to N NUCLEONS instead of N Nuclei

@@ -3,8 +3,7 @@ fitSampleList:
     isEnabled: true
     binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_TrueMuonP.txt"
 
-    selectionCuts: "(category==0) || (category==1) || (category==3) || (category==4)"
-    # (numu+numubar)
+    selectionCuts: "" # (numu+numubar)
     #selectionCuts: "TrueE>0.3" # (numu+numubar) but Enu>0.3 GeV
     #selectionCuts: "TrueE>0.3 && TruePDG>0." # (numu) but Enu>0.3 GeV
 

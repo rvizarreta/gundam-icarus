@@ -23,5 +23,3 @@ fitSampleList:
         # Let's assume a 0.2% uncertainty for now... (NOTE: **if** my math is right we may need to scale up by 0.2% in data...)
         meanValue: 4.6079073e30
         stdDev: 9.4281120e+27
-        #meanValue: 1.6597791530583497e+32
-        #stdDev: 3.319558306116699e+29

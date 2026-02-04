@@ -1,0 +1,19 @@
+name: Template Parameter true_dalphaT_deg
+isEnabled: true
+
+printDialSetsSummary: true
+
+nominalStepSize: 0.1
+useOnlyOneParameterPerEvent: true
+
+dialSetDefinitions:
+  - name: Template Parameter true_dalphaT_deg dialSetDefinitions
+    # 'applyOnDataSets' can take a list or a wildcard
+    applyOnDataSets: ["*"]
+    parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_true_dalphaT_deg.txt"
+    applyCondition: "([category]==0) || ([category]==1) || ([category]==3) || ([category]==4)"
+    printDialsSummary: true
+
+parameterLimits:
+  minValue: 0.
+  maxValue: 3.0

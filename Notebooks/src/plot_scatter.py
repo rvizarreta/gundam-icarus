@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 plt.style.use("/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/style.mplstyle")
 import numpy as np
 
-def plot_cross_section(filename, hist_path, xlabel, ylabel, bin_edges_labels,
+def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edges_labels, is_y_errors,
                        title_line1=None, label=None,
                        figsize=(5, 4), output_name=None, pot='POT'):
     """
@@ -39,8 +39,12 @@ def plot_cross_section(filename, hist_path, xlabel, ylabel, bin_edges_labels,
     hist = file[hist_path]
 
     # Extract bin values and errors
-    bin_values = hist.values()[:-1]*1e40
-    bin_errors = hist.errors()[:-1]*1e40
+    if  is_cross_section:
+        bin_values = hist.values()[:-1]*1e40
+        bin_errors = hist.errors()[:-1]*1e40
+    else:
+        bin_values = hist.values()[:-1]
+        bin_errors = hist.errors()[:-1]
 
     # Calculate bin centers from provided bin edges
     bin_edges_array = np.array(bin_edges_labels)
@@ -54,7 +58,7 @@ def plot_cross_section(filename, hist_path, xlabel, ylabel, bin_edges_labels,
     ax.errorbar(bin_centers,
                 bin_values,
                 xerr=bin_widths / 2,  # Half bin width for symmetric error bars
-                #yerr=bin_errors,
+                yerr=bin_errors if is_y_errors else None,
                 fmt='o',
                 markersize=7,
                 markerfacecolor='black',
@@ -131,7 +135,7 @@ def plot_cross_section(filename, hist_path, xlabel, ylabel, bin_edges_labels,
     # Save the plot
     if output_name is None:
         output_name = f"{hist.name}_matplotlib.png"
-    #plt.savefig(output_name, dpi=300, bbox_inches='tight')
+    plt.savefig(output_name, dpi=300, bbox_inches='tight')
 
     # Return the plot
     return fig, ax

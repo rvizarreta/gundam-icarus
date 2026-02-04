@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 def overlay_manual_cross_section(fig, ax, root_file_path, bins_mev,
                                  n_targets,
                                  flux,

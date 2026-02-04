@@ -1,0 +1,20 @@
+fitSampleList:
+  - name: "TrueDalphaT_XS"
+    isEnabled: true
+    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_true_dalphaT_deg.txt"
+
+    selectionCuts: "(category==0) || (category==1) || (category==3) || (category==4)"
+
+    dataSets: ["ICARUS_NuMI_1muNp0pi"]
+    parameterSetName: "Template Parameter true_dalphaT_deg"
+    yAxis: "#frac{d #sigma}{d #delta #alpha_{T}} #frac{cm^{2}}{(MeV/c)Ar}"
+    normaliseParameterList:
+      - name: "Constant flux"
+        isEnabled: true
+
+        meanValue: 1.075491e+11  # (numu+numubar)/cm², POT = 1.47e20
+        stdDev: 1.436e+10     # 12.59% uncertainty
+
+      - name: "Number of targets"
+        meanValue: 4.6079073e30
+        stdDev: 9.4281120e+27

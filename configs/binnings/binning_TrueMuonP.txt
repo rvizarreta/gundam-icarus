@@ -1,4 +1,4 @@
-variables: TrueMuonP TrueMuonP
+variables: true_leading_muon_momentum true_leading_muon_momentum
 0.000000 0.600000
 0.600000 1.200000
 1.200000 1.800000

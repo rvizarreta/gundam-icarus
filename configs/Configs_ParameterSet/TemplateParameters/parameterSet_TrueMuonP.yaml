@@ -7,7 +7,7 @@ nominalStepSize: 0.1
 useOnlyOneParameterPerEvent: true
 
 dialSetDefinitions:
-  - name: Template Parameter true_leading_muon_momentum dialSetDefinitions
+  - name: Template Parameter TrueMuonP dialSetDefinitions
     # 'applyOnDataSets' can take a list or a wildcard
     applyOnDataSets: ["*"]
     parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_TrueMuonP.txt"

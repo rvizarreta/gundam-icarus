@@ -6,7 +6,7 @@ fitSampleList:
     selectionCuts: "(category==0) || (category==1) || (category==3) || (category==4)"
 
     dataSets: ["ICARUS_NuMI_1muNp0pi"]
-    parameterSetName: "Template Parameter true_muon_P"
+    parameterSetName: "Template Parameter TrueMuonP"
     yAxis: "#frac{d #sigma}{dp} #frac{cm^{2}}{(MeV/c)Ar}"
     normaliseParameterList:
       - name: "Constant flux"

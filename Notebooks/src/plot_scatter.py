@@ -5,7 +5,7 @@ import numpy as np
 
 def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edges_labels, is_y_errors,
                        title_line1=None, label=None,
-                       figsize=(5, 4), output_name=None, pot='POT'):
+                       figsize=(5, 4), output_name=None, pot='POT', remove_last_bin=True, scaling_power_of_10=1.0):
     """
     Plot cross-section data from a ROOT file with error bars.
 
@@ -39,12 +39,20 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
     hist = file[hist_path]
 
     # Extract bin values and errors
-    if  is_cross_section:
-        bin_values = hist.values()[:-1]*1e40
-        bin_errors = hist.errors()[:-1]*1e40
+    if remove_last_bin:
+        if  is_cross_section:
+            bin_values = hist.values()[:-1]*scaling_power_of_10
+            bin_errors = hist.errors()[:-1]*scaling_power_of_10
+        else:
+            bin_values = hist.values()[:-1]
+            bin_errors = hist.errors()[:-1]
     else:
-        bin_values = hist.values()[:-1]
-        bin_errors = hist.errors()[:-1]
+        if  is_cross_section:
+            bin_values = hist.values()*scaling_power_of_10
+            bin_errors = hist.errors()*scaling_power_of_10
+        else:
+            bin_values = hist.values()
+            bin_errors = hist.errors()
 
     # Calculate bin centers from provided bin edges
     bin_edges_array = np.array(bin_edges_labels)

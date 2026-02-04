@@ -9,6 +9,8 @@ def overlay_manual_cross_section(fig, ax, root_file_path, bins_mev,
                                  color='red',
                                  marker='s',
                                  label='Manual Calculation',
+                                 scaling_power_of_10=1e0,
+                                 energy_conversion=False,
                                  markersize=7):
     """
     Calculate cross-section manually and overlay on existing plot.
@@ -68,9 +70,13 @@ def overlay_manual_cross_section(fig, ax, root_file_path, bins_mev,
 
     # Calculate cross-section per bin
     print("\n" + "="*90)
-    print("Signal Events and Cross-Section per True δpT Bin")
+    print("Signal Events and Cross-Section per True Bin")
     print("="*90)
-    print(f"{'Bin Range (MeV/c)':<25} {'N_Signal':<12} {'Bin Width (MeV)':<18} {'σ (x10-37 cm²/GeV)'}")
+    if energy_conversion:
+        exponent = int(np.log10(scaling_power_of_10))
+    else:
+        exponent = int(np.log10(scaling_power_of_10*1e3))
+    print(f"{'Bin Range (MeV/c)':<25} {'N_Signal':<12} {'Bin Width (MeV)':<18} {'σ (x10^-' + str(exponent) + ' cm²/GeV)'}")
     print("-"*90)
 
     cross_sections = []
@@ -88,14 +94,18 @@ def overlay_manual_cross_section(fig, ax, root_file_path, bins_mev,
             bin_width_mev = bin_high - bin_low
             bin_width_str = f"{bin_width_mev:.0f}"
 
-            # Calculate cross-section x 1e37: σ = N_events / (N_targets × Flux × bin_width) × 1e3 (convert MeV to GeV)
-            cross_section = 1e3 *1e37 * n_signal / (n_targets * flux * bin_width_mev)
+            # Calculate cross-section x 1eXX: σ = N_events / (N_targets × Flux × bin_width) × 1e3 (convert MeV to GeV)
+            cross_section = 1e3 * scaling_power_of_10 * n_signal / (n_targets * flux * bin_width_mev)
             cross_sections.append(cross_section)
             xs_str = f"{cross_section:.6e}"
 
             # Calculate bin center and width in GeV for plotting
-            bin_center_gev = (bin_low + bin_high) / 2 / 1000
-            bin_width_gev = bin_width_mev / 1000
+            if energy_conversion:
+                bin_center_gev = (bin_low + bin_high) / 2 / 1000
+                bin_width_gev = bin_width_mev / 1000
+            else:
+                bin_center_gev = (bin_low + bin_high) / 2
+                bin_width_gev = bin_width_mev
             bin_centers_gev.append(bin_center_gev)
             bin_widths_gev.append(bin_width_gev)
         else:

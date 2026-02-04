@@ -1,4 +1,4 @@
-variables: RecoMuonP RecoMuonP
+variables: reco_leading_muon_momentum reco_leading_muon_momentum
 0.000000 0.300000
 0.300000 0.600000
 0.600000 0.900000

@@ -1,33 +1,33 @@
-- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB1"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpA1CCQE"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB1"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpA1CCQE"
       applyCondition: "[is_nu]==1"
 
-- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB2"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpA2CCQE"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB2"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpA2CCQE"
       applyCondition: "[is_nu]==1"
 
-- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB3"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpA3CCQE"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB3"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpA3CCQE"
       applyCondition: "[is_nu]==1"
 
-- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB4"
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpA4CCQE"
   isEnabled: true
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
-      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB4"
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpA4CCQE"
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_RPA_CCQE"

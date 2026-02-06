@@ -1,10 +1,10 @@
 import os
 
 GENIEMultisigmaKnobNames = [
-"GENIEReWeight_SBN_v1_multisigma_ZExpPCAB1",
-"ZExpPCAB2",
-"ZExpPCAB3",
-"ZExpPCAB4",
+"ZExpA1CCQE",
+"ZExpA2CCQE",
+"ZExpA3CCQE",
+"ZExpA4CCQE",
 "RPA_CCQE",
 "CoulombCCQE",
 "NormCCMEC",
@@ -49,8 +49,6 @@ GENIEMultisigmaKnobNames = [
 "FrInel_N",
 "FrAbs_N",
 "FrPiProd_N",
-"CC1piTPi",
-"LowQ2Suppression",
 ]
 
 GENIEMorphKnobNames = [

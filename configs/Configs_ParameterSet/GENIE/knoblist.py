@@ -1,7 +1,7 @@
 import os
 
 GENIEMultisigmaKnobNames = [
-"ZExpPCAB1",
+"GENIEReWeight_SBN_v1_multisigma_ZExpPCAB1",
 "ZExpPCAB2",
 "ZExpPCAB3",
 "ZExpPCAB4",

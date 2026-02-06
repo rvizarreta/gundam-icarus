@@ -114,7 +114,7 @@ std::vector<std::string> GetGENIEMorphKnobNames(){
 
 }
 
-std::vector<std::string> GetGENIEMultisigmaKnobNames(){
+std::vector<std::string> GetcGENIEMultisigmaKnobNames(){
   return {
 "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB1",
 "GENIEReWeight_SBN_v1_multisigma_ZExpPCAB2",

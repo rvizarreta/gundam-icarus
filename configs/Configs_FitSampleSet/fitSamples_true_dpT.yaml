@@ -1,13 +1,13 @@
 fitSampleList:
-  - name: "TrueMuonP_XS"
+  - name: "TrueDeltaPT_XS"
     isEnabled: true
-    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_TrueMuonP.txt"
+    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_true_dpT.txt"
 
     selectionCuts: "(category==0) || (category==1) || (category==3) || (category==4)"
 
     dataSets: ["ICARUS_NuMI_1muNp0pi"]
-    parameterSetName: "Template Parameter TrueMuonP"
-    yAxis: "#frac{d #sigma}{dp} #frac{cm^{2}}{(MeV/c)Ar}"
+    parameterSetName: "Template Parameter true_dpT"
+    yAxis: "#frac{d #sigma}{d #delta p_{T}} #frac{cm^{2}}{(MeV/c)Ar}"
     normaliseParameterList:
       - name: "Constant flux"
         isEnabled: true

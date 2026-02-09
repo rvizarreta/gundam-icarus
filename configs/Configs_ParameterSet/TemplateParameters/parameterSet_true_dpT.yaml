@@ -10,7 +10,7 @@ dialSetDefinitions:
   - name: Template Parameter true_dpTgit  dialSetDefinitions
     # 'applyOnDataSets' can take a list or a wildcard
     applyOnDataSets: ["*"]
-    parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_TrueDeltaPT.txt"
+    parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_true_dpT.txt"
     applyCondition: "([category]==0) || ([category]==1) || ([category]==3) || ([category]==4)"
     printDialsSummary: true
 

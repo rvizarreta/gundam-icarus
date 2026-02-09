@@ -19,8 +19,8 @@ fitterEngineConfig:
     # dataSetManager
     propagatorConfig:
       parametersManagerConfig:
-        parameterSetList: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSetList/parameterSetList_DeltaPT.yaml"
-      fitSampleSetConfig: "${GUNDAM_CONFIG_DIR}/Configs_FitSampleSet/fitSamples_DeltaPT.yaml"
+        parameterSetList: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSetList/parameterSetList_true_dpT.yaml"
+      fitSampleSetConfig: "${GUNDAM_CONFIG_DIR}/Configs_FitSampleSet/fitSamples_reco_dpT.yaml"
 
       showEventBreakdown: true
       debugPrintLoadedEvents: true

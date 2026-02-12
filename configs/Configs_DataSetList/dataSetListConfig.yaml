@@ -8,7 +8,7 @@
   showSelectedEventCount: true
 
   mc:
-    tree: "events/full/signal"
+    tree: "events/full/selection"
     filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
     # - MC POT: 1.0900766e+21

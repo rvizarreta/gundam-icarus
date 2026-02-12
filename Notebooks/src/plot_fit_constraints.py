@@ -74,40 +74,45 @@ def plot_fit_constraints(filename, directory_path,
     # Create the plot
     fig, ax = plt.subplots(figsize=figsize)
 
-    y_positions = np.arange(n_params)
+    y_positions = np.arange(n_params) + 1.5
 
-    # Plot pre-fit uncertainties as bars
+    # Plot pre-fit uncertainties as bars - capture first bar for legend
+    prefit_bar = None
     for i in range(n_params):
-        ax.barh(y_positions[i],
-                2 * prefit_errors[i],
-                left=prefit_values[i] - prefit_errors[i],
-                height=0.95,
-                color='salmon',
-                alpha=0.7)
-
-    # Add line at pre-fit central value
-    ax.scatter(prefit_values, y_positions,
-               marker='|', s=100, color='darkred', linewidths=1.5, zorder=3)
+        bar = ax.barh(y_positions[i],
+                      2 * prefit_errors[i],
+                      left=prefit_values[i] - prefit_errors[i],
+                      height=1,
+                      color='salmon',
+                      alpha=0.6)
+        if i == 0:  # Save first bar for legend
+            prefit_bar = bar
 
     # Plot post-fit values as points with error bars
-    ax.errorbar(postfit_values, y_positions,
-                xerr=postfit_errors,
-                fmt='o',
-                color='black',
-                markersize=5,
-                capsize=3,
-                label='Post-fit values',
-                elinewidth=2,
-                linewidth=0,
-                zorder=4)
+    postfit_points = ax.errorbar(postfit_values, y_positions,
+                                  xerr=postfit_errors,
+                                  yerr=0.475,
+                                  fmt='o',
+                                  color='black',
+                                  markersize=4,
+                                  capsize=3,
+                                  elinewidth=1,
+                                  linewidth=0)
 
     # Set axis labels
-    ax.set_ylabel(r'$\mathbf{Parameter}$', fontsize=12)
+    ax.set_ylabel(r'$\mathbf{Interaction\ Model\ Parameter}$', fontsize=12, labelpad=100)
     ax.set_xlabel(r'$\mathbf{Parameter\ values}$ (a.u.)', fontsize=12)
 
-    # Set y-axis labels
-    ax.set_yticks(y_positions)
-    ax.set_yticklabels(labels, fontsize=8)
+    # Set y-axis with major ticks at integer positions (grid lines)
+    ax.set_ylim(n_params+2, 0)
+    ax.set_yticks(np.arange(n_params + 1))  # Grid lines at 0, 1, 2, ..., n_params
+    ax.set_yticklabels([])  # No labels on primary axis
+
+    # Manually add labels at the shifted positions (between grid lines)
+    for i, label in enumerate(labels):
+        ax.text(-0.02, y_positions[i], label,
+                transform=ax.get_yaxis_transform(),
+                ha='right', va='center', fontsize=8)
 
     # Set x-axis limits
     all_values = np.concatenate([prefit_values + prefit_errors,
@@ -138,9 +143,6 @@ def plot_fit_constraints(filename, directory_path,
                    width=1,
                    direction='in')
 
-    # Add vertical line at x=0
-    ax.axvline(x=0, color='black', linewidth=1.5, linestyle='-', zorder=5)
-
     # Add title if provided - place ABOVE the plot on the LEFT
     if title_line1:
         xrange = ax.get_xlim()
@@ -156,24 +158,17 @@ def plot_fit_constraints(filename, directory_path,
         label.set_fontfamily('sans-serif')
 
     # Grid
-    ax.grid(True, alpha=0.3)
+    ax.grid(True, alpha=1)
 
-    # Legend positioned at the TOP RIGHT, above the plot
-    from matplotlib.patches import Rectangle
-    from matplotlib.lines import Line2D
-    legend_elements = [
-        Rectangle((0, 0), 1, 1, fc='salmon', alpha=0.7, label='Pre-fit value'),
-        Line2D([0], [0], marker='o', color='w', markerfacecolor='black',
-               markersize=8, label='Post-fit value')
-    ]
-    ax.legend(handles=legend_elements,
-              loc='lower right',  # Anchor point of the legend box
-              bbox_to_anchor=(1, 1),  # Position: right edge (1), just above top (1.02)
+    # Legend using actual plot elements
+    ax.legend([prefit_bar, postfit_points],
+              ['Pre-fit value', 'Post-fit value'],
+              loc='upper right',
+              bbox_to_anchor=(1.001, 1.035),
               fontsize=10,
               framealpha=0.9,
-              ncol=2,  # Put legend items in 2 columns (horizontal layout)
-              borderaxespad=0,
-              columnspacing=0)
+              ncol=2,
+              columnspacing=1)
 
     # Save if requested
     if output_name:

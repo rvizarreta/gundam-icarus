@@ -4,3 +4,8 @@ fitSampleList:
     binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT.txt"
     selectionCuts: "(category==0) || (category==1) || (category==3) || (category==4)"
     dataSets: ["ICARUS_NuMI_1muNp0pi"]
+  - name: "sideband_reco_dpT"
+    isEnabled: true
+    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT.txt"
+    selectionCuts: "(category==6) || (category==7) || (category==8)"
+    dataSets: ["ICARUS_NuMI_1muNp0pi"]

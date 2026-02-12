@@ -1,5 +1,5 @@
 fitSampleList:
-  - name: "TrueDeltaPT_XS"
+  - name: "True_dpT_XS"
     isEnabled: true
     binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_true_dpT.txt"
 

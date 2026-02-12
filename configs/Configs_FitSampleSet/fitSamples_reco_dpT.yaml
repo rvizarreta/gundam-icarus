@@ -1,5 +1,5 @@
 fitSampleList:
-  - name: "signal_deltapT"
+  - name: "signal_dpT"
     isEnabled: true
     binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT.txt"
     selectionCuts: "(category==0) || (category==1) || (category==3) || (category==4)"

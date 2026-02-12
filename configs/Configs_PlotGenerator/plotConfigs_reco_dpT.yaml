@@ -3,22 +3,17 @@ varDictionnaries:
     dictionary:
       # Signal category (types 0 and 3)
       - { value: 0, title: "Signal", color: 418 }
-      - { value: 3, title: "Signal", color: 418 }  # Same label & color
 
       # Signal QE category (types 1 and 4)
       - { value: 1, title: "Signal QE", color: 416 }
-      - { value: 4, title: "Signal QE", color: 416 }  # Same label & color
 
       # Other CC category (types 6, 7, 8)
       - { value: 6, title: "Other CC", color: 807 }
-      - { value: 7, title: "Other CC", color: 807 }
-      - { value: 8, title: "Other CC", color: 807 }
 
       # ν NC category (type 9)
       - { value: 9, title: "$\nu$ NC", color: 632 }
 
       # OOFV category (types 2 and 5)
-      - { value: 2, title: "OOFV", color: 797 }
       - { value: 5, title: "OOFV", color: 797 }
 
       # Cosmic category (type 10)

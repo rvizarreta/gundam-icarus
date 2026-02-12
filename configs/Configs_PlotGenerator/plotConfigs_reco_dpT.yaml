@@ -25,11 +25,11 @@ varDictionnaries:
       - { value: 10, title: "Cosmic", color: 880 }
 
 histogramsDefinition:
-  - varToPlot: "reco"
+  - varToPlot: "reco_dpT"
     splitVars: ["IsSignal"]
     useSampleBinning: true
     rescaleAsBinWidth: false
-    xTitle: "p_{#mu} (GeV/c)"
+    xTitle: "#deltap_{T} (GeV/c)"
     yTitle: "Slices"
     xMax: 3.2
 

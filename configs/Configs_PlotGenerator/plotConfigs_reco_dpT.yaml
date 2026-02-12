@@ -1,5 +1,5 @@
 varDictionnaries:
-  - name: "IsSignal"
+  - name: "category"
     dictionary:
       # Signal category (types 0 and 3)
       - { value: 0, title: "Signal", color: 418 }
@@ -26,7 +26,7 @@ varDictionnaries:
 
 histogramsDefinition:
   - varToPlot: "reco_dpT"
-    splitVars: ["IsSignal"]
+    splitVars: ["category"]
     useSampleBinning: true
     rescaleAsBinWidth: false
     xTitle: "#deltap_{T} (GeV/c)"

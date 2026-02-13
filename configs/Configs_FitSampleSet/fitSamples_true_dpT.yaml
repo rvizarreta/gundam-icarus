@@ -3,7 +3,7 @@ fitSampleList:
     isEnabled: true
     binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_true_dpT.txt"
 
-    selectionCuts: "(category==0) || (category==1) || (category==3) || (category==4)"
+    selectionCuts: ""
 
     dataSets: ["ICARUS_NuMI_1muNp0pi"]
     parameterSetName: "Template Parameter true_dpT"

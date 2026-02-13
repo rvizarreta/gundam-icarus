@@ -18,7 +18,7 @@
 
 - name: "ICARUS_NuMI_1muNp0pi_sideband"
   isEnabled: true
-  selectedDataEntry: "FakeDataFromMC"
+  selectedDataEntry: "FakeDataFromMC_sideband"
   showSelectedEventCount: true
 
   mc:
@@ -28,7 +28,7 @@
     nominalWeightFormula: "(1.0)"
   data:
     # data from the same MC
-    - name: "FakeDataFromMC"
+    - name: "FakeDataFromMC_sideband"
       tree: "events/full/sideband"
       nominalWeightFormula: "(1.0)"
       filePathList:

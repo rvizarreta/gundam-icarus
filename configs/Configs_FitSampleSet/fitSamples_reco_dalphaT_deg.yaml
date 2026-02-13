@@ -8,4 +8,4 @@ fitSampleList:
     isEnabled: true
     binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dalphaT_deg.txt"
     selectionCuts: "cut_type==1"
-    dataSets: ["ICARUS_NuMI_1muNp0pi"]
+    dataSets: ["ICARUS_NuMI_1muNp0pi_sideband"]

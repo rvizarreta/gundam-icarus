@@ -5,7 +5,7 @@ fitSampleList:
 
     selectionCuts: ""
 
-    dataSets: ["ICARUS_NuMI_1muNp0pi"]
+    dataSets: ["ICARUS_NuMI_1muNp0pi_True"]
     parameterSetName: "Template Parameter true_dalphaT_deg"
     yAxis: "#frac{d #sigma}{d #delta #alpha_{T}} #frac{cm^{2}}{(MeV/c)Ar}"
     normaliseParameterList:

@@ -26,7 +26,6 @@ histogramsDefinition:
   - varToPlot: "reco_dpT"
     splitVars: ["category"]
     useSampleBinning: false
-    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT.txt"
     xTitle: "#deltap_{T} (MeV/c)"
     yTitle: "Slices"
     xMax: 1200

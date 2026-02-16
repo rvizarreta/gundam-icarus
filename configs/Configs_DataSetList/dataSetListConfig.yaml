@@ -1,4 +1,4 @@
-- name: "ICARUS_NuMI_1muNp0pi"
+- name: "ICARUS_NuMI_1muNp0pi_selection"
   isEnabled: true
   selectedDataEntry: "FakeDataFromMC"
   showSelectedEventCount: true

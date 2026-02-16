@@ -1,4 +1,4 @@
-- name: "ICARUS_NuMI_1muNp0pi_True"
+- name: "ICARUS_NuMI_1muNp0pi_Signal"
 
   mc:
     tree: "events/full/signal"

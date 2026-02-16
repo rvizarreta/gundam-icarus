@@ -1,5 +1,5 @@
 fitSampleList:
-  - name: "signal_dpT"
+  - name: "selection_reco_dpT"
     isEnabled: true
     binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT.txt"
     selectionCuts: "cut_type==1"

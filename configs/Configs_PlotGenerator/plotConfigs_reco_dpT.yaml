@@ -26,7 +26,7 @@ histogramsDefinition:
   - varToPlot: "reco_dpT"
     splitVars: ["category"]
     useSampleBinning: true
-    rescaleAsBinWidth: false
+    rescaleAsBinWidth: true
     xTitle: "#deltap_{T} (MeV/c)"
     yTitle: "Slices"
     xMax: 1200

@@ -28,7 +28,7 @@ histogramsDefinition:
   - varToPlot: "reco"
     splitVars: ["IsSignal"]
     useSampleBinning: true
-    rescaleAsBinWidth: false
+    rescaleAsBinWidth: true
     xTitle: "p_{#mu} (GeV/c)"
     yTitle: "Slices"
     xMax: 3.2

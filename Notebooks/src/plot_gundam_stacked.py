@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import mplhep as hep
 
 def plot_gundam_stacked(
-    root_file_path,
+    postfit_file_path,
     fitterengine_file_path,
     fit_type='pre-fit',
     sample_name='signal_dpT',
@@ -13,7 +13,7 @@ def plot_gundam_stacked(
     categories_config=None,
     stack_order=None,
     xlabel=r'$\delta p_T$ [MeV/c]',
-    ylabel='Events',
+    ylabel=r'$\mathbf{Events / (MeV/c)}$',
     title='ICARUS CC0π',
     pot='NuMI 2.22×10¹⁹ POT',
     xlim=None,
@@ -29,7 +29,7 @@ def plot_gundam_stacked(
 
     Parameters
     ----------
-    root_file_path : str
+    postfit_file_path : str
         Path to the ROOT file
     fit_type : str
         'pre-fit' or 'post-fit'
@@ -85,10 +85,10 @@ def plot_gundam_stacked(
             6: ('Other CC', 'C1'),
             7: ('Other CC', 'C1'),
             8: ('Other CC', 'C1'),
-            9: (r'$\nu$ NC', 'C0'),
-            2: ('OOFV', 'C6'),
-            5: ('OOFV', 'C6'),
-            10: ('Cosmic', 'C4'),  # Add Cosmic category
+            9: (r'$\nu$ NC', 'deepskyblue'),
+            2: ('OOFV', 'orchid'),
+            5: ('OOFV', 'orchid'),
+            #10: ('Cosmic', 'C4'),  # Add Cosmic category
         }
 
     # Default stack order (backgrounds first, signal last)
@@ -96,7 +96,7 @@ def plot_gundam_stacked(
         stack_order = [10, 9, 6, 7, 8, 2, 5, 1, 4, 0, 3]
 
     # Open ROOT file
-    file = uproot.open(root_file_path) # toyGen file
+    file = uproot.open(postfit_file_path) # toyGen file
     fitterengine_file = uproot.open(fitterengine_file_path) # FitterEngine file
 
     # Extract all category histograms
@@ -167,7 +167,7 @@ def plot_gundam_stacked(
         step='post',
         facecolor='lightgray',
         edgecolor='gray',
-        alpha=0.6,
+        alpha=1,
         hatch='xxx',
         linewidth=0.8,
         label='Systematic Unc.',
@@ -179,7 +179,7 @@ def plot_gundam_stacked(
         [cumulative[-1] + syst_errors[-1], cumulative[-1] + syst_errors[-1]],
         facecolor='lightgray',
         edgecolor='gray',
-        alpha=0.6,
+        alpha=1,
         hatch='xxx',
         linewidth=0.8,
         zorder=1
@@ -204,7 +204,7 @@ def plot_gundam_stacked(
             step='post',
             label=label,
             color=color,
-            alpha=0.95,
+            alpha=0.85,
             linewidth=0,
             zorder=3  # HIGHER z-order, draws on top
         )
@@ -228,40 +228,6 @@ def plot_gundam_stacked(
              linewidth=1.5,
              label=f'Prediction ({total_events:.1f} events)',
              zorder=7)
-
-    # Add SYSTEMATIC UNCERTAINTY BAND on top panel
-    ax1.fill_between(
-        bin_edges[:-1],
-        cumulative - syst_errors,
-        cumulative + syst_errors,
-        step='post',
-        facecolor='lightgray',
-        edgecolor='gray',
-        alpha=0.4,
-        hatch='xxx',
-        linewidth=0.6,
-        zorder=5
-    )
-    ax1.fill_between(
-        [bin_edges[-2], bin_edges[-1]],
-        [cumulative[-1] - syst_errors[-1], cumulative[-1] - syst_errors[-1]],
-        [cumulative[-1] + syst_errors[-1], cumulative[-1] + syst_errors[-1]],
-        facecolor='lightgray',
-        edgecolor='gray',
-        alpha=0.4,
-        hatch='xxx',
-        linewidth=0.6,
-        zorder=5
-    )
-
-    # ADD border line on top of uncertainty band
-    y_top = cumulative + syst_errors
-    ax1.step(bin_edges,
-             np.append(y_top, y_top[-1]),
-             where='post',
-             color='grey',
-             linewidth=1.5,
-             zorder=6)
 
     # Data points
     data_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
@@ -337,7 +303,7 @@ def plot_gundam_stacked(
             syst_handle = plt.Rectangle((0, 0), 1, 1,
                                         facecolor='lightgray',
                                         edgecolor='gray',
-                                        alpha=0.6,
+                                        alpha=1,
                                         hatch='xxx',
                                         linewidth=0.6)  # Remove contour
             syst_label = 'Stats & Interaction Uncertainty'
@@ -454,7 +420,7 @@ def plot_gundam_stacked(
 
     ax2.axhline(y=1, color='gray', linestyle='--', linewidth=1)
     ax2.set_xlabel(xlabel, fontsize=12, weight='bold')
-    ax2.set_ylabel('Data/MC', fontsize=11, weight='bold')
+    ax2.set_ylabel(r'$\mathbf{Data/MC}$', fontsize=11, weight='bold')
 
     if xlim:
         ax2.set_xlim(xlim)

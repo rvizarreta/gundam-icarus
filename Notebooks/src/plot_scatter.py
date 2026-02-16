@@ -138,7 +138,7 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
     ax.grid(True, alpha=0.3)
 
     # Add legend
-    ax.legend(loc='best', fontsize=10, framealpha=0.9)
+    #ax.legend(loc='best', fontsize=10, framealpha=0.9)
 
     # Save the plot
     if output_name is None:

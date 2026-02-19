@@ -5,8 +5,7 @@ plt.style.use("/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@g
 
 def plot_fit_constraints(filename, directory_path,
                         title_line1=None,
-                        figsize=(10, 14),
-                        output_name=None):
+                        figsize=(10, 14)):
     """
     Plot pre-fit and post-fit parameter constraints from GUNDAM ROOT file.
 
@@ -169,10 +168,5 @@ def plot_fit_constraints(filename, directory_path,
               framealpha=0.9,
               ncol=2,
               columnspacing=1)
-
-    # Save if requested
-    if output_name:
-        plt.savefig(output_name, dpi=300, bbox_inches='tight')
-        print(f"Plot saved to: {output_name}")
 
     return fig, ax

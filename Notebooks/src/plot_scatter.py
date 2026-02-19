@@ -5,7 +5,7 @@ import numpy as np
 
 def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edges_labels, is_y_errors,
                        title_line1=None, label=None,
-                       figsize=(5, 4), output_name=None, pot='POT', remove_last_bin=True, scaling_power_of_10=1.0):
+                       figsize=(5, 4), pot='POT', remove_last_bin=True, scaling_power_of_10=1.0):
     """
     Plot cross-section data from a ROOT file with error bars.
 
@@ -139,11 +139,6 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
 
     # Add legend
     #ax.legend(loc='best', fontsize=10, framealpha=0.9)
-
-    # Save the plot
-    if output_name is None:
-        output_name = f"{hist.name}_matplotlib.png"
-    plt.savefig(output_name, dpi=300, bbox_inches='tight')
 
     # Return the plot
     return fig, ax

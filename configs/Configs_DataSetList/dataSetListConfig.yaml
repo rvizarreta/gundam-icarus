@@ -7,12 +7,12 @@
     tree: "events/full/selected"
     filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
-    nominalWeightFormula: "(ppfx_cv_weight)"
+    nominalWeightFormula: "(1.0)"
   data:
     # data from the same MC
     - name: "FakeDataFromMC"
       tree: "events/full/selected"
-      nominalWeightFormula: "(ppfx_cv_weight)"
+      nominalWeightFormula: "(1.0)"
       filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
 
@@ -25,11 +25,11 @@
     tree: "events/full/sideband"
     filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
-    nominalWeightFormula: "(ppfx_cv_weight)"
+    nominalWeightFormula: "(1.0)"
   data:
     # data from the same MC
     - name: "FakeDataFromMC_sideband"
       tree: "events/full/sideband"
-      nominalWeightFormula: "(ppfx_cv_weight)"
+      nominalWeightFormula: "(1.0)"
       filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"

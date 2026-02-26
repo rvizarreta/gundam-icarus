@@ -59,7 +59,7 @@ def overlay_manual_cross_section(fig, ax, root_file_path, bins_mev,
     tree = file[signal_tree_path]
 
     # Read branches
-    arrays = tree.arrays([variable_name, "category", "ppfx_cv_weight"], library="ak")
+    arrays = tree.arrays([variable_name, "category"], library="ak")
 
     # Apply signal selection
     signal_mask = ak.zeros_like(arrays.category, dtype=bool)
@@ -88,7 +88,7 @@ def overlay_manual_cross_section(fig, ax, root_file_path, bins_mev,
         # Count events in this bin
         bin_mask = (signal_events[variable_name] >= bin_low) & (signal_events[variable_name] < bin_high)
         n_signal = int(ak.sum(bin_mask))
-        n_signal_weighted = float(ak.sum(signal_events["ppfx_cv_weight"][bin_mask]))
+        n_signal_weighted = float(n_signal)
 
         # Calculate bin width in MeV
         if bin_high < 99999:

@@ -40,7 +40,6 @@ def _read_nuisflat_dir(file_dir, generator_name, branches, signal_expr,
 
     return h, flux_integral, len(files)
 
-
 def overlay_genie_nuisance_xsec(fig, ax,
                                  nuisance_file_dir,
                                  bin_edges,

@@ -1,4 +1,4 @@
-variables: true_dpT true_dpT
+variables: true_dpT_lp_genie true_dpT_lp_genie
 0.000000 80.00000
 80.00000 160.0000
 160.0000 240.0000

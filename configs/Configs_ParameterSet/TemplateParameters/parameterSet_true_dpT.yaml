@@ -1,4 +1,4 @@
-name: Template Parameter true_dpT
+name: Template Parameter true_dpT_lp_genie
 isEnabled: true
 
 printDialSetsSummary: true
@@ -7,7 +7,7 @@ nominalStepSize: 0.1
 useOnlyOneParameterPerEvent: true
 
 dialSetDefinitions:
-  - name: Template Parameter true_dpT  dialSetDefinitions
+  - name: Template Parameter true_dpT_lp_genie  dialSetDefinitions
     # 'applyOnDataSets' can take a list or a wildcard
     applyOnDataSets: ["*"]
     parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_true_dpT.txt"

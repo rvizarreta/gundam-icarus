@@ -6,7 +6,7 @@ fitSampleList:
     selectionCuts: ""
 
     dataSets: ["ICARUS_NuMI_1muNp0pi_signal"]
-    parameterSetName: "Template Parameter true_dpT"
+    parameterSetName: "Template Parameter true_dpT_lp_genie"
     yAxis: "#frac{d #sigma}{d #delta p_{T}} #frac{cm^{2}}{(MeV/c)Ar}"
     normaliseParameterList:
       - name: "Constant flux"

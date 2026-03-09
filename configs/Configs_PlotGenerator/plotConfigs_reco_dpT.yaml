@@ -23,7 +23,7 @@ varDictionnaries:
       - { value: 10, title: "Cosmic", color: 880 }
 
 histogramsDefinition:
-  - varToPlot: "reco_dpT"
+  - varToPlot: "reco_dpT_lp"
     splitVars: ["category"]
     useSampleBinning: true
     rescaleAsBinWidth: true

@@ -8,7 +8,7 @@ def plot_gundam_stacked(
     fitterengine_file_path,
     fit_type='pre-fit',
     sample_name='signal_dpT',
-    variable_name='reco_dpT',
+    variable_name='reco_dpT_lp',
     cov_bin_range=(0, 12),
     categories_config=None,
     stack_order=None,

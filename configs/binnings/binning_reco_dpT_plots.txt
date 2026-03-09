@@ -1,4 +1,4 @@
-variables: reco_dpT reco_dpT
+variables: reco_dpT_lp reco_dpT_lp
 0.0000 400.00
 0.0400 0.0800
 0.0800 0.1250

@@ -12,9 +12,9 @@ fitSampleList:
       - name: "Constant flux"
         isEnabled: true
 
-        meanValue: 1.075491e+11  # (numu+numubar)/cm², POT = 1.47e20
+        meanValue: 1.076331e+11  # (numu+numubar)/cm², POT = 1.47e20
         stdDev: 1.436e+10     # 12.59% uncertainty
 
       - name: "Number of targets"
-        meanValue: 4.6079073e30
+        meanValue: 4.721444e+30
         stdDev: 9.4281120e+27

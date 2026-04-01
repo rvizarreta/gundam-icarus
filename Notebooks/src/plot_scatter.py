@@ -74,7 +74,7 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
                 color='black',
                 capsize=4,
                 capthick=1.5,
-                elinewidth=1.5,
+                elinewidth=1.75,
                 label=label,
                 linewidth=2)
 

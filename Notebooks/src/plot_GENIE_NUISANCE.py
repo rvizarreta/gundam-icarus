@@ -139,9 +139,9 @@ def overlay_genie_nuisance_xsec(fig, ax,
     left  = bin_centers - bin_widths / 2
     right = bin_centers + bin_widths / 2
 
-    ax.hlines(xsec, left, right, colors=color, linestyles='--', linewidth=1.5, label=label)
-    ax.vlines(left,  0, xsec,   colors=color, linestyles='--', linewidth=1.0)
-    ax.vlines(right, 0, xsec,   colors=color, linestyles='--', linewidth=1.0)
+    ax.hlines(xsec, left, right, colors=color, linestyles='--', linewidth=1.5, label=label, zorder=1)
+    ax.vlines(left,  0, xsec,   colors=color, linestyles='--', linewidth=1.0, zorder=1)
+    ax.vlines(right, 0, xsec,   colors=color, linestyles='--', linewidth=1.0, zorder=1)
 
     handles, labels = ax.get_legend_handles_labels()
     ax.legend(handles[::-1], labels[::-1], loc='best', fontsize=10, framealpha=0.9)

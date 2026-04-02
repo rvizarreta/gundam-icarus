@@ -11,6 +11,7 @@ def plot_gundam_stacked(
     variable_name='reco_dpT_lp',
     cov_bin_range=(0, 12),
     categories_config=None,
+    is_data=False,
     stack_order=None,
     xlabel=r'$\delta p_T$ [MeV/c]',
     ylabel=r'$\mathbf{Events / (MeV/c)}$',
@@ -102,7 +103,6 @@ def plot_gundam_stacked(
     # Extract all category histograms
     category_data = {}
     bin_edges = None
-
     if fit_type == 'pre-fit':
         path_template = f"toyGen/plots/histograms/{sample_name} (pre-fit)/{variable_name}/category/{{cat}}/MC_TH1D"
     else:  # post-fit
@@ -120,10 +120,16 @@ def plot_gundam_stacked(
             print(f"Warning: Category {cat} not found at {path}")
 
     # Extract data values and errors from FitterEngine path
-    if fit_type == 'pre-fit':
-        data_path = f"FitterEngine/preFit/plots/histograms/{sample_name}/{variable_name}/MC_TH1D"
-    else:  # post-fit
-        data_path = f"FitterEngine/preFit/plots/histograms/{sample_name}/{variable_name}/MC_TH1D"
+    if is_data is False:
+        if fit_type == 'pre-fit':
+            data_path = f"FitterEngine/preFit/plots/histograms/{sample_name}/{variable_name}/MC_TH1D"
+        else:  # post-fit
+            data_path = f"FitterEngine/preFit/plots/histograms/{sample_name}/{variable_name}/MC_TH1D"
+    if is_data:
+        if fit_type == 'pre-fit':
+            data_path = f"FitterEngine/preFit/plots/histograms/{sample_name}/{variable_name}/Data_TH1D"
+        else:  # post-fit
+            data_path = f"FitterEngine/preFit/plots/histograms/{sample_name}/{variable_name}/Data_TH1D"
 
     data_hist = fitterengine_file[data_path]
     data_values = data_hist.values()  # Remove overflow

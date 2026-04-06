@@ -148,7 +148,7 @@ def plot_fit_constraints(filename, directory_path,
         usex_left = xrange[0] + 0.01*(xrange[1] - xrange[0])
         usey = y_max + 0.01*(y_max - y_min)
 
-        color = 'chocolate' if 'data' in title_line1.lower() else 'blue'
+        color = 'black' if 'mock' in title_line1.lower() else ('chocolate' if 'data' in title_line1.lower() else 'blue')
         ax.text(x=usex_left, y=usey, s=title_line1, fontsize=10, color=color,
                 verticalalignment='bottom')
 

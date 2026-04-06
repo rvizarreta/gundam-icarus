@@ -365,7 +365,7 @@ def plot_gundam_stacked(
     xrange = ax1.get_xlim()
     usey = yrange[1] + 0.01*(yrange[1] - yrange[0])
     usex = xrange[0] + 0.01*(xrange[1] - xrange[0])
-    color = 'chocolate' if 'data' in title.lower() else 'blue'
+    color = 'black' if 'mock' in title.lower() else ('chocolate' if 'data' in title.lower() else 'blue')
     ax1.text(x=usex, y=usey, s=title,
              fontsize=10, color=color, verticalalignment='bottom')
     usex_right = xrange[1] - 0.025*(xrange[1] - xrange[0])

@@ -4,7 +4,7 @@ plt.style.use("/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@g
 import numpy as np
 
 def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edges_labels, is_y_errors,
-                       title_line1=None, label=None,
+                       title_line1=None, label=None, hline_nuisance=False,
                        figsize=(5, 4), pot='POT', remove_last_bin=True, scaling_power_of_10=1.0):
     """
     Plot cross-section data from a ROOT file with error bars.
@@ -88,6 +88,9 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
     y_max = np.max(bin_values + bin_errors) * 1.2
     ax.set_ylim(y_min, y_max)
 
+    if hline_nuisance:
+        ax.axhline(y=1, color='black', linestyle='--', linewidth=1.0, alpha=0.8)
+
     # Set x-axis ticks at bin edges
     #ax.set_xticks(bin_edges_array)
     #ax.set_xticklabels([f'{x:.1f}' for x in bin_edges_array], fontsize=10)
@@ -120,7 +123,7 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
         usey = yrange[1] + 0.01*(yrange[1] - yrange[0]) + 0.0*(yrange[1] - yrange[0])
         xrange = ax.get_xlim()
         usex = xrange[0] + 0.01*(xrange[1] - xrange[0]) + 0.0*(xrange[1] - xrange[0])
-        color = 'chocolate' if 'data' in title_line1.lower() else 'blue'
+        color = 'black' if 'mock' in title_line1.lower() else ('chocolate' if 'data' in title_line1.lower() else 'blue')
         ax.text(x=usex, y=usey, s=title_line1, fontsize=10, color=color, verticalalignment='bottom')
         usex_right = xrange[1] - 0.025*(xrange[1] - xrange[0])
         ax.text(x=usex_right, y=usey, s=pot, fontsize=10, color="black",

@@ -13,8 +13,8 @@ fitterEngineConfig:
 
     # jointProbability
     jointProbabilityConfig:
-      #type: "PoissonLLH"
-      type: "BarlowLLH"
+      type: "PoissonLLH"
+      #type: "BarlowLLH"
 
     # dataSetManager
     propagatorConfig:
@@ -28,7 +28,7 @@ fitterEngineConfig:
     enableStatThrowInToys: false
     enableEventMcThrow: false
 
-    dataSetList: "${GUNDAM_CONFIG_DIR}/Configs_DataSetList/dataSetListConfig.yaml"
+    dataSetList: "${GUNDAM_CONFIG_DIR}/Configs_DataSetList/dataSetListConfig_Asimov.yaml"
     plotGeneratorConfig: "${GUNDAM_CONFIG_DIR}/Configs_PlotGenerator/plotConfigs_reco_dpT.yaml"
 
   # listing local configs 

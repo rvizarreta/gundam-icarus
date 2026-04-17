@@ -1,7 +1,7 @@
 - name: "ICARUS_NuMI_1muNp0pi_signal"
 
   mc:
-    tree: "events/full/signal"
+    tree: "events/nominal/signal"
     filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
     nominalWeightFormula: "(ppfx_cv_weight)"

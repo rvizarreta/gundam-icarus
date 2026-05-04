@@ -4,7 +4,7 @@
   showSelectedEventCount: true
 
   mc:
-    tree: "events/nominal/selected"
+    tree: "events/full/selected"
     filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
     nominalWeightFormula: "((ppfx_cv_weight) * (2.36124e+19/7.78521e+20))" #2.21627e+19/1.471115e+20
@@ -22,7 +22,7 @@
   showSelectedEventCount: true
 
   mc:
-    tree: "events/nominal/sideband"
+    tree: "events/full/sideband"
     filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
     nominalWeightFormula: "((ppfx_cv_weight) * (2.36124e+19/7.78521e+20))" #2.21627e+19/1.471115e+20

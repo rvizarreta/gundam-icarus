@@ -1,10 +1,12 @@
 import uproot
 import numpy as np
+import re
 import matplotlib.pyplot as plt
 plt.style.use("/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/style.mplstyle")
 
 def plot_fit_constraints(filename, directory_path,
                         title_line1=None,
+                        y_label=None,
                         figsize=(10, 14)):
     """
     Plot pre-fit and post-fit parameter constraints from GUNDAM ROOT file.
@@ -63,6 +65,11 @@ def plot_fit_constraints(filename, directory_path,
             if '_multisigma_' in label:
                 actual_name = label.split('_multisigma_')[-1]
                 labels.append(actual_name)
+            elif 'hysyst_' in label:
+                # Strip leading "#N_" index and everything up to and including "hysyst_"
+                actual_name = re.sub(r'^#\d+_', '', label)  # remove "#0_", "#23_", etc.
+                actual_name = actual_name.split('hysyst_', 1)[-1]  # remove "hysyst_" prefix
+                labels.append(actual_name)
             else:
                 labels.append(label)
 
@@ -99,7 +106,7 @@ def plot_fit_constraints(filename, directory_path,
                                   linewidth=0)
 
     # Set axis labels
-    ax.set_ylabel(r'$\mathbf{Interaction\ Model\ Parameter}$', fontsize=12, labelpad=100)
+    ax.set_ylabel(y_label, fontsize=12, labelpad=100)
     ax.set_xlabel(r'$\mathbf{Parameter\ values}$ (a.u.)', fontsize=12)
 
     # Set y-axis with major ticks at integer positions (grid lines)
@@ -144,13 +151,11 @@ def plot_fit_constraints(filename, directory_path,
 
     # Add title if provided - place ABOVE the plot on the LEFT
     if title_line1:
-        xrange = ax.get_xlim()
-        usex_left = xrange[0] + 0.01*(xrange[1] - xrange[0])
-        usey = y_max + 0.01*(y_max - y_min)
-
         color = 'black' if 'mock' in title_line1.lower() else ('chocolate' if 'data' in title_line1.lower() else 'blue')
-        ax.text(x=usex_left, y=usey, s=title_line1, fontsize=10, color=color,
-                verticalalignment='bottom')
+        ax.text(0.01, 1.01, title_line1,
+                transform=ax.transAxes,
+                fontsize=10, color=color,
+                ha='left', va='bottom')
 
     # Force font family on tick labels
     for label in ax.get_xticklabels() + ax.get_yticklabels():
@@ -159,11 +164,10 @@ def plot_fit_constraints(filename, directory_path,
     # Grid
     ax.grid(True, alpha=1)
 
-    # Legend using actual plot elements
     ax.legend([prefit_bar, postfit_points],
               ['Pre-fit value', 'Post-fit value'],
-              loc='upper right',
-              bbox_to_anchor=(1.001, 1.035),
+              loc='lower right',
+              bbox_to_anchor=(1.0, 1.01),
               fontsize=10,
               framealpha=0.9,
               ncol=2,

@@ -2,6 +2,7 @@ import uproot
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import TwoSlopeNorm
+import re
 
 plt.style.use(
     "/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com"
@@ -31,6 +32,10 @@ def _extract_labels(hist, n_params):
         for label in raw_labels:
             if "_multisigma_" in label:
                 labels.append(label.split("_multisigma_")[-1])
+            elif "hysyst_" in label:
+                actual_name = re.sub(r'^#\d+_', '', label)
+                actual_name = actual_name.split("hysyst_", 1)[-1]
+                labels.append(actual_name)
             else:
                 labels.append(label)
 
@@ -78,6 +83,7 @@ def plot_both_matrices(
     title_line1=None,
     figsize=(14, 24),
     cmap="RdBu_r",
+    label_name=None,
     annotate=False,
     annotate_threshold=0.3,
 ):
@@ -156,16 +162,16 @@ def plot_both_matrices(
                                           constrained_layout=True)
 
     # ── Shared axis formatting helper ─────────────────────────────────────────
-    def _format_axes(ax):
+    def _format_axes(ax, label_name):
         ax.set_xticks(tick_pos)
         ax.set_yticks(tick_pos)
         ax.set_xticklabels(labels, rotation=90, fontsize=7, ha="center")
         ax.set_yticklabels(labels, fontsize=7)
         ax.set_xlabel(
-            r"$\mathbf{Interaction\ Model\ Parameter}$", fontsize=12, labelpad=8
+            label_name, fontsize=12, labelpad=8
         )
         ax.set_ylabel(
-            r"$\mathbf{Interaction\ Model\ Parameter}$", fontsize=12, labelpad=8
+            label_name, fontsize=12, labelpad=8
         )
         _apply_common_style(ax)
 
@@ -180,7 +186,7 @@ def plot_both_matrices(
     cbar_cov = fig_cov.colorbar(im_cov, ax=ax_cov, fraction=0.046, pad=0.04)
     cbar_cov.set_label(r"$\mathbf{Covariance}$", fontsize=11)
     cbar_cov.ax.tick_params(labelsize=9)
-    _format_axes(ax_cov)
+    _format_axes(ax_cov, label_name)
 
     # ── Correlation panel ─────────────────────────────────────────────────────
     norm_corr = TwoSlopeNorm(vmin=-1.0, vcenter=0.0, vmax=1.0)
@@ -208,7 +214,7 @@ def plot_both_matrices(
                         fontsize=5, color=text_color,
                     )
 
-    _format_axes(ax_corr)
+    _format_axes(ax_corr, label_name)
 
     # ── Title on both panels ─────────────────────────────────────────────────
     if title_line1:

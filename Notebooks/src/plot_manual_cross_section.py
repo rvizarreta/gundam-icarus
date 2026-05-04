@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 def overlay_manual_cross_section(fig, ax, root_file_path, bins_mev,
                                  n_targets,
                                  flux,
-                                 signal_tree_path="events/full/signal",
+                                 signal_tree_path="events/nominal/signal",
                                  variable_name="true_dpT",
                                  category_cuts=[0, 1, 3, 4],
                                  color='red',

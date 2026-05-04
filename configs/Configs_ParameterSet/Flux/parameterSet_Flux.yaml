@@ -1,0 +1,14 @@
+name: Multisigma Flux Systematics
+isEnabled: true
+
+printDialSetsSummary: true
+
+releaseFixedParametersOnHesse: true
+covarianceMatrixFilePath: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/Flux/gundaminput_fluxsyst.root"
+covarianceMatrixTMatrixD: flux_cov
+parameterPriorTVectorD: flux_param_prior
+parameterNameTObjArray: flux_param_names
+parameterLowerBoundsTVectorD: flux_param_lb
+parameterUpperBoundsTVectorD: flux_param_ub
+
+parameterDefinitions: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/Flux/FluxDialsmultisigma.yaml"

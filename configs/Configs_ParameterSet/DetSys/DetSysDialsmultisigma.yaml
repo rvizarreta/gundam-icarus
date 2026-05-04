@@ -1,0 +1,70 @@
+- parameterName: "var00"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minimumSplineResponse: 0
+      dialLeafName: "var00"
+      applyCondition: "[is_nu]==1"
+- parameterName: "var01"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minimumSplineResponse: 0
+      dialLeafName: "var01"
+      applyCondition: "[is_nu]==1"
+- parameterName: "var02"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minimumSplineResponse: 0
+      dialLeafName: "var02"
+      applyCondition: "[is_nu]==1"
+- parameterName: "var03"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minimumSplineResponse: 0
+      dialLeafName: "var03"
+      applyCondition: "[is_nu]==1"
+- parameterName: "var04"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minimumSplineResponse: 0
+      dialLeafName: "var04"
+      applyCondition: "[is_nu]==1"
+- parameterName: "var05"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minimumSplineResponse: 0
+      dialLeafName: "var05"
+      applyCondition: "[is_nu]==1"
+- parameterName: "var06"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minimumSplineResponse: 0
+      dialLeafName: "var06"
+      applyCondition: "[is_nu]==1"
+- parameterName: "var07"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minimumSplineResponse: 0
+      dialLeafName: "var07"
+      applyCondition: "[is_nu]==1"
+- parameterName: "var08"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minimumSplineResponse: 0
+      dialLeafName: "var08"
+      applyCondition: "[is_nu]==1"
+- parameterName: "var09"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minimumSplineResponse: 0
+      dialLeafName: "var09"
+      applyCondition: "[is_nu]==1"

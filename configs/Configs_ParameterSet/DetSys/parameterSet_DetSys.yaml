@@ -1,0 +1,14 @@
+name: Detector Systematics
+isEnabled: true
+
+printDialSetsSummary: true
+
+releaseFixedParametersOnHesse: true
+covarianceMatrixFilePath: "{GUNDAM_CONFIG_DIR}/Configs_ParameterSet/DetSys/gundaminput_detsyst.root"
+covarianceMatrixTMatrixD: detsys_cov
+parameterPriorTVectorD: detsys_param_prior
+parameterNameTObjArray: detsys_param_names
+parameterLowerBoundsTVectorD: detsys_param_lb
+parameterUpperBoundsTVectorD: detsys_param_ub
+
+parameterDefinitions: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/DetSys/DetSysDialsmultisigma.yaml"

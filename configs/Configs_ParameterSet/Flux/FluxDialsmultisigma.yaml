@@ -1,0 +1,216 @@
+- parameterName: "hysyst_beam_horn_2kA"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_beam_horn_2kA"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_beam_horn1_x_3mm"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_beam_horn1_x_3mm"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_beam_horn1_y_3mm"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_beam_horn1_y_3mm"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_beam_spot_1_3mm"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_beam_spot_1_3mm"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_beam_spot_1_7mm"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_beam_spot_1_7mm"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_beam_horn2_x_3mm"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_beam_horn2_x_3mm"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_beam_horn2_y_3mm"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_beam_horn2_y_3mm"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_beam_horns_0mm_water"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_beam_horns_0mm_water"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_beam_horns_2mm_water"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_beam_horns_2mm_water"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_beam_Beam_shift_x_1mm"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_beam_Beam_shift_x_1mm"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_beam_Beam_shift_y_1mm"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_beam_Beam_shift_y_1mm"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_beam_Target_z_7mm"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_beam_Target_z_7mm"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_hpc_0"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_hpc_0"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_hpc_1"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_hpc_1"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_hpc_2"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_hpc_2"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_hpc_3"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_hpc_3"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_hpc_4"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_hpc_4"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_hpc_5"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_hpc_5"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_hpc_6"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_hpc_6"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_hpc_7"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_hpc_7"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_hpc_8"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_hpc_8"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_hpc_9"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_hpc_9"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_hpc_10"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_hpc_10"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_hpc_11"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_hpc_11"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_hpc_12"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_hpc_12"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_hpc_13"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_hpc_13"
+      applyCondition: "[is_nu]==1"
+- parameterName: "hysyst_hpc_14"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "hysyst_hpc_14"
+      applyCondition: "[is_nu]==1"

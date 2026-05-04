@@ -86,7 +86,6 @@ std::vector<std::string> GetGENIEMorphKnobNames(){
 
 std::vector<std::string> GetDetSysMultisigmaKnobNames(){
   return {
-    "var00",
       "var01",
       "var02",
       "var03",
@@ -95,5 +94,6 @@ std::vector<std::string> GetDetSysMultisigmaKnobNames(){
       "var06",
       "var07",
       "var08",
+      "var09",
       };
 }

@@ -16,6 +16,13 @@ plt.style.use(
 # human-readable label. Covers detector systematics (var01–var09),
 # NuMI beam focusing dials, and hadron-production PCA components (HPC).
 DETSYS_LABEL_MAP = {
+
+    # PCA Components of Z Expansion # ────────────────────────────────────
+    '#0_ZExpPCAWeighter_myreweighter_b1': 'ZExp_PCA_b1',
+    '#1_ZExpPCAWeighter_myreweighter_b2': 'ZExp_PCA_b2',
+    '#2_ZExpPCAWeighter_myreweighter_b3': 'ZExp_PCA_b3',
+    '#3_ZExpPCAWeighter_myreweighter_b4': 'ZExp_PCA_b4',
+
     # ── Detector systematics ────────────────────────────────────────────
     'var01': 'Induction Gain',
     'var02': 'TPC Coherent Noise',
@@ -37,8 +44,8 @@ DETSYS_LABEL_MAP = {
     'beam_spot_1_7mm':       r'Beam Spot Size (1.7 mm)',
     'beam_horns_0mm_water':  r'Horn Water Layer (0 mm)',
     'beam_horns_2mm_water':  r'Horn Water Layer ($\pm$2 mm)',
-    'beam_Beam_shift_x_1mm': r'Proton Beam X Shift ($\pm$1 mm)',
-    'beam_Beam_shift_y_1mm': r'Proton Beam Y Shift ($\pm$1 mm)',
+    'beam_Beam_shift_x_1mm': r'Beam X Shift ($\pm$1 mm)',
+    'beam_Beam_shift_y_1mm': r'Beam Y Shift ($\pm$1 mm)',
     'beam_Target_z_7mm':     r'Target Z Position ($\pm$7 mm)',
 
     # ── Hadron Production PCA components (HPC) ──────────────────────────

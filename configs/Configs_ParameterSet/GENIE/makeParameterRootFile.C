@@ -14,65 +14,40 @@ void makeParameterRootFile()
 
   std::string outputname = "gundaminput_geniesyst.root";
 
-  // Make the covariance matrix: ((0,1), (1,0))
   TFile *file = new TFile(outputname.c_str(),"RECREATE");
   file->cd();
 
   std::cout << "@@ Prefit error by covariance matrix" << std::endl;
   TMatrixTSym<double> xsec_cov(NKnob);
+
+  // Initialize to identity
   for (int i = 0; i < NKnob; i++) {
-
-    std::string this_knobname = KnobNames[i];
-
-    double this_prefit_err = 1.0;
-
-    if(i<genieMultisigmaNames.size()){
-      this_prefit_err = 1.0;
-    }
-    else{
-      this_prefit_err = 1.0;
-    }
-
-    std::cout << this_knobname << "\t" << this_prefit_err << std::endl;
-
-    xsec_cov(i, i) = this_prefit_err*this_prefit_err;
-
+    xsec_cov(i, i) = 1.0;
+    std::cout << KnobNames[i] << "\t" << 1.0 << std::endl;
   }
 
-  // Z-exp
-  double ZExpCorr[4][4];
-  ZExpCorr[0][0] = 1.000000;
-  ZExpCorr[0][1] = 0.350000;
-  ZExpCorr[0][2] = -0.678000;
-  ZExpCorr[0][3] = 0.611000;
-  ZExpCorr[1][0] = 0.350000;
-  ZExpCorr[1][1] = 1.000000;
-  ZExpCorr[1][2] = -0.898000;
-  ZExpCorr[1][3] = 0.367000;
-  ZExpCorr[2][0] = -0.678000;
-  ZExpCorr[2][1] = -0.898000;
-  ZExpCorr[2][2] = 1.000000;
-  ZExpCorr[2][3] = -0.685000;
-  ZExpCorr[3][0] = 0.611000;
-  ZExpCorr[3][1] = 0.367000;
-  ZExpCorr[3][2] = -0.685000;
-  ZExpCorr[3][3] = 1.000000;
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
-      xsec_cov(i,j) = ZExpCorr[i][j];
-    }
-  }
+  // ZExp PCA b-parameters are uncorrelated by construction (PCA diagonalizes
+  // the covariance matrix). They occupy indices 0-3 in genieMultisigmaNames.
+  // The identity matrix is already correct for them — no off-diagonal terms needed.
+  //
+  // For reference, the original ZExp A-parameter correlation matrix from
+  // PRD 93, 113015 (Meyer et al. 2016) was:
+  //   ZExpCorr[0][0]=1.000  [0][1]=0.350  [0][2]=-0.678  [0][3]=0.611
+  //   ZExpCorr[1][0]=0.350  [1][1]=1.000  [1][2]=-0.898  [1][3]=0.367
+  //   ZExpCorr[2][0]=-0.678 [2][1]=-0.898 [2][2]=1.000   [2][3]=-0.685
+  //   ZExpCorr[3][0]=0.611  [3][1]=0.367  [3][2]=-0.685  [3][3]=1.000
+  // The PCA rotation diagonalizes this matrix, so b1-b4 are independent.
 
   xsec_cov.Write("xsec_cov");
 
   TObjArray xsec_param_names;
   for(const auto& name: genieMultisigmaNames){
     xsec_param_names.Add( new TObjString(name.c_str()) );
-    std::cout << "@@ Writting " << name << std::endl;
+    std::cout << "@@ Writing " << name << std::endl;
   }
   for(const auto& name: genieMorphNames){
     xsec_param_names.Add( new TObjString(name.c_str()) );
-    std::cout << "@@ Writting " << name << std::endl;
+    std::cout << "@@ Writing " << name << std::endl;
   }
   file->WriteObjectAny( &xsec_param_names, "TObjArray", "xsec_param_names" );
 
@@ -80,21 +55,9 @@ void makeParameterRootFile()
   TVectorD xsec_param_lb(NKnob);
   TVectorD xsec_param_ub(NKnob);
   for(int i=0; i<NKnob; i++){
-    if(i<genieMultisigmaNames.size()){
-      xsec_param_prior[i] = 0.;
-      xsec_param_lb[i] = -3.;
-      xsec_param_ub[i] = +3.;
-    }
-    else if(i==genieMultisigmaNames.size()){
-      xsec_param_prior[i] = 0.005;
-      xsec_param_lb[i] = -3;
-      xsec_param_ub[i] = 3.;
-    }
-    else{
-      xsec_param_prior[i] = 0.;
-      xsec_param_lb[i] = -3;
-      xsec_param_ub[i] = 3.;
-    }
+    xsec_param_prior[i] = 0.;
+    xsec_param_lb[i] = -3.;
+    xsec_param_ub[i] = +3.;
   }
   xsec_param_prior.Write("xsec_param_prior");
   xsec_param_lb.Write("xsec_param_lb");
@@ -104,22 +67,23 @@ void makeParameterRootFile()
 }
 
 std::vector<std::string> GetGENIEMorphKnobNames(){
-
   return {
 "GENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape",
 "GENIEReWeight_SBN_v1_multisigma_DecayAngMEC",
 "GENIEReWeight_SBN_v1_multisigma_Theta_Delta2Npi",
 "GENIEReWeight_SBN_v1_multisigma_ThetaDelta2NRad",
   };
-
 }
 
 std::vector<std::string> GetGENIEMultisigmaKnobNames(){
   return {
-"GENIEReWeight_SBN_v1_multisigma_ZExpA1CCQE",
-"GENIEReWeight_SBN_v1_multisigma_ZExpA2CCQE",
-"GENIEReWeight_SBN_v1_multisigma_ZExpA3CCQE",
-"GENIEReWeight_SBN_v1_multisigma_ZExpA4CCQE",
+// ZExp PCA b-parameters (replace ZExpA1-A4CCQE)
+// Uncorrelated by PCA construction — identity covariance
+"ZExpPCAWeighter_myreweighter_b1",
+"ZExpPCAWeighter_myreweighter_b2",
+"ZExpPCAWeighter_myreweighter_b3",
+"ZExpPCAWeighter_myreweighter_b4",
+// Remaining GENIE knobs (unchanged)
 "GENIEReWeight_SBN_v1_multisigma_RPA_CCQE",
 "GENIEReWeight_SBN_v1_multisigma_CoulombCCQE",
 "GENIEReWeight_SBN_v1_multisigma_NormCCMEC",
@@ -165,5 +129,4 @@ std::vector<std::string> GetGENIEMultisigmaKnobNames(){
 "GENIEReWeight_SBN_v1_multisigma_FrAbs_N",
 "GENIEReWeight_SBN_v1_multisigma_FrPiProd_N",
   };
-
 }

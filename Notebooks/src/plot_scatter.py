@@ -25,12 +25,28 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
         First line of title (e.g., "ICARUS · NuMI Data (10% Run 2)")
     figsize : tuple, optional
         Figure size (width, height). Default is (5, 4)
-    output_name : str, optional
-        Output filename for saving the plot. If None, uses the histogram name. Default is None
+    scaling_power_of_10 : float, optional
+        Scaling factor for cross-section values (e.g., 1e40). Default is 1.0
+    pot : str, optional
+        POT label to display. Default is 'POT'
+    remove_last_bin : bool, optional
+        Whether to remove the last (overflow) bin. Default is True
+    is_cross_section : bool
+        Whether the data is a cross-section (applies scaling)
+    is_y_errors : bool
+        Whether to plot y-error bars
+    label : str, optional
+        Legend label for the data points
+    hline_nuisance : bool, optional
+        Whether to add a horizontal line at y=1. Default is False
 
     Returns
     -------
     fig, ax : matplotlib figure and axis objects
+    bin_values_raw : np.ndarray
+        Raw bin values (before scaling_power_of_10 applied)
+    bin_errors_raw : np.ndarray
+        Raw bin errors (before scaling_power_of_10 applied)
     """
     # Open the ROOT file
     file = uproot.open(filename)
@@ -38,21 +54,21 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
     # Navigate to the histogram
     hist = file[hist_path]
 
-    # Extract bin values and errors
+    # Extract bin values and errors (raw, unscaled)
     if remove_last_bin:
-        if  is_cross_section:
-            bin_values = hist.values()[:-1]*scaling_power_of_10
-            bin_errors = hist.errors()[:-1]*scaling_power_of_10
-        else:
-            bin_values = hist.values()[:-1]
-            bin_errors = hist.errors()[:-1]
+        bin_values_raw = hist.values()[:-1]
+        bin_errors_raw = hist.errors()[:-1]
     else:
-        if  is_cross_section:
-            bin_values = hist.values()*scaling_power_of_10
-            bin_errors = hist.errors()*scaling_power_of_10
-        else:
-            bin_values = hist.values()
-            bin_errors = hist.errors()
+        bin_values_raw = hist.values()
+        bin_errors_raw = hist.errors()
+
+    # Apply scaling for plotting
+    if is_cross_section:
+        bin_values = bin_values_raw * scaling_power_of_10
+        bin_errors = bin_errors_raw * scaling_power_of_10
+    else:
+        bin_values = bin_values_raw
+        bin_errors = bin_errors_raw
 
     # Calculate bin centers from provided bin edges
     bin_edges_array = np.array(bin_edges_labels)
@@ -91,10 +107,6 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
     if hline_nuisance:
         ax.axhline(y=1, color='black', linestyle='--', linewidth=1.0, alpha=0.8)
 
-    # Set x-axis ticks at bin edges
-    #ax.set_xticks(bin_edges_array)
-    #ax.set_xticklabels([f'{x:.1f}' for x in bin_edges_array], fontsize=10)
-
     # Set tick parameters
     ax.tick_params(axis='both', which='major',
                    labelsize=12,
@@ -113,35 +125,27 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
                    width=1,
                    direction='in')
 
-    # Add two-line title if provided (RIGHT-aligned)
+    # Add two-line title if provided
     if title_line1:
-        title_text = ""
-        if title_line1:
-            title_text += title_line1
-
         yrange = ax.get_ylim()
-        usey = yrange[1] + 0.01*(yrange[1] - yrange[0]) + 0.0*(yrange[1] - yrange[0])
+        usey = yrange[1] + 0.01*(yrange[1] - yrange[0])
         xrange = ax.get_xlim()
-        usex = xrange[0] + 0.01*(xrange[1] - xrange[0]) + 0.0*(xrange[1] - xrange[0])
+        usex = xrange[0] + 0.01*(xrange[1] - xrange[0])
         color = 'black' if 'mock' in title_line1.lower() else ('chocolate' if 'data' in title_line1.lower() else 'blue')
         ax.text(x=usex, y=usey, s=title_line1, fontsize=10, color=color, verticalalignment='bottom')
         usex_right = xrange[1] - 0.025*(xrange[1] - xrange[0])
         ax.text(x=usex_right, y=usey, s=pot, fontsize=10, color="black",
                 verticalalignment='bottom', horizontalalignment='right')
 
-    # Force font family on tick labels after formatting
+    # Force font family on tick labels
     for label in ax.get_xticklabels() + ax.get_yticklabels():
         label.set_fontfamily('sans-serif')
 
-    # Also set font for the offset text (scientific notation exponent)
     ax.yaxis.get_offset_text().set_fontfamily('sans-serif')
     ax.xaxis.get_offset_text().set_fontfamily('sans-serif')
 
     # Grid
     ax.grid(True, alpha=0.3)
 
-    # Add legend
-    #ax.legend(loc='best', fontsize=10, framealpha=0.9)
-
-    # Return the plot
-    return fig, ax
+    # Return the plot AND the raw (unscaled) values for reuse
+    return fig, ax, bin_values_raw, bin_errors_raw

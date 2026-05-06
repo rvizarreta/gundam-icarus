@@ -10,6 +10,56 @@ plt.style.use(
     "/ICARUS_CC0pi_GUNDAM/gundam-icarus/style.mplstyle"
 )
 
+# Hardcoded mapping from raw token (e.g. 'var01') in GUNDAM bin labels
+# to the human-readable detector-systematic label.
+# Hardcoded mapping from raw token in GUNDAM bin labels to the
+# human-readable label. Covers detector systematics (var01–var09),
+# NuMI beam focusing dials, and hadron-production PCA components (HPC).
+DETSYS_LABEL_MAP = {
+    # ── Detector systematics ────────────────────────────────────────────
+    'var01': 'Induction Gain',
+    'var02': 'TPC Coherent Noise',
+    'var03': 'TPC Intrinsic Noise',
+    'var04': 'Lifetime',
+    'var05': 'Scintillation (PMT QE)',
+    'var06': 'Induction Gap',
+    'var07': 'YZ Uniformity',
+    'var08': 'Recombination',
+    'var09': 'Cathode Bending',
+
+    # ── NuMI beam focusing dials ────────────────────────────────────────
+    'beam_horn_2kA':         r'Horn Current ($\pm$2 kA)',
+    'beam_horn1_x_3mm':      r'Horn 1 X Position ($\pm$3 mm)',
+    'beam_horn1_y_3mm':      r'Horn 1 Y Position ($\pm$3 mm)',
+    'beam_horn2_x_3mm':      r'Horn 2 X Position ($\pm$3 mm)',
+    'beam_horn2_y_3mm':      r'Horn 2 Y Position ($\pm$3 mm)',
+    'beam_spot_1_3mm':       r'Beam Spot Size (1.3 mm)',
+    'beam_spot_1_7mm':       r'Beam Spot Size (1.7 mm)',
+    'beam_horns_0mm_water':  r'Horn Water Layer (0 mm)',
+    'beam_horns_2mm_water':  r'Horn Water Layer ($\pm$2 mm)',
+    'beam_Beam_shift_x_1mm': r'Proton Beam X Shift ($\pm$1 mm)',
+    'beam_Beam_shift_y_1mm': r'Proton Beam Y Shift ($\pm$1 mm)',
+    'beam_Target_z_7mm':     r'Target Z Position ($\pm$7 mm)',
+
+    # ── Hadron Production PCA components (HPC) ──────────────────────────
+    'hpc_0':  'HPC PC 0',
+    'hpc_1':  'HPC PC 1',
+    'hpc_2':  'HPC PC 2',
+    'hpc_3':  'HPC PC 3',
+    'hpc_4':  'HPC PC 4',
+    'hpc_5':  'HPC PC 5',
+    'hpc_6':  'HPC PC 6',
+    'hpc_7':  'HPC PC 7',
+    'hpc_8':  'HPC PC 8',
+    'hpc_9':  'HPC PC 9',
+    'hpc_10': 'HPC PC 10',
+    'hpc_11': 'HPC PC 11',
+    'hpc_12': 'HPC PC 12',
+    'hpc_13': 'HPC PC 13',
+    'hpc_14': 'HPC PC 14',
+}
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Internal helpers
 # ─────────────────────────────────────────────────────────────────────────────
@@ -31,13 +81,24 @@ def _extract_labels(hist, n_params):
 
         for label in raw_labels:
             if "_multisigma_" in label:
-                labels.append(label.split("_multisigma_")[-1])
+                actual_name = label.split("_multisigma_")[-1]
             elif "hysyst_" in label:
                 actual_name = re.sub(r'^#\d+_', '', label)
                 actual_name = actual_name.split("hysyst_", 1)[-1]
-                labels.append(actual_name)
             else:
-                labels.append(label)
+                actual_name = label
+
+            # Apply hardcoded detector-systematics remap if a known token
+            # (var01..var09) is present. We do NOT use \b boundaries because
+            # '_' is a regex word character, so '\bvar01\b' would not match
+            # inside '#0_var01'. The (?!\d) lookahead prevents 'var01' from
+            # accidentally matching 'var010' if the list is extended later.
+            for token, pretty in DETSYS_LABEL_MAP.items():
+                if re.search(rf'{re.escape(token)}(?!\d)', actual_name):
+                    actual_name = pretty
+                    break
+
+            labels.append(actual_name)
 
     except Exception as e:
         print(f"Could not extract labels: {e}")

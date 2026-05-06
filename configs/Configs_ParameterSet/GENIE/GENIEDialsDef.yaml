@@ -1,5 +1,5 @@
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpA1CCQE"
-  isEnabled: true
+  isEnabled: false
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
@@ -7,7 +7,7 @@
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpA2CCQE"
-  isEnabled: true
+  isEnabled: false
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
@@ -15,7 +15,7 @@
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpA3CCQE"
-  isEnabled: true
+  isEnabled: false
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
@@ -23,11 +23,43 @@
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpA4CCQE"
-  isEnabled: true
+  isEnabled: false
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpA4CCQE"
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "ZExpPCAWeighter_myreweighter_b1"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minimumSplineResponse: 0
+      dialLeafName: "ZExpPCAWeighter_myreweighter_b1"
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "ZExpPCAWeighter_myreweighter_b2"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minimumSplineResponse: 0
+      dialLeafName: "ZExpPCAWeighter_myreweighter_b2"
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "ZExpPCAWeighter_myreweighter_b3"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minimumSplineResponse: 0
+      dialLeafName: "ZExpPCAWeighter_myreweighter_b3"
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "ZExpPCAWeighter_myreweighter_b4"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minimumSplineResponse: 0
+      dialLeafName: "ZExpPCAWeighter_myreweighter_b4"
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_RPA_CCQE"

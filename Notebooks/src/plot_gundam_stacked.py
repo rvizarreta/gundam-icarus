@@ -2,6 +2,8 @@ import uproot
 import numpy as np
 import matplotlib.pyplot as plt
 import mplhep as hep
+from scipy.stats import chi2 as chi2_dist
+
 
 def plot_gundam_stacked(
     postfit_file_path,
@@ -23,53 +25,17 @@ def plot_gundam_stacked(
     figsize=(7, 4),
     style_file=None,
     output_file=None,
-    show_plot=True
+    show_plot=True,
+    chi2_stat_source='prediction',
+    title_n_lines=2
 ):
     """
     Plot stacked histogram from GUNDAM output with data overlay and ratio panel.
 
-    Parameters
-    ----------
-    postfit_file_path : str
-        Path to the ROOT file
-    fit_type : str
-        'pre-fit' or 'post-fit'
-    sample_name : str
-        Sample name (e.g., 'signal_dpT')
-    variable_name : str
-        Variable name (e.g., 'reco_dpT')
-    cov_bin_range : tuple
-        (start, end) bin indices for this variable in the covariance matrix
-    categories_config : dict
-        Category configuration {cat_id: (label, color), ...}
-    stack_order : list
-        Order for stacking categories (backgrounds first)
-    xlabel : str
-        X-axis label
-    ylabel : str
-        Y-axis label
-    title : str
-        Plot title (top left)
-    pot : str
-        POT text (top right)
-    xlim : tuple
-        X-axis limits (min, max)
-    ylim_top : tuple
-        Y-axis limits for top panel (min, max)
-    ylim_ratio : tuple
-        Y-axis limits for ratio panel (min, max)
-    figsize : tuple
-        Figure size (width, height)
-    style_file : str
-        Path to matplotlib style file
-    output_file : str
-        Path to save figure (if None, don't save)
-    show_plot : bool
-        Whether to display the plot
-
     Returns
     -------
-    fig, (ax1, ax2) : matplotlib figure and axes
+    fig, (ax1, ax2), chi2_info
+        chi2_info is a dict with keys 'chi2', 'ndof', 'p_value'.
     """
 
     # Apply custom style if provided
@@ -89,23 +55,23 @@ def plot_gundam_stacked(
             9: (r'$\nu$ NC', 'deepskyblue'),
             2: ('OOFV', 'orchid'),
             5: ('OOFV', 'orchid'),
-            #10: ('Cosmic', 'C4'),  # Add Cosmic category
+            #10: ('Cosmic', 'C4'),
         }
 
     # Default stack order (backgrounds first, signal last)
     if stack_order is None:
         stack_order = [10, 9, 6, 7, 8, 2, 5, 1, 4, 0, 3]
 
-    # Open ROOT file
-    file = uproot.open(postfit_file_path) # toyGen file
-    fitterengine_file = uproot.open(fitterengine_file_path) # FitterEngine file
+    # Open ROOT files
+    file = uproot.open(postfit_file_path)
+    fitterengine_file = uproot.open(fitterengine_file_path)
 
-    # Extract all category histograms
+    # Extract category histograms
     category_data = {}
     bin_edges = None
     if fit_type == 'pre-fit':
         path_template = f"toyGen/plots/histograms/{sample_name} (pre-fit)/{variable_name}/category/{{cat}}/MC_TH1D"
-    else:  # post-fit
+    else:
         path_template = f"toyGen/plots/histograms/{sample_name}/{variable_name}/category/{{cat}}/MC_TH1D"
 
     for cat in categories_config.keys():
@@ -119,31 +85,22 @@ def plot_gundam_stacked(
         except KeyError:
             print(f"Warning: Category {cat} not found at {path}")
 
-    # Extract data values and errors from FitterEngine path
+    # Extract data values and errors
     if is_data is False:
-        if fit_type == 'pre-fit':
-            data_path = f"FitterEngine/preFit/plots/histograms/{sample_name}/{variable_name}/MC_TH1D"
-        else:  # post-fit
-            data_path = f"FitterEngine/preFit/plots/histograms/{sample_name}/{variable_name}/MC_TH1D"
-    if is_data:
-        if fit_type == 'pre-fit':
-            data_path = f"FitterEngine/preFit/plots/histograms/{sample_name}/{variable_name}/Data_TH1D"
-        else:  # post-fit
-            data_path = f"FitterEngine/preFit/plots/histograms/{sample_name}/{variable_name}/Data_TH1D"
+        data_path = f"FitterEngine/preFit/plots/histograms/{sample_name}/{variable_name}/MC_TH1D"
+    else:
+        data_path = f"FitterEngine/preFit/plots/histograms/{sample_name}/{variable_name}/Data_TH1D"
 
     data_hist = fitterengine_file[data_path]
-    data_values = data_hist.values()  # Remove overflow
-    data_errors = data_hist.errors()  # Get stored statistical errors
+    data_values = data_hist.values()
+    data_errors = data_hist.errors()
 
-
-    # Extract SYSTEMATIC UNCERTAINTIES from covariance matrix
+    # Extract systematic covariance sub-matrix
     cov_matrix_hist = file["toyGen/matrices/covarianceMatrix_TH2D"]
     cov_matrix = cov_matrix_hist.values()
-
-    # Extract diagonal elements for this variable's bins
     bin_start, bin_end = cov_bin_range
-    cov_diag = np.diag(cov_matrix)[bin_start:bin_end]
-    syst_errors = np.sqrt(cov_diag)
+    cov_syst = cov_matrix[bin_start:bin_end, bin_start:bin_end]
+    syst_errors = np.sqrt(np.diag(cov_syst))
 
     # Group categories by (label, color)
     unique_categories = {}
@@ -156,16 +113,41 @@ def plot_gundam_stacked(
             unique_categories[key] = np.zeros_like(category_data[cat])
         unique_categories[key] += category_data[cat]
 
-    # Create figure
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize,
-                                    gridspec_kw={'height_ratios': [3, 1], 'hspace': 0.05})
-
-    # Top panel: Calculate cumulative FIRST (before drawing)
+    # Build cumulative prediction
     cumulative = np.zeros_like(list(unique_categories.values())[0])
     for (label, color), values in unique_categories.items():
         cumulative += values
 
-    # Draw SYSTEMATIC UNCERTAINTY BAND FIRST (underneath)
+    # ---------------- chi^2 / Ndof ----------------
+    if chi2_stat_source == 'prediction':
+        cov_stat = np.diag(cumulative)
+    elif chi2_stat_source == 'data':
+        cov_stat = np.diag(np.where(data_values > 0, data_values, 1.0))
+    else:
+        raise ValueError(f"Unknown chi2_stat_source: {chi2_stat_source}")
+
+    cov_total = cov_syst + cov_stat
+
+    if cov_total.shape[0] != len(cumulative):
+        print(f"Warning: cov shape {cov_total.shape} doesn't match cumulative shape "
+              f"{cumulative.shape}. Check cov_bin_range.")
+
+    try:
+        cov_inv = np.linalg.inv(cov_total)
+    except np.linalg.LinAlgError:
+        cov_inv = np.linalg.pinv(cov_total)
+
+    residual = data_values - cumulative
+    chi2 = float(residual @ cov_inv @ residual)
+    ndof = len(cumulative)
+    p_value = 1.0 - chi2_dist.cdf(chi2, ndof)
+    # ----------------------------------------------
+
+    # Create figure
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize,
+                                    gridspec_kw={'height_ratios': [3, 1], 'hspace': 0.05})
+
+    # Systematic uncertainty band (underneath)
     ax1.fill_between(
         bin_edges[:-1],
         cumulative - syst_errors,
@@ -177,7 +159,7 @@ def plot_gundam_stacked(
         hatch='xxx',
         linewidth=0.8,
         label='Systematic Unc.',
-        zorder=1  # LOW z-order, draws first
+        zorder=1
     )
     ax1.fill_between(
         [bin_edges[-2], bin_edges[-1]],
@@ -191,7 +173,7 @@ def plot_gundam_stacked(
         zorder=1
     )
 
-    # ADD border line on top of uncertainty band
+    # Border line
     y_top = cumulative + syst_errors
     ax1.step(bin_edges,
              np.append(y_top, y_top[-1]),
@@ -200,44 +182,45 @@ def plot_gundam_stacked(
              linewidth=1.5,
              zorder=2)
 
-    # NOW draw stacked histogram ON TOP
-    cumulative = np.zeros_like(list(unique_categories.values())[0])
+    # Stacked histogram
+    cumulative_running = np.zeros_like(cumulative)
     for (label, color), values in unique_categories.items():
         ax1.fill_between(
             bin_edges[:-1],
-            cumulative,
-            cumulative + values,
+            cumulative_running,
+            cumulative_running + values,
             step='post',
             label=label,
             color=color,
             alpha=0.85,
             linewidth=0,
-            zorder=3  # HIGHER z-order, draws on top
+            zorder=3
         )
         ax1.fill_between(
             [bin_edges[-2], bin_edges[-1]],
-            [cumulative[-1], cumulative[-1]],
-            [cumulative[-1] + values[-1], cumulative[-1] + values[-1]],
+            [cumulative_running[-1], cumulative_running[-1]],
+            [cumulative_running[-1] + values[-1], cumulative_running[-1] + values[-1]],
             color=color,
             alpha=0.95,
             linewidth=0,
             zorder=3
         )
-        cumulative += values
+        cumulative_running += values
 
-    # ADD PREDICTION LINE (total MC)
+    # Total prediction line (clean label, no chi^2 inside)
     total_events = cumulative.sum()
+    prediction_label = f'Prediction ({total_events:.1f} events)'
     ax1.step(bin_edges,
              np.append(cumulative, cumulative[-1]),
              where='post',
              color='black',
              linewidth=1.5,
-             label=f'Prediction ({total_events:.1f} events)',
+             label=prediction_label,
              zorder=7)
 
     # Data points
     data_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
-    data_widths = np.diff(bin_edges) / 2  # Half bin width for xerr
+    data_widths = np.diff(bin_edges) / 2
 
     ax1.errorbar(
         data_centers,
@@ -269,59 +252,47 @@ def plot_gundam_stacked(
     else:
         ax1.set_ylim(0, ax1.get_ylim()[1] * 1.30)
 
-    # Tick parameters matching plot_scatter style
+    # Tick parameters
     ax1.tick_params(axis='both', which='major',
-                    labelsize=12,
-                    size=8,
-                    width=2,
-                    direction='in',
-                    labelbottom=False)
+                    labelsize=12, size=8, width=2, direction='in',
+                    labelbottom=False,
+                    top=True, right=True, left=True, bottom=True)
     ax1.minorticks_on()
     ax1.tick_params(axis='y', which='minor',
-                    size=4,
-                    width=1,
-                    direction='in')
+                    size=4, width=1, direction='in',
+                    top=True, right=True, left=True, bottom=True)
     ax1.tick_params(axis='x', which='minor',
-                    size=4,
-                    width=1,
-                    direction='in')
+                    size=4, width=1, direction='in',
+                    top=True, right=True, left=True, bottom=True)
 
-    # Calculate total MC events and individual category events
+    # Legend (without chi^2)
     total_mc_events = cumulative.sum()
-    category_events = {}
-    for (label, color), values in unique_categories.items():
-        category_events[label] = values.sum()
+    category_events = {label: values.sum() for (label, color), values in unique_categories.items()}
 
-    # Build new labels with event counts
     new_handles = []
     new_labels = []
-
     handles, labels = ax1.get_legend_handles_labels()
 
-    # Separate systematic from others
     syst_handle = None
     syst_label = None
 
-    # First pass: collect non-systematic items
     for handle, label in zip(handles, labels):
         if 'Systematic Unc.' in label:
-            # Create custom patch for systematic with NO EDGE
             syst_handle = plt.Rectangle((0, 0), 1, 1,
                                         facecolor='lightgray',
                                         edgecolor='gray',
                                         alpha=1,
                                         hatch='xxx',
-                                        linewidth=0.6)  # Remove contour
+                                        linewidth=0.6)
             syst_label = 'Stats & Interaction Uncertainty'
             continue
         elif 'Prediction' in label:
             new_handles.append(handle)
             new_labels.append(label)
-        elif 'Data' in label:
+        elif label == 'Data':
             new_handles.append(handle)
             new_labels.append(f'Data ({data_values.sum():.1f})')
         else:
-            # Add event count and percentage for MC categories
             for cat_label, count in category_events.items():
                 if cat_label in label:
                     percentage = 100 * count / total_mc_events
@@ -329,50 +300,46 @@ def plot_gundam_stacked(
                     new_labels.append(f'{cat_label} ({count:.1f}, {percentage:.2f}%)')
                     break
 
-    # Reverse the current list (Data at top)
     new_handles = new_handles[::-1]
     new_labels = new_labels[::-1]
 
-    # Add systematic at the END (bottom of legend)
     if syst_handle is not None:
         new_handles.append(syst_handle)
         new_labels.append(syst_label)
 
-    ax1.legend(new_handles, new_labels, loc='upper right', fontsize=8, framealpha=0.9, frameon=False)
+    ax1.legend(new_handles, new_labels, loc='upper right',
+               fontsize=8, framealpha=0.9, frameon=False)
 
-    # Top panel tick parameters - add ticks on all sides
-    ax1.tick_params(axis='both', which='major',
-                    labelsize=12,
-                    size=8,
-                    width=2,
-                    direction='in',
-                    labelbottom=False,
-                    top=True, right=True, left=True, bottom=True)  # ADD: all sides
-    ax1.minorticks_on()
-    ax1.tick_params(axis='y', which='minor',
-                    size=4,
-                    width=1,
-                    direction='in',
-                    top=True, right=True, left=True, bottom=True)  # ADD: all sides
-    ax1.tick_params(axis='x', which='minor',
-                    size=4,
-                    width=1,
-                    direction='in',
-                    top=True, right=True, left=True, bottom=True)  # ADD: all sides
-
-    # Title using text placement (top left and top right like plot_scatter)
+    # Title (top-left, above the axes) + POT (top-right, above the axes)
     yrange = ax1.get_ylim()
     xrange = ax1.get_xlim()
-    usey = yrange[1] + 0.01*(yrange[1] - yrange[0])
-    usex = xrange[0] + 0.01*(xrange[1] - xrange[0])
+    usey_top = yrange[1] + 0.01 * (yrange[1] - yrange[0])
+    usex = xrange[0] + 0.01 * (xrange[1] - xrange[0])
     color = 'black' if 'mock' in title.lower() else ('chocolate' if 'data' in title.lower() else 'blue')
-    ax1.text(x=usex, y=usey, s=title,
+    ax1.text(x=usex, y=usey_top, s=title,
              fontsize=10, color=color, verticalalignment='bottom')
-    usex_right = xrange[1] - 0.025*(xrange[1] - xrange[0])
-    ax1.text(x=usex_right, y=usey, s=pot, fontsize=10, color="black",
+    usex_right = xrange[1] - 0.025 * (xrange[1] - xrange[0])
+    ax1.text(x=usex_right, y=usey_top, s=pot, fontsize=10, color="black",
              verticalalignment='bottom', horizontalalignment='right')
 
-    # Force font family on tick labels
+    # chi^2 / Ndof and p-value (top-left, *inside* the axes, below the title block)
+    chi2_text = (
+        rf'$\chi^2/N_{{\rm dof}} = {chi2:.1f}/{ndof}$' + '\n'
+        + f'(p-value = {p_value:.3f})'
+    )
+    # Place it inside the plotting area, near the top-left.
+    # Using axis fraction so it doesn't depend on the y-scale.
+    ax1.text(
+        x=0.02,
+        y=0.97,
+        s=chi2_text,
+        transform=ax1.transAxes,
+        fontsize=9,
+        color='black',
+        verticalalignment='top',
+        horizontalalignment='left'
+    )
+
     for label in ax1.get_xticklabels() + ax1.get_yticklabels():
         label.set_fontfamily('sans-serif')
     ax1.yaxis.get_offset_text().set_fontfamily('sans-serif')
@@ -383,36 +350,33 @@ def plot_gundam_stacked(
     ratio_err = data_errors / cumulative
     ratio_syst = syst_errors / cumulative
 
-    # Bottom panel data points - ADD xerr
     ax2.errorbar(
         data_centers,
         ratio,
-        xerr=data_widths,  # ADD THIS
+        xerr=data_widths,
         yerr=ratio_err,
         fmt='o',
         color='black',
-        markersize=6,  # Change from 7 to 6
+        markersize=6,
         markerfacecolor='black',
         markeredgecolor='black',
-        linewidth=1.5,  # Change from 2 to 1.5
-        capsize=4,      # Change from 4 to 3
+        linewidth=1.5,
+        capsize=4,
         capthick=1.5,
         elinewidth=1.5
     )
 
-    # Systematic uncertainty band on ratio plot
     ax2.fill_between(
         bin_edges[:-1],
         1 - ratio_syst,
         1 + ratio_syst,
         step='post',
-        facecolor='lightgray',  # Change from 'gray'
+        facecolor='lightgray',
         edgecolor='gray',
-        alpha=0.6,  # Change from 0.3
-        hatch='xxx',  # Change from '///'
-        linewidth=0.8  # Change from 0
+        alpha=0.6,
+        hatch='xxx',
+        linewidth=0.8
     )
-    # LAST BIN for ratio plot
     ax2.fill_between(
         [bin_edges[-2], bin_edges[-1]],
         [1 - ratio_syst[-1], 1 - ratio_syst[-1]],
@@ -435,37 +399,26 @@ def plot_gundam_stacked(
 
     ax2.set_ylim(ylim_ratio)
 
-    # Tick parameters for bottom panel - add ticks on all sides
     ax2.tick_params(axis='both', which='major',
-                    labelsize=12,
-                    size=8,
-                    width=2,
-                    direction='in',
-                    top=True, right=True, left=True, bottom=True)  # ADD: all sides
+                    labelsize=12, size=8, width=2, direction='in',
+                    top=True, right=True, left=True, bottom=True)
     ax2.minorticks_on()
     ax2.tick_params(axis='y', which='minor',
-                    size=4,
-                    width=1,
-                    direction='in',
-                    top=True, right=True, left=True, bottom=True)  # ADD: all sides
+                    size=4, width=1, direction='in',
+                    top=True, right=True, left=True, bottom=True)
     ax2.tick_params(axis='x', which='minor',
-                    size=4,
-                    width=1,
-                    direction='in',
-                    top=True, right=True, left=True, bottom=True)  # ADD: all sides
+                    size=4, width=1, direction='in',
+                    top=True, right=True, left=True, bottom=True)
 
-    # Force font family on tick labels
     for label in ax2.get_xticklabels() + ax2.get_yticklabels():
         label.set_fontfamily('sans-serif')
     ax2.yaxis.get_offset_text().set_fontfamily('sans-serif')
     ax2.xaxis.get_offset_text().set_fontfamily('sans-serif')
 
-    # Save if requested with higher DPI
     if output_file:
         plt.savefig(output_file, dpi=300, bbox_inches='tight')
 
-    # Show if requested
     if show_plot:
         plt.show()
 
-    return fig, (ax1, ax2)
+    return fig, (ax1, ax2), {'chi2': chi2, 'ndof': ndof, 'p_value': p_value}

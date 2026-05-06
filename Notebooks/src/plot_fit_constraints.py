@@ -4,6 +4,56 @@ import re
 import matplotlib.pyplot as plt
 plt.style.use("/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/gundam-icarus/style.mplstyle")
 
+# Hardcoded mapping from raw token (as it appears in GUNDAM bin labels)
+# to the human-readable label we want on the plot.
+# Hardcoded mapping from raw token in GUNDAM bin labels to the
+# human-readable label. Covers detector systematics (var01–var09),
+# NuMI beam focusing dials, and hadron-production PCA components (HPC).
+DETSYS_LABEL_MAP = {
+    # ── Detector systematics ────────────────────────────────────────────
+    'var01': 'Induction Gain',
+    'var02': 'TPC Coherent Noise',
+    'var03': 'TPC Intrinsic Noise',
+    'var04': 'Lifetime',
+    'var05': 'Scintillation (PMT QE)',
+    'var06': 'Induction Gap',
+    'var07': 'YZ Uniformity',
+    'var08': 'Recombination',
+    'var09': 'Cathode Bending',
+
+    # ── NuMI beam focusing dials ────────────────────────────────────────
+    'beam_horn_2kA':         r'Horn Current ($\pm$2 kA)',
+    'beam_horn1_x_3mm':      r'Horn 1 X Position ($\pm$3 mm)',
+    'beam_horn1_y_3mm':      r'Horn 1 Y Position ($\pm$3 mm)',
+    'beam_horn2_x_3mm':      r'Horn 2 X Position ($\pm$3 mm)',
+    'beam_horn2_y_3mm':      r'Horn 2 Y Position ($\pm$3 mm)',
+    'beam_spot_1_3mm':       r'Beam Spot Size (1.3 mm)',
+    'beam_spot_1_7mm':       r'Beam Spot Size (1.7 mm)',
+    'beam_horns_0mm_water':  r'Horn Water Layer (0 mm)',
+    'beam_horns_2mm_water':  r'Horn Water Layer ($\pm$2 mm)',
+    'beam_Beam_shift_x_1mm': r'Proton Beam X Shift ($\pm$1 mm)',
+    'beam_Beam_shift_y_1mm': r'Proton Beam Y Shift ($\pm$1 mm)',
+    'beam_Target_z_7mm':     r'Target Z Position ($\pm$7 mm)',
+
+    # ── Hadron Production PCA components (HPC) ──────────────────────────
+    'hpc_0':  'HPC PC 0',
+    'hpc_1':  'HPC PC 1',
+    'hpc_2':  'HPC PC 2',
+    'hpc_3':  'HPC PC 3',
+    'hpc_4':  'HPC PC 4',
+    'hpc_5':  'HPC PC 5',
+    'hpc_6':  'HPC PC 6',
+    'hpc_7':  'HPC PC 7',
+    'hpc_8':  'HPC PC 8',
+    'hpc_9':  'HPC PC 9',
+    'hpc_10': 'HPC PC 10',
+    'hpc_11': 'HPC PC 11',
+    'hpc_12': 'HPC PC 12',
+    'hpc_13': 'HPC PC 13',
+    'hpc_14': 'HPC PC 14',
+}
+
+
 def plot_fit_constraints(filename, directory_path,
                         title_line1=None,
                         y_label=None,
@@ -21,8 +71,6 @@ def plot_fit_constraints(filename, directory_path,
         Title text (e.g., "ICARUS · NuMI Data")
     figsize : tuple, optional
         Figure size (width, height). Default is (10, 14)
-    output_name : str, optional
-        Output filename for saving the plot
 
     Returns
     -------
@@ -64,14 +112,24 @@ def plot_fit_constraints(filename, directory_path,
         for label in raw_labels:
             if '_multisigma_' in label:
                 actual_name = label.split('_multisigma_')[-1]
-                labels.append(actual_name)
             elif 'hysyst_' in label:
                 # Strip leading "#N_" index and everything up to and including "hysyst_"
                 actual_name = re.sub(r'^#\d+_', '', label)  # remove "#0_", "#23_", etc.
                 actual_name = actual_name.split('hysyst_', 1)[-1]  # remove "hysyst_" prefix
-                labels.append(actual_name)
             else:
-                labels.append(label)
+                actual_name = label
+
+            # Apply hardcoded detector-systematics remap if a known token is present.
+            # NOTE: We don't use \b boundaries because '_' is a word character,
+            # so '\bvar01\b' would NOT match inside '#0_var01'. Instead, require
+            # that the token is not followed by another digit, so 'var01' won't
+            # accidentally match 'var010' if you extend the list later.
+            for token, pretty in DETSYS_LABEL_MAP.items():
+                if re.search(rf'{re.escape(token)}(?!\d)', actual_name):
+                    actual_name = pretty
+                    break
+
+            labels.append(actual_name)
 
     except Exception as e:
         print(f"Could not extract labels: {e}")
@@ -127,9 +185,6 @@ def plot_fit_constraints(filename, directory_path,
                                   postfit_values - postfit_errors])
     x_max = max(abs(np.max(all_values)), abs(np.min(all_values)))
     ax.set_xlim(-x_max * 1.15, x_max * 1.15)
-
-    # Get y-axis limits for proper title placement
-    y_min, y_max = ax.get_ylim()
 
     # Set tick parameters
     ax.tick_params(axis='both', which='major',

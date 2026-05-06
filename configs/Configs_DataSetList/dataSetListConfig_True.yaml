@@ -4,4 +4,4 @@
     tree: "events/full/signal"
     filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
-    nominalWeightFormula: "(1.0909*pfx_cv_weight)"
+    nominalWeightFormula: "(1.0909*ppfx_cv_weight)"

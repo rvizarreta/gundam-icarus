@@ -1,0 +1,35 @@
+- name: "ICARUS_NuMI_1muNp0pi_selection"
+  isEnabled: true
+  selectedDataEntry: "FakeDataFromMC" # Irrelevant naming, please ignore
+  showSelectedEventCount: true
+
+  mc:
+    tree: "events/full/selected"
+    filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+    nominalWeightFormula: "(ppfx_cv_weight)"
+  data:
+    # data from the same MC
+    - name: "FakeDataFromMC"
+      tree: "events/full/selected"
+      nominalWeightFormula: "(ppfx_cv_weight) * ((true_category == 6 || true_category == 7 || true_category == 8) ? true_low_q2_weight : 1.0)"
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+
+- name: "ICARUS_NuMI_1muNp0pi_sideband"
+  isEnabled: true
+  selectedDataEntry: "FakeDataFromMC_sideband"
+  showSelectedEventCount: true
+
+  mc:
+    tree: "events/full/sideband"
+    filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+    nominalWeightFormula: "(ppfx_cv_weight)"
+  data:
+    # data from the same MC
+    - name: "FakeDataFromMC_sideband"
+      tree: "events/full/sideband"
+      nominalWeightFormula: "(ppfx_cv_weight) * ((true_category == 6 || true_category == 7 || true_category == 8) ? true_low_q2_weight : 1.0)"
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"

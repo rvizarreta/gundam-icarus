@@ -101,7 +101,7 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
     # Set axis limits
     ax.set_xlim(bin_edges_array[0], bin_edges_array[-1])
     y_min = 0
-    y_max = np.max(bin_values + bin_errors) * 1.2
+    y_max = np.max(bin_values + bin_errors) * 1.6
     ax.set_ylim(y_min, y_max)
 
     if hline_nuisance:

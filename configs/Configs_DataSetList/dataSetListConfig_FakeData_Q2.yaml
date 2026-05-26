@@ -12,7 +12,7 @@
     # data from the same MC
     - name: "FakeDataFromMC"
       tree: "events/full/selected"
-      nominalWeightFormula: "(ppfx_cv_weight) * ((true_category == 6 || true_category == 7 || true_category == 8) ? true_low_q2_weight : 1.0)"
+      nominalWeightFormula: "(ppfx_cv_weight) * ((category == 6 || category == 7 || category == 8) ? true_low_q2_weight : 1.0)"
       filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
 
@@ -30,6 +30,6 @@
     # data from the same MC
     - name: "FakeDataFromMC_sideband"
       tree: "events/full/sideband"
-      nominalWeightFormula: "(ppfx_cv_weight) * ((true_category == 6 || true_category == 7 || true_category == 8) ? true_low_q2_weight : 1.0)"
+      nominalWeightFormula: "(ppfx_cv_weight) * ((category == 6 || category == 7 || category == 8) ? true_low_q2_weight : 1.0)"
       filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"

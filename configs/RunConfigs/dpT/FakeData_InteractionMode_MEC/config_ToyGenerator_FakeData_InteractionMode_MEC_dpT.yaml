@@ -28,7 +28,7 @@ fitterEngineConfig:
     enableStatThrowInToys: true
     enableEventMcThrow: true
 
-    dataSetList: "${GUNDAM_CONFIG_DIR}/Configs_DataSetList/dataSetListConfig_FakeData_InteractionMode_QE.yaml"
+    dataSetList: "${GUNDAM_CONFIG_DIR}/Configs_DataSetList/dataSetListConfig_FakeData_InteractionMode_MEC.yaml"
     plotGeneratorConfig: "${GUNDAM_CONFIG_DIR}/Configs_PlotGenerator/plotConfigs_reco_dpT.yaml"
 
   # listing local configs 

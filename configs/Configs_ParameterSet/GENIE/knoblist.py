@@ -7,7 +7,7 @@ GENIEMultisigmaKnobNames = [
 "ZExpA4CCQE",
 "RPA_CCQE",
 "CoulombCCQE",
-"NormCCMEC",
+#"NormCCMEC",
 "NormNCMEC",
 "MaNCEL",
 "EtaNCEL",

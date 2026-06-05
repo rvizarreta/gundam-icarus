@@ -56,6 +56,10 @@ def _read_nuisflat_dir(file_dir, generator_name, branches, signal_expr,
         df_all['FinalWeight'] = df_all['FinalWeight'] * np.where(
             df_all['Mode'].isin([11, 12, 13]), 0.8, 1.0
         )
+    elif reweight_mode == 'MEC_0p8':
+        df_all['FinalWeight'] = df_all['FinalWeight'] * np.where(
+            df_all['Mode'].isin([2]), 0.8, 1.0
+        )
     elif reweight_mode is not None:
         raise ValueError(f"Unknown reweight_mode: '{reweight_mode}'. "
                          f"Supported values: 'QE_0p8', 'RES_0p8', None.")

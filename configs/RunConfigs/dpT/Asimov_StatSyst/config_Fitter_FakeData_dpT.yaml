@@ -27,6 +27,7 @@ fitterEngineConfig:
 
     enableStatThrowInToys: true
     enableEventMcThrow: false
+    throwAsimovFitParameters: true
 
     dataSetList: "${GUNDAM_CONFIG_DIR}/Configs_DataSetList/dataSetListConfig_Asimov.yaml"
     plotGeneratorConfig: "${GUNDAM_CONFIG_DIR}/Configs_PlotGenerator/plotConfigs_reco_dpT.yaml"

@@ -87,6 +87,7 @@ std::vector<std::string> GetGENIEMultisigmaKnobNames(){
 "GENIEReWeight_SBN_v1_multisigma_RPA_CCQE",
 "GENIEReWeight_SBN_v1_multisigma_CoulombCCQE",
 //"GENIEReWeight_SBN_v1_multisigma_NormCCMEC",
+"Synthetic_multisigma_NormCCRES",
 "GENIEReWeight_SBN_v1_multisigma_NormNCMEC",
 "GENIEReWeight_SBN_v1_multisigma_MaNCEL",
 "GENIEReWeight_SBN_v1_multisigma_EtaNCEL",

@@ -61,6 +61,14 @@
       minimumSplineResponse: 0
       dialLeafName: "ZExpPCAWeighter_myreweighter_b4"
       applyCondition: "[is_nu]==1"
+#
+#- parameterName: "Synthetic_multisigma_NormCCRES"
+#  isEnabled: true
+#  dialSetDefinitions:
+#    - dialType: Spline
+#      minimumSplineResponse: 0
+#      dialLeafName: "Synthetic_multisigma_NormCCRES"
+#      applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_RPA_CCQE"
   isEnabled: true

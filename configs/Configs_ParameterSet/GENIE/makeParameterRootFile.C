@@ -1,6 +1,9 @@
 std::vector<std::string> GetGENIEMorphKnobNames();
 std::vector<std::string> GetGENIEMultisigmaKnobNames();
 
+// Prior width multiplier for MaCCRES/MvCCRES — set to 1, 2, 3, 5, or large for ~unconstrained
+const double RES_PRIOR_SCALE = 2.0;
+
 void makeParameterRootFile()
 {
 
@@ -20,10 +23,15 @@ void makeParameterRootFile()
   std::cout << "@@ Prefit error by covariance matrix" << std::endl;
   TMatrixTSym<double> xsec_cov(NKnob);
 
-  // Initialize to identity
+  // Initialize to identity, with RES form-factor priors scaled
   for (int i = 0; i < NKnob; i++) {
-    xsec_cov(i, i) = 1.0;
-    std::cout << KnobNames[i] << "\t" << 1.0 << std::endl;
+    double w = 1.0;
+    if (KnobNames[i].find("MaCCRES") != std::string::npos ||
+        KnobNames[i].find("MvCCRES") != std::string::npos) {
+      w = RES_PRIOR_SCALE;
+    }
+    xsec_cov(i, i) = w * w;
+    std::cout << KnobNames[i] << "\t" << w*w << std::endl;
   }
 
   // ZExp PCA b-parameters are uncorrelated by construction (PCA diagonalizes
@@ -56,8 +64,13 @@ void makeParameterRootFile()
   TVectorD xsec_param_ub(NKnob);
   for(int i=0; i<NKnob; i++){
     xsec_param_prior[i] = 0.;
-    xsec_param_lb[i] = -3.;
-    xsec_param_ub[i] = +3.;
+    double bound = 3.0;
+    if (KnobNames[i].find("MaCCRES") != std::string::npos ||
+        KnobNames[i].find("MvCCRES") != std::string::npos) {
+      bound = 3.0 * RES_PRIOR_SCALE;
+    }
+    xsec_param_lb[i] = -bound;
+    xsec_param_ub[i] = +bound;
   }
   xsec_param_prior.Write("xsec_param_prior");
   xsec_param_lb.Write("xsec_param_lb");

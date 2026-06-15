@@ -2,7 +2,7 @@ std::vector<std::string> GetGENIEMorphKnobNames();
 std::vector<std::string> GetGENIEMultisigmaKnobNames();
 
 // Prior width multiplier for MaCCRES/MvCCRES — set to 1, 2, 3, 5, or large for ~unconstrained
-const double RES_PRIOR_SCALE = 2.0;
+const double RES_PRIOR_SCALE = 4.0;
 
 void makeParameterRootFile()
 {

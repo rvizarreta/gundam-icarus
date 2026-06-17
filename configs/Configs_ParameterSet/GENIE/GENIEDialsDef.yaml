@@ -438,16 +438,16 @@
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_LowQ2Suppression"
       applyCondition: "[is_nu]==1"
 
-- parameterName: "GENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape"
-  isEnabled: true
-  dialSetDefinitions:
-    - dialType: Spline
-      minimumSplineResponse: 0
-      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape"
-      useMirrorDial: true
-      mirrorLowEdge: -1
-      mirrorHighEdge: 1
-      applyCondition: "[is_nu]==1"
+#- parameterName: "GENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape"
+#  isEnabled: true
+#  dialSetDefinitions:
+#    - dialType: Spline
+#      minimumSplineResponse: 0
+#      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape"
+#      useMirrorDial: true
+#      mirrorLowEdge: -1
+#      mirrorHighEdge: 1
+#      applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_DecayAngMEC"
   isEnabled: true
@@ -460,16 +460,16 @@
       mirrorHighEdge: 1
       applyCondition: "[is_nu]==1"
 
-- parameterName: "GENIEReWeight_SBN_v1_multisigma_Theta_Delta2Npi"
-  isEnabled: true
-  dialSetDefinitions:
-    - dialType: Spline
-      minimumSplineResponse: 0
-      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_Theta_Delta2Npi"
-      useMirrorDial: true
-      mirrorLowEdge: -1
-      mirrorHighEdge: 1
-      applyCondition: "[is_nu]==1"
+#- parameterName: "GENIEReWeight_SBN_v1_multisigma_Theta_Delta2Npi"
+#  isEnabled: true
+#  dialSetDefinitions:
+#    - dialType: Spline
+#      minimumSplineResponse: 0
+#      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_Theta_Delta2Npi"
+#      useMirrorDial: true
+#      mirrorLowEdge: -1
+#      mirrorHighEdge: 1
+#      applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_ThetaDelta2NRad"
   isEnabled: true

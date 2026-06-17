@@ -81,9 +81,9 @@ void makeParameterRootFile()
 
 std::vector<std::string> GetGENIEMorphKnobNames(){
   return {
-"GENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape",
+//"GENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape",
 "GENIEReWeight_SBN_v1_multisigma_DecayAngMEC",
-"GENIEReWeight_SBN_v1_multisigma_Theta_Delta2Npi",
+//"GENIEReWeight_SBN_v1_multisigma_Theta_Delta2Npi",
 "GENIEReWeight_SBN_v1_multisigma_ThetaDelta2NRad",
   };
 }

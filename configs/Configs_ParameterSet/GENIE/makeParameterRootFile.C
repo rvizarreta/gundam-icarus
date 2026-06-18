@@ -64,6 +64,9 @@ void makeParameterRootFile()
   TVectorD xsec_param_ub(NKnob);
   for(int i=0; i<NKnob; i++){
     xsec_param_prior[i] = 0.;
+    if (KnobNames[i].find("VecFFCCQEshape") != std::string::npos) {
+     xsec_param_prior[i] = 0.005;
+    }
     double bound = 3.0;
     if (KnobNames[i].find("MaCCRES") != std::string::npos ||
         KnobNames[i].find("MvCCRES") != std::string::npos) {
@@ -81,9 +84,9 @@ void makeParameterRootFile()
 
 std::vector<std::string> GetGENIEMorphKnobNames(){
   return {
-//"GENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape",
+"GENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape",
 "GENIEReWeight_SBN_v1_multisigma_DecayAngMEC",
-//"GENIEReWeight_SBN_v1_multisigma_Theta_Delta2Npi",
+"GENIEReWeight_SBN_v1_multisigma_Theta_Delta2Npi",
 "GENIEReWeight_SBN_v1_multisigma_ThetaDelta2NRad",
   };
 }

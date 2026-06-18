@@ -441,7 +441,7 @@
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape"
   isEnabled: true
   isFixed: true
-  priorValue: 0
+  priorValue: 1
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0

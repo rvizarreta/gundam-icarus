@@ -5,7 +5,7 @@
 - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/GENIE/parameterSet_GENIE.yaml"
 
 # FLUX
-#- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/Flux/parameterSet_Flux.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/Flux/parameterSet_Flux.yaml"
 
 # DETECTOR SYSTEMATICS
-#- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/DetSys/parameterSet_DetSys.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/DetSys/parameterSet_DetSys.yaml"

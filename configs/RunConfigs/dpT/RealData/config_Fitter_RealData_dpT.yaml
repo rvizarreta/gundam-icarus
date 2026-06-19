@@ -47,7 +47,7 @@ fitterEngineConfig:
 
   ## "_enablePostFitScan_" is set by "enablePostFitScan"
   ## - default: false
-  enablePostFitScan: true
+  enablePostFitScan: false
 
   ## "_enablePreFitToPostFitLineScan_" is set by "enablePreFitToPostFitLineScan"
   ## - default: true

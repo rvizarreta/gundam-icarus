@@ -22,11 +22,14 @@ def plot_gundam_stacked(
     xlim=None,
     ylim_top=None,
     ylim_ratio=(0.5, 1.75),
-    figsize=(7, 4),
+    figsize=(5, 5),
     style_file=None,
     output_file=None,
+    save_dir=None,
+    save_name=None,
     show_plot=True,
     chi2_stat_source='prediction',
+    show_ppfx=True,
     title_n_lines=2
 ):
     """
@@ -42,20 +45,22 @@ def plot_gundam_stacked(
     if style_file:
         plt.style.use(style_file)
 
-    # Default category configuration
+    # Default category configuration (colors match the medulla/spineplot
+    # scheme: Signal #003087, Other CC #FFD100, nu NC #CC0000,
+    # OOFV #2E8B57, Others/Cosmic #FF69B4)
     if categories_config is None:
         categories_config = {
-            0: ('Signal', 'darkgreen'),
-            3: ('Signal', 'darkgreen'),
-            1: ('Signal', 'darkgreen'),
-            4: ('Signal', 'darkgreen'),
-            6: ('Other CC', 'C1'),
-            7: ('Other CC', 'C1'),
-            8: ('Other CC', 'C1'),
-            9: (r'$\nu$ NC', 'deepskyblue'),
-            2: ('OOFV', 'orchid'),
-            5: ('OOFV', 'orchid'),
-            #10: ('Cosmic', 'C4'),
+            0: ('Signal', '#003087'),
+            3: ('Signal', '#003087'),
+            1: ('Signal', '#003087'),
+            4: ('Signal', '#003087'),
+            6: ('Other CC', '#FFD100'),
+            7: ('Other CC', '#FFD100'),
+            8: ('Other CC', '#FFD100'),
+            9: (r'$\nu$ NC', '#CC0000'),
+            2: ('OOFV', '#2E8B57'),
+            5: ('OOFV', '#2E8B57'),
+            #10: ('Cosmic', '#FF69B4'),
         }
 
     # Default stack order (backgrounds first, signal last)
@@ -250,7 +255,7 @@ def plot_gundam_stacked(
     if ylim_top:
         ax1.set_ylim(ylim_top)
     else:
-        ax1.set_ylim(0, ax1.get_ylim()[1] * 1.30)
+        ax1.set_ylim(0, ax1.get_ylim()[1] * 1.50)
 
     # Tick parameters
     ax1.tick_params(axis='both', which='major',
@@ -307,8 +312,8 @@ def plot_gundam_stacked(
         new_handles.append(syst_handle)
         new_labels.append(syst_label)
 
-    ax1.legend(new_handles, new_labels, loc='upper right',
-               fontsize=8, framealpha=0.9, frameon=False)
+    ax1.legend(new_handles, new_labels, loc='upper left',
+               fontsize=8, ncol=2, framealpha=0.9, frameon=False)
 
     # Title (top-left, above the axes) + POT (top-right, above the axes)
     yrange = ax1.get_ylim()
@@ -322,23 +327,31 @@ def plot_gundam_stacked(
     ax1.text(x=usex_right, y=usey_top, s=pot, fontsize=10, color="black",
              verticalalignment='bottom', horizontalalignment='right')
 
-    # chi^2 / Ndof and p-value (top-left, *inside* the axes, below the title block)
+    # PPFX indicator and chi^2/p-value, matching the medulla/spineplot
+    # layout: PPFX right-aligned at (0.95, 0.7) in axes coordinates, with
+    # the chi^2/ndf and p-value anchored to its left edge just below.
     chi2_text = (
-        rf'$\chi^2/N_{{\rm dof}} = {chi2:.1f}/{ndof}$' + '\n'
+        rf'$\chi^2/\mathrm{{ndf}} = {chi2:.1f}/{ndof}$' + '\n'
         + f'(p-value = {p_value:.3f})'
     )
-    # Place it inside the plotting area, near the top-left.
-    # Using axis fraction so it doesn't depend on the y-scale.
-    ax1.text(
-        x=0.02,
-        y=0.97,
-        s=chi2_text,
-        transform=ax1.transAxes,
-        fontsize=9,
-        color='black',
-        verticalalignment='top',
-        horizontalalignment='left'
-    )
+    if show_ppfx:
+        ppfx_text = ax1.text(0.95, 0.7, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+                             transform=ax1.transAxes,
+                             fontsize=7, color='black',
+                             horizontalalignment='right',
+                             verticalalignment='top')
+        ax1.annotate(chi2_text,
+                     xy=(0, 0), xycoords=ppfx_text,
+                     xytext=(0, -2), textcoords='offset points',
+                     fontsize=9, color='black',
+                     horizontalalignment='left',
+                     verticalalignment='top')
+    else:
+        ax1.text(0.95, 0.7, chi2_text,
+                 transform=ax1.transAxes,
+                 fontsize=9, color='black',
+                 horizontalalignment='right',
+                 verticalalignment='top')
 
     for label in ax1.get_xticklabels() + ax1.get_yticklabels():
         label.set_fontfamily('sans-serif')
@@ -417,6 +430,15 @@ def plot_gundam_stacked(
 
     if output_file:
         plt.savefig(output_file, dpi=300, bbox_inches='tight')
+
+    if save_dir is not None and save_name is not None:
+        import os
+        os.makedirs(os.path.join(save_dir, 'pdf'), exist_ok=True)
+        os.makedirs(os.path.join(save_dir, 'jpeg'), exist_ok=True)
+        fig.savefig(os.path.join(save_dir, 'pdf', f'{save_name}.pdf'),
+                    bbox_inches='tight')
+        fig.savefig(os.path.join(save_dir, 'jpeg', f'{save_name}.jpeg'),
+                    dpi=300, bbox_inches='tight')
 
     if show_plot:
         plt.show()

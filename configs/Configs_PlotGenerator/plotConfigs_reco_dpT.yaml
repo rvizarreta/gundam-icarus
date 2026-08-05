@@ -1,26 +1,25 @@
 varDictionnaries:
   - name: "category"
     dictionary:
-      # Signal category (types 0 and 3)
+      # Signal (0: QE, 1: MEC, 2: pion absorption)
       - { value: 0, title: "Signal", color: 418 }
-      - { value: 3, title: "Signal", color: 418 }
-      - { value: 1, title: "Signal", color: 416 }
-      - { value: 4, title: "Signal", color: 416 }
+      - { value: 1, title: "Signal", color: 418 }
+      - { value: 2, title: "Signal", color: 418 }
 
-      # Other CC category (types 6, 7, 8)
+      # OOFV (type 3)
+      - { value: 3, title: "OOFV", color: 797 }
+
+      # Other CC (4: numuCC Np1pi, 5: uncontained fiducial, 6: uncontained, 7: nu CC)
+      - { value: 4, title: "Other CC", color: 807 }
+      - { value: 5, title: "Other CC", color: 807 }
       - { value: 6, title: "Other CC", color: 807 }
       - { value: 7, title: "Other CC", color: 807 }
-      - { value: 8, title: "Other CC", color: 807 }
 
-      # ν NC category (type 9)
-      - { value: 9, title: "$\nu$ NC", color: 632 }
+      # ν NC (type 8)
+      - { value: 8, title: "$\nu$ NC", color: 632 }
 
-      # OOFV category (types 2 and 5)
-      - { value: 2, title: "OOFV", color: 797 }
-      - { value: 5, title: "OOFV", color: 797 }
-
-      # Cosmic category (type 10)
-      - { value: 10, title: "Cosmic", color: 880 }
+      # Cosmic (type 9)
+      - { value: 9, title: "Cosmic", color: 880 }
 
 histogramsDefinition:
   - varToPlot: "reco_dpT_lp"

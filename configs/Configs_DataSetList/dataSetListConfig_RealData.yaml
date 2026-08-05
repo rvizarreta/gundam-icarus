@@ -34,25 +34,25 @@
       filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
 
-# In-time cosmics from offbeam data. Prediction-only: the onbeam data above
-# already contains cosmics, so these entries have no "data" block.
-# Scale = Livetime[onbeam] / Livetime[offbeam] = 483958 / 50788498 = 9.5289e-3
-- name: "ICARUS_NuMI_1muNp0pi_cosmics"
-  isEnabled: false
-  showSelectedEventCount: true
-
-  mc:
-    tree: "events/offbeam/selected"
-    filePathList:
-      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
-    nominalWeightFormula: "(483958.0/50788498.0)"
-
-- name: "ICARUS_NuMI_1muNp0pi_cosmics_sideband"
-  isEnabled: false
-  showSelectedEventCount: true
-
-  mc:
-    tree: "events/offbeam/sideband"
-    filePathList:
-      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
-    nominalWeightFormula: "(483958.0/50788498.0)"
+## In-time cosmics from offbeam data. Prediction-only: the onbeam data above
+## already contains cosmics, so these entries have no "data" block.
+## Scale = Livetime[onbeam] / Livetime[offbeam] = 483958 / 50788498 = 9.5289e-3
+#- name: "ICARUS_NuMI_1muNp0pi_cosmics"
+#  isEnabled: false
+#  showSelectedEventCount: true
+#
+#  mc:
+#    tree: "events/offbeam/selected"
+#    filePathList:
+#      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+#    nominalWeightFormula: "(483958.0/50788498.0)"
+#
+#- name: "ICARUS_NuMI_1muNp0pi_cosmics_sideband"
+#  isEnabled: false
+#  showSelectedEventCount: true
+#
+#  mc:
+#    tree: "events/offbeam/sideband"
+#    filePathList:
+#      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+#    nominalWeightFormula: "(483958.0/50788498.0)"

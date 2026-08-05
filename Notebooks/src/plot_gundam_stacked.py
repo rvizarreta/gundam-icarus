@@ -8,7 +8,7 @@ from scipy.stats import chi2 as chi2_dist
 def plot_gundam_stacked(
     postfit_file_path,
     fitterengine_file_path,
-    fit_type='pre-fit',
+    fit_type='prefit',
     sample_name='signal_dpT',
     variable_name='reco_dpT_lp',
     cov_bin_range=(0, 12),
@@ -50,22 +50,21 @@ def plot_gundam_stacked(
     # OOFV #2E8B57, Others/Cosmic #FF69B4)
     if categories_config is None:
         categories_config = {
-            0: ('Signal', '#003087'),
-            3: ('Signal', '#003087'),
-            1: ('Signal', '#003087'),
-            4: ('Signal', '#003087'),
+            0: (r'$\nu_\mu$CC0$\pi$ QE', '#003087'),
+            1: (r'$\nu_\mu$CC0$\pi$ 2p2h', '#4A7CC7'),
+            2: (r'$\nu_\mu$CC0$\pi$ $\pi$ abs.', '#9DC3F7'),
+            3: (r'$\nu_\mu$CC0$\pi$ OOFV', '#2E8B57'),
+            4: (r'$\nu_\mu$CC1$\pi^\pm$', '#FF8C00'),
+            5: ('Other CC', '#FFD100'),
             6: ('Other CC', '#FFD100'),
             7: ('Other CC', '#FFD100'),
-            8: ('Other CC', '#FFD100'),
-            9: (r'$\nu$ NC', '#CC0000'),
-            2: ('OOFV', '#2E8B57'),
-            5: ('OOFV', '#2E8B57'),
-            #10: ('Cosmic', '#FF69B4'),
+            8: (r'$\nu$ NC', '#CC0000'),
+            10: ('Others', '#FF69B4'),
         }
 
     # Default stack order (backgrounds first, signal last)
     if stack_order is None:
-        stack_order = [10, 9, 6, 7, 8, 2, 5, 1, 4, 0, 3]
+        stack_order = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
 
     # Open ROOT files
     file = uproot.open(postfit_file_path)
@@ -74,7 +73,9 @@ def plot_gundam_stacked(
     # Extract category histograms
     category_data = {}
     bin_edges = None
-    if fit_type == 'pre-fit':
+    # Note: "(pre-fit)" below is a directory name inside the GUNDAM output
+    # file, not a plot label -- it must stay hyphenated.
+    if fit_type in ('prefit', 'pre-fit'):
         path_template = f"toyGen/plots/histograms/{sample_name} (pre-fit)/{variable_name}/category/{{cat}}/MC_TH1D"
     else:
         path_template = f"toyGen/plots/histograms/{sample_name}/{variable_name}/category/{{cat}}/MC_TH1D"
@@ -212,8 +213,12 @@ def plot_gundam_stacked(
         )
         cumulative_running += values
 
-    # Total prediction line (clean label, no chi^2 inside)
-    total_events = cumulative.sum()
+    # Total prediction line (clean label, no chi^2 inside).
+    # GUNDAM histograms are bin-width rescaled (rescaleAsBinWidth: true), so
+    # they hold densities. Multiply by bin width to recover event counts for
+    # the legend; the drawn curves stay as densities.
+    bin_widths = np.diff(bin_edges)
+    total_events = float((cumulative * bin_widths).sum())
     prediction_label = f'Prediction ({total_events:.1f} events)'
     ax1.step(bin_edges,
              np.append(cumulative, cumulative[-1]),
@@ -255,7 +260,7 @@ def plot_gundam_stacked(
     if ylim_top:
         ax1.set_ylim(ylim_top)
     else:
-        ax1.set_ylim(0, ax1.get_ylim()[1] * 1.50)
+        ax1.set_ylim(0, ax1.get_ylim()[1] * 1.80)
 
     # Tick parameters
     ax1.tick_params(axis='both', which='major',
@@ -271,8 +276,9 @@ def plot_gundam_stacked(
                     top=True, right=True, left=True, bottom=True)
 
     # Legend (without chi^2)
-    total_mc_events = cumulative.sum()
-    category_events = {label: values.sum() for (label, color), values in unique_categories.items()}
+    total_mc_events = total_events
+    category_events = {label: float((values * bin_widths).sum())
+                       for (label, color), values in unique_categories.items()}
 
     new_handles = []
     new_labels = []
@@ -296,13 +302,14 @@ def plot_gundam_stacked(
             new_labels.append(label)
         elif label == 'Data':
             new_handles.append(handle)
-            new_labels.append(f'Data ({data_values.sum():.1f})')
+            new_labels.append(f'Data ({float((data_values * bin_widths).sum()):.1f})')
         else:
+            # Category entries: percentage only, no event counts.
             for cat_label, count in category_events.items():
                 if cat_label in label:
                     percentage = 100 * count / total_mc_events
                     new_handles.append(handle)
-                    new_labels.append(f'{cat_label} ({count:.1f}, {percentage:.2f}%)')
+                    new_labels.append(f'{cat_label} ({percentage:.2f}%)')
                     break
 
     new_handles = new_handles[::-1]
@@ -335,7 +342,7 @@ def plot_gundam_stacked(
         + f'(p-value = {p_value:.3f})'
     )
     if show_ppfx:
-        ppfx_text = ax1.text(0.95, 0.7, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
+        ppfx_text = ax1.text(0.95, 0.58, r'$\mathbf{PPFX\ REWEIGHT\ APPLIED}$',
                              transform=ax1.transAxes,
                              fontsize=7, color='black',
                              horizontalalignment='right',

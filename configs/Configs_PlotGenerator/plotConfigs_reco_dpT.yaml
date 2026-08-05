@@ -20,6 +20,7 @@ varDictionnaries:
 
       # Cosmic (type 9)
       - { value: 9, title: "Cosmic", color: 880 }
+      - { value: 10, title: "In-time cosmics", color: 880 }
 
 histogramsDefinition:
   - varToPlot: "reco_dpT_lp"

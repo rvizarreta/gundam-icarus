@@ -114,6 +114,41 @@ def _adaptive_legend(ax):
     )
 
 
+def _get_or_make_ratio_ax(fig, ax, height_frac=0.28, gap=0.06):
+    """
+    Shrink an existing single-panel axes and add a ratio panel beneath it.
+
+    The panel is created once and cached on the figure, so repeated overlay
+    calls all draw into the same axes. The x-label is moved down to the ratio
+    panel and the top panel's tick labels are hidden.
+    """
+    existing = getattr(fig, '_nuisance_ratio_ax', None)
+    if existing is not None:
+        return existing
+
+    pos = ax.get_position()
+    ratio_h = pos.height * height_frac
+    main_h = pos.height * (1.0 - height_frac) - gap
+
+    ax.set_position([pos.x0, pos.y0 + ratio_h + gap, pos.width, main_h])
+    rax = fig.add_axes([pos.x0, pos.y0, pos.width, ratio_h])
+
+    rax.set_xlim(ax.get_xlim())
+    rax.set_xscale(ax.get_xscale())
+    rax.set_xlabel(ax.get_xlabel(), fontsize=12, weight='bold')
+    ax.set_xlabel('')
+    ax.tick_params(labelbottom=False)
+
+    rax.tick_params(axis='both', which='major', labelsize=10,
+                    direction='in', top=True, right=True)
+    rax.minorticks_on()
+    rax.tick_params(axis='both', which='minor', direction='in',
+                    top=True, right=True)
+
+    fig._nuisance_ratio_ax = rax
+    return rax
+
+
 def overlay_genie_nuisance_xsec(fig, ax,
                                 nuisance_file_dir,
                                 bin_edges,
@@ -132,7 +167,14 @@ def overlay_genie_nuisance_xsec(fig, ax,
                                 extracted_xsec_errors=None,
                                 reweight_mode=None,
                                 finer_binning=False,
-                                n_fine_bins=80):
+                                n_fine_bins=80,
+                                add_ratio=False,
+                                ratio_ax=None,
+                                nominal_label='GENIE AR23_20i',
+                                nominal_xsec=None,
+                                ratio_ylabel='Ratio to\nnominal',
+                                ratio_ylim=(0.5, 1.5),
+                                draw_extracted_ratio=True):
     """
     Overlay GENIE NUISANCE flat-tree cross-section on an existing plot.
 
@@ -172,6 +214,26 @@ def overlay_genie_nuisance_xsec(fig, ax,
         If False (default), original step rendering on `bin_edges`.
     n_fine_bins : int
         Number of uniform fine bins used when finer_binning=True. Default 80.
+    add_ratio : bool
+        If True, shrink `ax` and create a ratio panel beneath it automatically
+        (created once, reused by later overlay calls on the same figure).
+    ratio_ax : matplotlib axes, optional
+        Explicit ratio panel axes, if you built the two-panel figure yourself.
+        Takes precedence over `add_ratio`.
+    nominal_label : str
+        Label identifying the nominal model. When a call is made with
+        `label == nominal_label`, its coarse (and fine) xsec is cached on `ax`
+        and used as the denominator for this and all later overlays. The
+        nominal must therefore be overlaid FIRST.
+    nominal_xsec : array-like, optional
+        Explicit denominator on the coarse bins, bypassing the cache above.
+    ratio_ylabel : str
+        Y-axis label for the ratio panel.
+    ratio_ylim : tuple
+        Y-limits for the ratio panel.
+    draw_extracted_ratio : bool
+        If True, draw extracted_xsec / nominal as points with errors in the
+        ratio panel. Drawn only once per ratio_ax.
 
     Returns
     -------
@@ -291,6 +353,69 @@ def overlay_genie_nuisance_xsec(fig, ax,
                   label=label_with_chi2, zorder=1)
         ax.vlines(left,  0, xsec, colors=color, linestyles='--', linewidth=1.0, zorder=1)
         ax.vlines(right, 0, xsec, colors=color, linestyles='--', linewidth=1.0, zorder=1)
+
+    # ── bottom ratio panel: this model / nominal model ──────────────────────
+    if ratio_ax is None and add_ratio:
+        ratio_ax = _get_or_make_ratio_ax(fig, ax)
+
+    if ratio_ax is not None:
+        # Cache the nominal the first time it is overlaid, so that this and
+        # every later call can divide by it.
+        if label == nominal_label:
+            ax._nuisance_nominal_xsec = xsec.copy()
+            ax._nuisance_nominal_xsec_fine = (
+                xsec_fine.copy() if finer_binning else None
+            )
+
+        nominal = (np.asarray(nominal_xsec, dtype=float)
+                   if nominal_xsec is not None
+                   else getattr(ax, '_nuisance_nominal_xsec', None))
+
+        if nominal is None:
+            print(f"Warning: nominal model '{nominal_label}' has not been "
+                  f"overlaid yet — skipping ratio for '{label}'. Overlay the "
+                  f"nominal first, or pass nominal_xsec explicitly.")
+        else:
+            def _safe_ratio(num, den):
+                num = np.asarray(num, dtype=float)
+                den = np.asarray(den, dtype=float)
+                with np.errstate(divide='ignore', invalid='ignore'):
+                    return np.where(den > 0, num / den, np.nan)
+
+            nominal_fine = getattr(ax, '_nuisance_nominal_xsec_fine', None)
+
+            if finer_binning and nominal_fine is not None:
+                ratio_ax.plot(fine_centers, _safe_ratio(xsec_fine, nominal_fine),
+                              color=color, linestyle='--', linewidth=1.5, zorder=1)
+            else:
+                # Coarse step rendering (also the fallback when the nominal was
+                # cached without a fine grid).
+                ratio = _safe_ratio(xsec, nominal)
+                left  = bin_centers - bin_widths / 2
+                right = bin_centers + bin_widths / 2
+                ratio_ax.hlines(ratio, left, right, colors=color,
+                                linestyles='--', linewidth=1.5, zorder=1)
+
+            # Extracted GUNDAM xsec / nominal — points with errors, once only.
+            if (draw_extracted_ratio
+                    and extracted_xsec is not None
+                    and not getattr(ratio_ax, '_extracted_ratio_drawn', False)):
+                r_data = _safe_ratio(extracted_xsec, nominal)
+                r_err = (_safe_ratio(extracted_xsec_errors, nominal)
+                         if extracted_xsec_errors is not None else None)
+                ratio_ax.errorbar(bin_centers, r_data,
+                                  xerr=bin_widths / 2, yerr=r_err,
+                                  fmt='o', color='black', markersize=4,
+                                  capsize=3, linewidth=1.2, elinewidth=1.2,
+                                  zorder=5)
+                ratio_ax._extracted_ratio_drawn = True
+
+            if not getattr(ratio_ax, '_ratio_styled', False):
+                ratio_ax.axhline(1.0, color='gray', linestyle='--', linewidth=1)
+                ratio_ax.set_ylabel(ratio_ylabel, fontsize=10, weight='bold')
+                ratio_ax.set_ylim(ratio_ylim)
+                ratio_ax.set_xlim(bin_edges[0], bin_edges[-1])
+                ratio_ax._ratio_styled = True
 
     # Adaptive legend: shrinks fontsize with entry count and moves outside
     # the axes when entries are many or labels are long.

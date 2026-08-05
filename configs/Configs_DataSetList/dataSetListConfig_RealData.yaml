@@ -38,7 +38,7 @@
 # already contains cosmics, so these entries have no "data" block.
 # Scale = Livetime[onbeam] / Livetime[offbeam] = 483958 / 50788498 = 9.5289e-3
 - name: "ICARUS_NuMI_1muNp0pi_cosmics"
-  isEnabled: true
+  isEnabled: false
   showSelectedEventCount: true
 
   mc:
@@ -48,7 +48,7 @@
     nominalWeightFormula: "(483958.0/50788498.0)"
 
 - name: "ICARUS_NuMI_1muNp0pi_cosmics_sideband"
-  isEnabled: true
+  isEnabled: false
   showSelectedEventCount: true
 
   mc:

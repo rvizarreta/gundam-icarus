@@ -4,6 +4,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "var00"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "var01"
   isEnabled: true
@@ -11,6 +12,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "var01"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "var02"
   isEnabled: true
@@ -18,6 +20,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "var02"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "var03"
   isEnabled: true
@@ -25,6 +28,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "var03"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "var04"
   isEnabled: true
@@ -32,6 +36,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "var04"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "var05"
   isEnabled: true
@@ -39,6 +44,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "var05"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "var06"
   isEnabled: true
@@ -46,6 +52,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "var06"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "var07"
   isEnabled: true
@@ -53,6 +60,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "var07"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "var08"
   isEnabled: true
@@ -60,6 +68,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "var08"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "var09"
   isEnabled: true
@@ -67,4 +76,5 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "var09"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"

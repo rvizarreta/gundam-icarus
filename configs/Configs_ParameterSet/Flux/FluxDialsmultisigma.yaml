@@ -5,6 +5,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_beam_horn_2kA"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_beam_horn1_x_3mm"
   isEnabled: true
@@ -13,6 +14,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_beam_horn1_x_3mm"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_beam_horn1_y_3mm"
   isEnabled: true
@@ -21,6 +23,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_beam_horn1_y_3mm"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_beam_spot_1_3mm"
   isEnabled: true
@@ -29,6 +32,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_beam_spot_1_3mm"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_beam_spot_1_7mm"
   isEnabled: true
@@ -37,6 +41,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_beam_spot_1_7mm"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_beam_horn2_x_3mm"
   isEnabled: true
@@ -45,6 +50,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_beam_horn2_x_3mm"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_beam_horn2_y_3mm"
   isEnabled: true
@@ -53,6 +59,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_beam_horn2_y_3mm"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_beam_horns_0mm_water"
   isEnabled: true
@@ -61,6 +68,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_beam_horns_0mm_water"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_beam_horns_2mm_water"
   isEnabled: true
@@ -69,6 +77,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_beam_horns_2mm_water"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_beam_Beam_shift_x_1mm"
   isEnabled: true
@@ -77,6 +86,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_beam_Beam_shift_x_1mm"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_beam_Beam_shift_y_1mm"
   isEnabled: true
@@ -85,6 +95,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_beam_Beam_shift_y_1mm"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_beam_Target_z_7mm"
   isEnabled: true
@@ -93,6 +104,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_beam_Target_z_7mm"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_hpc_0"
   isEnabled: true
@@ -101,6 +113,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_hpc_0"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_hpc_1"
   isEnabled: true
@@ -109,6 +122,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_hpc_1"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_hpc_2"
   isEnabled: true
@@ -117,6 +131,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_hpc_2"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_hpc_3"
   isEnabled: true
@@ -125,6 +140,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_hpc_3"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_hpc_4"
   isEnabled: true
@@ -133,6 +149,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_hpc_4"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_hpc_5"
   isEnabled: true
@@ -141,6 +158,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_hpc_5"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_hpc_6"
   isEnabled: true
@@ -149,6 +167,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_hpc_6"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_hpc_7"
   isEnabled: true
@@ -157,6 +176,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_hpc_7"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_hpc_8"
   isEnabled: true
@@ -165,6 +185,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_hpc_8"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_hpc_9"
   isEnabled: true
@@ -173,6 +194,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_hpc_9"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_hpc_10"
   isEnabled: true
@@ -181,6 +203,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_hpc_10"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_hpc_11"
   isEnabled: true
@@ -189,6 +212,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_hpc_11"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_hpc_12"
   isEnabled: true
@@ -197,6 +221,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_hpc_12"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_hpc_13"
   isEnabled: true
@@ -205,6 +230,7 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_hpc_13"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"
 - parameterName: "hysyst_hpc_14"
   isEnabled: true
@@ -213,4 +239,5 @@
       minDialResponse: 0
       maxDialResponse: 10
       dialLeafName: "hysyst_hpc_14"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
       applyCondition: "[is_nu]==1"

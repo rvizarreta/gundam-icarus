@@ -81,16 +81,82 @@ def _xsec_from_df(df_sel, nuisance_var, bin_edges, n_files, n_nucleons):
     return h / bin_widths / n_files * n_nucleons
 
 
-def _adaptive_legend(ax):
+def _all_panels(fig, ax):
+    """Main axes plus the ratio panel, if one has been created."""
+    panels = [ax]
+    rax = getattr(fig, '_nuisance_ratio_ax', None)
+    if rax is not None:
+        panels.append(rax)
+    return panels
+
+
+def _tighten_ylim(ax, headroom=1.12):
     """
-    Place the legend inside the axes at the least-cluttered corner.
-    Fontsize shrinks with entry count so long χ²/p-value labels still fit.
+    Shrink the y-range to just above the tallest drawn point.
+
+    Used once the legend has moved outside the axes: the headroom that was
+    needed to keep the legend clear of the curves is now dead space.
+    """
+    ymax = None
+
+    def _bump(value):
+        nonlocal ymax
+        if value is None or not np.isfinite(value):
+            return
+        ymax = value if ymax is None else max(ymax, value)
+
+    for line in ax.get_lines():
+        yd = np.asarray(line.get_ydata(), dtype=float)
+        if yd.size:
+            _bump(np.nanmax(yd))
+
+    # hlines/vlines and errorbar bars are LineCollections, not Line2D.
+    for coll in ax.collections:
+        get_segments = getattr(coll, 'get_segments', None)
+        if get_segments is None:
+            continue
+        for seg in get_segments():
+            seg = np.asarray(seg, dtype=float)
+            if seg.size:
+                _bump(np.nanmax(seg[:, 1]))
+
+    if ymax is None or ymax <= 0:
+        return
+
+    old_lo, old_hi = ax.get_ylim()
+    new_hi = ymax * headroom
+    ax.set_ylim(0, new_hi)
+
+    # Header text (ICARUS/POT labels) is placed in DATA coordinates just above
+    # the old y-limit, so it has to follow the limit down or it floats away
+    # from the axes. Anything anchored at/above the old top is moved.
+    old_span = old_hi - old_lo
+    for txt in ax.texts:
+        if txt.get_transform() is not ax.transData:
+            continue
+        x, y = txt.get_position()
+        if y >= old_hi - 0.02 * old_span:
+            txt.set_position((x, new_hi + 0.01 * new_hi))
+
+
+def _adaptive_legend(ax, max_models_inside=2, widen_factor=1.55,
+                     tighten_y=True):
+    """
+    Place the legend inside the axes while there are few models, and move it
+    outside (to the right of the plot) once more than `max_models_inside`
+    models are overlaid.
+
+    Going outside widens the figure and shrinks the axes by the same factor,
+    so the panels keep their original size in inches and the legend gets its
+    own strip of canvas rather than covering the curves.
     """
     handles, labels = ax.get_legend_handles_labels()
     if not handles:
         return
 
     n = len(handles)
+    # One of the entries is the extracted data; the rest are models.
+    n_models = max(n - 1, 0)
 
     # Fontsize tiers — explicit, no interpolation
     if n <= 2:
@@ -102,21 +168,48 @@ def _adaptive_legend(ax):
     else:
         fontsize = 7
 
-    ax.legend(
-        handles[::-1], labels[::-1],
-        loc='best',
+    common = dict(
         fontsize=fontsize,
         framealpha=0.9,
         handlelength=2.0,
         handletextpad=0.5,
-        borderaxespad=0.5,
         labelspacing=0.3,
     )
 
+    if n_models <= max_models_inside:
+        ax.legend(handles[::-1], labels[::-1], loc='best',
+                  borderaxespad=0.5, **common)
+        return
 
-def _get_or_make_ratio_ax(fig, ax, height_frac=0.28, gap=0.06):
+    # Outside, to the right. Widen the canvas once.
+    fig = ax.figure
+    if not getattr(fig, '_nuisance_legend_outside', False):
+        w, h = fig.get_size_inches()
+        fig.set_size_inches(w * widen_factor, h, forward=True)
+        # Figure-fraction positions must shrink by the same factor so the
+        # panels keep their absolute width.
+        for a in _all_panels(fig, ax):
+            p = a.get_position()
+            a.set_position([p.x0 / widen_factor, p.y0,
+                            p.width / widen_factor, p.height])
+        fig._nuisance_legend_outside = True
+
+    ax.legend(handles[::-1], labels[::-1],
+              loc='upper left', bbox_to_anchor=(1.02, 1.0),
+              borderaxespad=0.0, **common)
+
+    # The legend no longer sits over the curves, so reclaim the headroom.
+    if tighten_y:
+        _tighten_ylim(ax)
+
+
+def _get_or_make_ratio_ax(fig, ax, height_frac=0.28, gap=0.08):
     """
-    Shrink an existing single-panel axes and add a ratio panel beneath it.
+    Add a ratio panel beneath an existing single-panel axes.
+
+    The figure is grown taller to make room, so the main panel keeps its
+    original height in inches instead of being squeezed. `height_frac` and
+    `gap` are expressed as fractions of the main panel's height.
 
     The panel is created once and cached on the figure, so repeated overlay
     calls all draw into the same axes. The x-label is moved down to the ratio
@@ -127,11 +220,26 @@ def _get_or_make_ratio_ax(fig, ax, height_frac=0.28, gap=0.06):
         return existing
 
     pos = ax.get_position()
-    ratio_h = pos.height * height_frac
-    main_h = pos.height * (1.0 - height_frac) - gap
+    w, h = fig.get_size_inches()
 
-    ax.set_position([pos.x0, pos.y0 + ratio_h + gap, pos.width, main_h])
-    rax = fig.add_axes([pos.x0, pos.y0, pos.width, ratio_h])
+    # Work in inches so the main panel is preserved exactly.
+    main_h_in = pos.height * h
+    ratio_h_in = main_h_in * height_frac
+    gap_in = main_h_in * gap
+    new_h = h + ratio_h_in + gap_in
+
+    fig.set_size_inches(w, new_h, forward=True)
+
+    # Everything below the main panel keeps its absolute offset from the
+    # bottom; fractions rescale by h / new_h.
+    shrink = h / new_h
+    bottom = pos.y0 * shrink
+    ratio_h = ratio_h_in / new_h
+    gap_f = gap_in / new_h
+    main_h = main_h_in / new_h
+
+    ax.set_position([pos.x0, bottom + ratio_h + gap_f, pos.width, main_h])
+    rax = fig.add_axes([pos.x0, bottom, pos.width, ratio_h])
 
     rax.set_xlim(ax.get_xlim())
     rax.set_xscale(ax.get_xscale())

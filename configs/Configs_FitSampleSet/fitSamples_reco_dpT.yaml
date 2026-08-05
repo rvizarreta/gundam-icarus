@@ -3,9 +3,9 @@ fitSampleList:
     isEnabled: true
     binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT.txt"
     selectionCuts: "cut_type==1"
-    dataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_cosmics"]
+    dataSets: ["ICARUS_NuMI_1muNp0pi_selection"]#, "ICARUS_NuMI_1muNp0pi_cosmics"]
   - name: "sideband_reco_dpT"
     isEnabled: true
     binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT.txt"
     selectionCuts: "cut_type==1"
-    dataSets: ["ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_cosmics_sideband"]
+    dataSets: ["ICARUS_NuMI_1muNp0pi_sideband"]#, "ICARUS_NuMI_1muNp0pi_cosmics_sideband"]

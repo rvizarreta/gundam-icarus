@@ -116,3 +116,103 @@ Or you can just run below after changing directory to `GUNDAM-1.9.X`:
 cd GUNDAM-1.9.X
 source setup_GUNDAM.sh
 ```
+
+# dpT containment-split fit
+
+Simultaneous contained/exiting muon fit for the dpT analysis: 4 fit samples
+(`selection_reco_dpT_contained`, `selection_reco_dpT_exiting`,
+`sideband_reco_dpT_contained`, `sideband_reco_dpT_exiting`) sharing one
+likelihood and one set of 7 truth-level template parameters.
+
+## Binning
+
+- Truth: `configs/binnings/binning_true_dpT.txt` -- 6 finite bins + 1 overflow
+  (7 total), medulla-optimized, shared across all 4 samples.
+- Reco: per-channel, since contained and exiting muons resolve differently
+  - `configs/binnings/binning_reco_dpT_contained.txt` -- 20 finite + 1 overflow (21 rows)
+  - `configs/binnings/binning_reco_dpT_exiting.txt` -- 10 finite + 1 overflow (11 rows)
+  - `configs/binnings/binning_reco_dpT.txt` -- combined-sample binning (12 finite + 1 overflow), kept for A/B comparison against the pre-containment-split fit
+
+**`cov_bin_range` gotcha (Notebooks/dpT/Asimov_Containment_Studies.ipynb):** the
+toyGen `covarianceMatrix_TH2D` keeps the overflow row per sample (so each
+sample's true block is 21 or 11 wide), but the `toyGen/plots/histograms/.../MC_TH1D`
+category histograms silently drop it (20 or 10 bins). Block boundaries in the
+full matrix are therefore at `0, 21, 32, 53, 64` (with-overflow widths), but
+each `cov_bin_range` slice must stop one row short of its block boundary to
+match the category histograms:
+
+| sample | `cov_bin_range` |
+|---|---|
+| `selection_reco_dpT_contained` | `(0, 20)` |
+| `selection_reco_dpT_exiting` | `(21, 31)` |
+| `sideband_reco_dpT_contained` | `(32, 52)` |
+| `sideband_reco_dpT_exiting` | `(53, 63)` |
+
+## Fit sample set
+
+`configs/Configs_FitSampleSet/fitSamples_reco_dpT_containment.yaml` -- 4
+samples split on `reco_leading_muon_containment`, each pointed at its
+per-channel binning file above.
+
+## Asimov closure
+
+```
+gundamFitter -c RunConfigs/dpT/Asimov_Containment/config_Fitter_FakeData_dpT.yaml -o asimov_dpT_containment.root -a
+
+gundamToyGenerator -c RunConfigs/dpT/Asimov_Containment/config_ToyGenerator_FakeData_dpT.yaml \
+  -f asimov_dpT_containment.root -o prefit_asimov_dpT_containment.root \
+  -s 1 -t 8 --use-prefit --use-data-entry Asimov -n 1000
+
+gundamToyGenerator -c RunConfigs/dpT/Asimov_Containment/config_ToyGenerator_FakeData_dpT.yaml \
+  -f asimov_dpT_containment.root -o postfit_asimov_dpT_containment.root \
+  -s 1 -t 8 --use-bf --use-data-entry Asimov -n 1000
+```
+
+Results viewed in `Notebooks/dpT/Asimov_Containment_Studies.ipynb`.
+
+## Fake data studies: low-Q2, containment-split
+
+Motivation: the combined-sample low-Q2 fake data study does not close
+(chi2/ndf = 21.2/6, p = 0.002) -- `NormCCRES` absorbs the flat-normalization
+piece of the signal, but there is no dedicated nuisance parameter for a
+Q2-shaped *background*-only normalization shift, so the residual leaks into
+the signal templates. The containment split gives the fit an extra handle:
+contained and exiting muons have different momentum resolution, so a genuine
+Q2-shaped distortion should imprint differently on the two channels' reco
+spectra than a flat-normalization shift would. If chi2/ndf improves relative
+to the combined-sample baseline, that supports the degeneracy explanation;
+if it doesn't, that points to a real missing nuisance parameter rather than
+a statistics/binning limitation.
+
+The fake-data weighting (`configs/Configs_DataSetList/dataSetListConfig_FakeData_Q2.yaml`)
+is unchanged -- it's keyed by dataset/tree name, not by fit sample, so it
+applies identically under the containment split. Only the fitter/toy-generator
+configs needed a `fitSampleSetConfig` swap to point at the containment sample
+list; `config_CalcXSec_FakeData_Q2_dpT.yaml` is reused as-is since it runs on
+the (unsplit) truth-level sample.
+
+```
+gundamFitter -c RunConfigs/dpT/FakeData_Q2_Containment/config_Fitter_FakeData_Q2_dpT.yaml \
+  -o asimov_dpT_Q2_containment.root -a
+
+gundamToyGenerator -c RunConfigs/dpT/FakeData_Q2_Containment/config_ToyGenerator_FakeData_Q2_dpT.yaml \
+  -f asimov_dpT_Q2_containment.root -o prefit_dpT_Q2_containment.root \
+  -s 1 -t 8 --use-prefit --use-data-entry FakeDataFromMC -n 1000
+
+gundamToyGenerator -c RunConfigs/dpT/FakeData_Q2_Containment/config_ToyGenerator_FakeData_Q2_dpT.yaml \
+  -f asimov_dpT_Q2_containment.root -o postfit_dpT_Q2_containment.root \
+  -s 1 -t 8 --use-bf --use-data-entry FakeDataFromMC -n 1000
+
+gundamCalcXsec -c RunConfigs/dpT/FakeData_Q2/config_CalcXSec_FakeData_Q2_dpT.yaml \
+  -f asimov_dpT_Q2_containment.root -n 10000 -o asimov_XSec_dpT_Q2_containment.root --use-bf-as-xsec
+```
+
+Outputs land in `data/Fitter/dpT/FakeData_Q2_Containment/` and
+`data/XSection/dpT/FakeData_Q2_Containment/`. Compare the resulting
+chi2/ndf directly against the combined-sample baseline (21.2/6) using the
+same `cov_bin_range` convention documented above -- note the block
+boundaries there were derived for the Asimov containment run and should be
+re-verified against this run's actual covariance matrix labels before
+trusting the per-sample breakdown, since the fake-data weighting could in
+principle change bin population enough to shift PCA-driven parameter
+reduction (`enablePca: true`).

@@ -1,0 +1,81 @@
+# Config for gundamToyGenerator: Q2 fake data study, containment-split (contained/exiting) simultaneous fit
+# Mirrors config_ToyGenerator_FakeData_Q2_dpT.yaml -- only change is fitSampleSetConfig pointing at
+# the containment-split, per-channel-binned sample list instead of the combined one.
+
+#outputFolder: "${GUNDAM_CONFIG_DIR}/output/"
+minGundamVersion: 1.9.0
+
+fitterEngineConfig:
+
+  # minimizer
+  minimizerConfig: "${GUNDAM_CONFIG_DIR}/Configs_Minimizer/default_minimizer.yaml"
+
+  # likelihoodInterface
+  likelihoodInterfaceConfig:
+
+    # jointProbability
+    jointProbabilityConfig:
+      type: "PoissonLLH"
+      #type: "BarlowLLH"
+
+    # dataSetManager
+    propagatorConfig:
+      parametersManagerConfig:
+        parameterSetList: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSetList/parameterSetList_true_dpT.yaml"
+      fitSampleSetConfig: "${GUNDAM_CONFIG_DIR}/Configs_FitSampleSet/fitSamples_reco_dpT_containment.yaml"
+
+      showEventBreakdown: true
+      debugPrintLoadedEvents: true
+
+    enableStatThrowInToys: true
+    enableEventMcThrow: true
+
+    dataSetList: "${GUNDAM_CONFIG_DIR}/Configs_DataSetList/dataSetListConfig_FakeData_Q2.yaml"
+    plotGeneratorConfig: "${GUNDAM_CONFIG_DIR}/Configs_PlotGenerator/plotConfigs_reco_dpT.yaml"
+
+  # listing local configs 
+
+  ## "_enablePca_" is set by {"enablePca"}, {"runPcaCheck"}, {"fixGhostFitParameters"}
+  ## - default: false
+  enablePca: true
+
+  ## "_pcaDeltaChi2Threshold_" is set by {"ghostParameterDeltaChi2Threshold"}, {"pcaDeltaChi2Threshold"}
+  ## - default: 1E-6
+  pcaDeltaChi2Threshold: 1E-4
+
+  ## "_enablePreFitScan_" is set by "enablePreFitScan"
+  ## - default: false
+  enablePreFitScan: false
+
+  ## "_enablePostFitScan_" is set by "enablePostFitScan"
+  ## - default: false
+  enablePostFitScan: false
+
+  ## "_enablePreFitToPostFitLineScan_" is set by "enablePreFitToPostFitLineScan"
+  ## - default: true
+
+  ## "_generateSamplePlots_" is set by "generateSamplePlots"
+  ## - default: true
+
+  ## "_generateOneSigmaPlots_" is set by "generateOneSigmaPlots"
+  ## - default: false
+
+  ## "_doAllParamVariations_" is set by "enableParamVariations"
+  ## - default: false
+
+  ## "_allParamVariationsSigmas_" is set by {"paramVariationsSigmas"}, {"allParamVariations"}
+  ## - default: empty vector
+
+  ## "_scaleParStepWithChi2Response_" is set by "scaleParStepWithChi2Response"
+  ## - default: false
+
+  ## "_parStepGain_" is set by "parStepGain"
+  ## - default: 0.1
+
+  ## "_throwMcBeforeFit_" is set by "throwMcBeforeFit"
+  ## - default: false
+
+  ## "_throwGain_" is set by "throwMcBeforeFitGain"
+  ## - default: 1.
+
+  ## "_savePostfitEventTrees_" is set by "savePostfitEventTrees"

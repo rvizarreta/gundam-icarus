@@ -1,0 +1,56 @@
+# Config for gundamFitter: contained/exiting simultaneous fit, first pass.
+# Copied from RunConfigs/dpT/Asimov/config_Fitter_FakeData_dpT.yaml.
+# Only change vs. that file: fitSampleSetConfig points at the 4-sample
+# containment-split fitSampleSet instead of the 2-sample combined one.
+# enableStatThrowInToys stays false here -- this is the single un-thrown
+# closure check, not the toy ensemble. Promote to Asimov_StatSyst-style
+# config only after this closes.
+
+#outputFolder: "${GUNDAM_CONFIG_DIR}/output/"
+minGundamVersion: 1.9.0
+
+fitterEngineConfig:
+
+  # minimizer
+  minimizerConfig: "${GUNDAM_CONFIG_DIR}/Configs_Minimizer/default_minimizer.yaml"
+
+  # likelihoodInterface
+  likelihoodInterfaceConfig:
+
+    # jointProbability
+    jointProbabilityConfig:
+      type: "PoissonLLH"
+      #type: "BarlowLLH"
+
+    # dataSetManager
+    propagatorConfig:
+      parametersManagerConfig:
+        parameterSetList: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSetList/parameterSetList_true_dpT.yaml"
+      fitSampleSetConfig: "${GUNDAM_CONFIG_DIR}/Configs_FitSampleSet/fitSamples_reco_dpT_containment.yaml"
+
+      showEventBreakdown: true
+      debugPrintLoadedEvents: true
+
+    enableStatThrowInToys: false
+    enableEventMcThrow: false
+
+    dataSetList: "${GUNDAM_CONFIG_DIR}/Configs_DataSetList/dataSetListConfig_Asimov.yaml"
+    plotGeneratorConfig: "${GUNDAM_CONFIG_DIR}/Configs_PlotGenerator/plotConfigs_reco_dpT.yaml"
+
+  # listing local configs
+
+  ## "_enablePca_" is set by {"enablePca"}, {"runPcaCheck"}, {"fixGhostFitParameters"}
+  ## - default: false
+  enablePca: true
+
+  ## "_pcaDeltaChi2Threshold_" is set by {"ghostParameterDeltaChi2Threshold"}, {"pcaDeltaChi2Threshold"}
+  ## - default: 1E-6
+  pcaDeltaChi2Threshold: 1E-4
+
+  ## "_enablePreFitScan_" is set by "enablePreFitScan"
+  ## - default: false
+  enablePreFitScan: false
+
+  ## "_enablePostFitScan_" is set by "enablePostFitScan"
+  ## - default: false
+  enablePostFitScan: false

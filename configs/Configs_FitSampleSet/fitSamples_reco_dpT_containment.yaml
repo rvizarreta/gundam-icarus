@@ -1,21 +1,21 @@
 fitSampleList:
   - name: "selection_reco_dpT_contained"
     isEnabled: true
-    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT.txt"
+    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT_contained.txt"
     selectionCuts: "cut_type==1 && reco_leading_muon_containment==1"
     dataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_cosmics"]
   - name: "selection_reco_dpT_exiting"
     isEnabled: true
-    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT.txt"
+    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT_exiting.txt"
     selectionCuts: "cut_type==1 && reco_leading_muon_containment==0"
     dataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_cosmics"]
   - name: "sideband_reco_dpT_contained"
     isEnabled: true
-    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT.txt"
+    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT_contained.txt"
     selectionCuts: "cut_type==1 && reco_leading_muon_containment==1"
     dataSets: ["ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_cosmics_sideband"]
   - name: "sideband_reco_dpT_exiting"
     isEnabled: true
-    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT.txt"
+    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT_exiting.txt"
     selectionCuts: "cut_type==1 && reco_leading_muon_containment==0"
     dataSets: ["ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_cosmics_sideband"]

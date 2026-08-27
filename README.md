@@ -192,19 +192,42 @@ list; `config_CalcXSec_FakeData_Q2_dpT.yaml` is reused as-is since it runs on
 the (unsplit) truth-level sample.
 
 ```
-gundamFitter -c RunConfigs/dpT/FakeData_Q2_Containment/config_Fitter_FakeData_Q2_dpT.yaml \
-  -o asimov_dpT_Q2_containment.root -a
+gundamFitter -c RunConfigs/dpT/FakeData_Q2_Containment/config_Fitter_FakeData_Q2_dpT.yaml -o fakeData_Q2_containment_dpT.root
+```
+```
+scp rvizarr@icarusgpvm04.fnal.gov:"/exp/icarus/app/users/rvizarr/gundam-icarus/configs/fakeData_Q2_containment_dpT.root" "/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/data/Fitter/dpT/FakeData_Q2_Containment"
+```
 
+```
 gundamToyGenerator -c RunConfigs/dpT/FakeData_Q2_Containment/config_ToyGenerator_FakeData_Q2_dpT.yaml \
-  -f asimov_dpT_Q2_containment.root -o prefit_dpT_Q2_containment.root \
-  -s 1 -t 8 --use-prefit --use-data-entry FakeDataFromMC -n 1000
+-f fakeData_Q2_containment_dpT.root \
+-o prefit_fakeData_Q2_containment_dpT.root \
+-s 1  -t 8 \
+--use-prefit \
+-n 1000
+```
+```
+scp rvizarr@icarusgpvm04.fnal.gov:"/exp/icarus/app/users/rvizarr/gundam-icarus/configs/prefit_fakeData_Q2_containment_dpT.root" "/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/data/Fitter/dpT/FakeData_Q2_Containment"
+```
 
+```
 gundamToyGenerator -c RunConfigs/dpT/FakeData_Q2_Containment/config_ToyGenerator_FakeData_Q2_dpT.yaml \
-  -f asimov_dpT_Q2_containment.root -o postfit_dpT_Q2_containment.root \
-  -s 1 -t 8 --use-bf --use-data-entry FakeDataFromMC -n 1000
+-f fakeData_Q2_containment_dpT.root \
+-o postfit_fakeData_Q2_containment_dpT.root \
+-s 1  -t 8 \
+--use-bf \
+-n 1000
+```
+```
+scp rvizarr@icarusgpvm04.fnal.gov:"/exp/icarus/app/users/rvizarr/gundam-icarus/configs/postfit_fakeData_Q2_containment_dpT.root" "/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/data/Fitter/dpT/FakeData_Q2_Containment"
+```
 
+```
 gundamCalcXsec -c RunConfigs/dpT/FakeData_Q2/config_CalcXSec_FakeData_Q2_dpT.yaml \
-  -f asimov_dpT_Q2_containment.root -n 10000 -o asimov_XSec_dpT_Q2_containment.root --use-bf-as-xsec
+-f fakeData_Q2_containment_dpT.root -n 10000 -o fakeData_Q2_containment_XSec_dpT.root --use-bf-as-xsec
+```
+```
+scp rvizarr@icarusgpvm04.fnal.gov:"/exp/icarus/app/users/rvizarr/gundam-icarus/configs/fakeData_Q2_containment_XSec_dpT.root" "/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/data/XSection/dpT/FakeData_Q2_Containment"
 ```
 
 Outputs land in `data/Fitter/dpT/FakeData_Q2_Containment/` and
@@ -216,3 +239,53 @@ re-verified against this run's actual covariance matrix labels before
 trusting the per-sample breakdown, since the fake-data weighting could in
 principle change bin population enough to shift PCA-driven parameter
 reduction (`enablePca: true`).
+
+## Real data, containment split
+
+`configs/RunConfigs/dpT/RealData_Containment/` -- same containment-split fitSampleSet, but on genuine data (10% unblinded Run 2, 2.36124e19 POT) instead of Asimov/fake data.
+
+Two things carried over unchanged from the combined-sample real-data setup, not introduced by the containment split:
+
+- `BarlowLLH` likelihood (not `PoissonLLH`) -- accounts for finite MC statistics, appropriate for genuine data.
+- `dataSetListConfig_RealData.yaml` does not define `ICARUS_NuMI_1muNp0pi_cosmics`/`_cosmics_sideband` (commented out), while the fitSampleSet's selection/sideband samples reference them. This gap already exists identically in the combined-sample config (`fitSamples_reco_dpT.yaml`), so it isn't something the containment split changes -- worth resolving at some point, out of scope here.
+
+```
+gundamFitter -c RunConfigs/dpT/RealData_Containment/config_Fitter_RealData_dpT.yaml -o real_containment_dpT.root
+```
+```
+scp rvizarr@icarusgpvm04.fnal.gov:"/exp/icarus/app/users/rvizarr/gundam-icarus/configs/real_containment_dpT.root" "/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/data/Fitter/dpT/RealData_Containment"
+```
+
+```
+gundamToyGenerator -c RunConfigs/dpT/RealData_Containment/config_ToyGenerator_RealData_dpT.yaml \
+-f real_containment_dpT.root \
+-o prefit_real_containment_dpT.root \
+-s 1  -t 8 \
+--use-prefit \
+-n 1000
+```
+```
+scp rvizarr@icarusgpvm04.fnal.gov:"/exp/icarus/app/users/rvizarr/gundam-icarus/configs/prefit_real_containment_dpT.root" "/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/data/Fitter/dpT/RealData_Containment"
+```
+
+```
+gundamToyGenerator -c RunConfigs/dpT/RealData_Containment/config_ToyGenerator_RealData_dpT.yaml \
+-f real_containment_dpT.root \
+-o postfit_real_containment_dpT.root \
+-s 1  -t 8 \
+--use-bf \
+-n 1000
+```
+```
+scp rvizarr@icarusgpvm04.fnal.gov:"/exp/icarus/app/users/rvizarr/gundam-icarus/configs/postfit_real_containment_dpT.root" "/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/data/Fitter/dpT/RealData_Containment"
+```
+
+```
+gundamCalcXsec -c RunConfigs/dpT/RealData/config_CalcXSec_RealData_dpT.yaml \
+-f real_containment_dpT.root -n 10000 -o real_containment_XSec_dpT.root --use-bf-as-xsec
+```
+```
+scp rvizarr@icarusgpvm04.fnal.gov:"/exp/icarus/app/users/rvizarr/gundam-icarus/configs/real_containment_XSec_dpT.root" "/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/data/XSection/dpT/RealData_Containment"
+```
+
+Results viewed in `Notebooks/dpT/RealData_Containment_Studies.ipynb`. Same `cov_bin_range` values and re-verification caveat as the low-Q2 containment study above.

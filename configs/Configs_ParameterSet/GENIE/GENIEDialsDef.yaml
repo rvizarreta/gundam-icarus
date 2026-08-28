@@ -386,6 +386,7 @@
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_MFP_pi"
   isEnabled: true
+  priorType: "Flat"
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
@@ -395,6 +396,7 @@
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrCEx_pi"
   isEnabled: true
+  priorType: "Flat"
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
@@ -404,6 +406,7 @@
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrInel_pi"
   isEnabled: true
+  priorType: "Flat"
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
@@ -413,6 +416,7 @@
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrAbs_pi"
   isEnabled: true
+  priorType: "Flat"
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
@@ -422,6 +426,7 @@
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrPiProd_pi"
   isEnabled: true
+  priorType: "Flat"
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
@@ -431,6 +436,7 @@
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_MFP_N"
   isEnabled: true
+  priorType: "Flat"
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
@@ -440,6 +446,7 @@
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrCEx_N"
   isEnabled: true
+  priorType: "Flat"
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
@@ -449,6 +456,7 @@
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrInel_N"
   isEnabled: true
+  priorType: "Flat"
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
@@ -458,6 +466,7 @@
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrAbs_N"
   isEnabled: true
+  priorType: "Flat"
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
@@ -467,6 +476,7 @@
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrPiProd_N"
   isEnabled: true
+  priorType: "Flat"
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0

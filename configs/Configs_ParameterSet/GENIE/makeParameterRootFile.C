@@ -95,10 +95,14 @@ std::vector<std::string> GetGENIEMultisigmaKnobNames(){
   return {
 // ZExp PCA b-parameters (replace ZExpA1-A4CCQE)
 // Uncorrelated by PCA construction — identity covariance
-"ZExpPCAWeighter_myreweighter_b1",
-"ZExpPCAWeighter_myreweighter_b2",
-"ZExpPCAWeighter_myreweighter_b3",
-"ZExpPCAWeighter_myreweighter_b4",
+//"ZExpPCAWeighter_myreweighter_b1",
+//"ZExpPCAWeighter_myreweighter_b2",
+//"ZExpPCAWeighter_myreweighter_b3",
+//"ZExpPCAWeighter_myreweighter_b4",
+"GENIEReWeight_SBN_v1_multisigma_ZExpA1CCQE",
+"GENIEReWeight_SBN_v1_multisigma_ZExpA2CCQE",
+"GENIEReWeight_SBN_v1_multisigma_ZExpA3CCQE",
+"GENIEReWeight_SBN_v1_multisigma_ZExpA4CCQE",
 // Remaining GENIE knobs (unchanged)
 "GENIEReWeight_SBN_v1_multisigma_RPA_CCQE",
 "GENIEReWeight_SBN_v1_multisigma_CoulombCCQE",

@@ -31,8 +31,10 @@ def _read_nuisflat_dir(file_dir, generator_name, branches, signal_expr,
     for f_path in files:
         with uproot.open(f_path) as f:
             read_branches = list(branches)
-            if reweight_mode is not None and 'Mode' not in read_branches:
+            if reweight_mode in ('QE_0p8', 'RES_0p8', 'MEC_0p8') and 'Mode' not in read_branches:
                 read_branches.append('Mode')
+            elif reweight_mode == 'Q2_suppression' and 'Q2_true' not in read_branches:
+                read_branches.append('Q2_true')
 
             df = f['FlatTree_VARS'].arrays(read_branches, library='pd')
             if df_all is None:
@@ -60,9 +62,27 @@ def _read_nuisflat_dir(file_dir, generator_name, branches, signal_expr,
         df_all['FinalWeight'] = df_all['FinalWeight'] * np.where(
             df_all['Mode'].isin([2]), 0.8, 1.0
         )
+    elif reweight_mode == 'Q2_suppression':
+        # Same Q2-dependent suppression as the GUNDAM FakeData_Q2 dataset
+        # config (Configs_DataSetList/dataSetListConfig_FakeData_Q2.yaml),
+        # minus its category-4-7 cut (not available in the nuisflat tree;
+        # signal_expr is applied downstream instead). Suppression is active
+        # for 0.0 <= Q2 <= 0.7 GeV^2:
+        #   f(Q2)  = -0.6*Q2*(Q2-0.7)/0.1225 + Q2*(Q2-0.35)/0.245
+        #   weight = 1.0 - 0.7*(1.0 - f(Q2))**2
+        # Q2_true in the nuisflat tree is in MeV^2 (checked on a sample file:
+        # min 229.99, max 1.831e7, mean 6.066e5 -- i.e. mean ~0.607 GeV^2
+        # once converted, consistent with MeV^2 rather than GeV^2), so it is
+        # converted before applying the formula.
+        q2 = df_all['Q2_true'].to_numpy(dtype=float) / 1e6  # MeV^2 -> GeV^2
+        f_q2 = -0.6 * q2 * (q2 - 0.7) / 0.1225 + q2 * (q2 - 0.35) / 0.245
+        suppression = 1.0 - 0.7 * np.power(1.0 - f_q2, 2)
+        in_range = (q2 >= 0.0) & (q2 <= 0.7)
+        df_all['FinalWeight'] = df_all['FinalWeight'] * np.where(in_range, suppression, 1.0)
     elif reweight_mode is not None:
         raise ValueError(f"Unknown reweight_mode: '{reweight_mode}'. "
-                         f"Supported values: 'QE_0p8', 'RES_0p8', None.")
+                         f"Supported values: 'QE_0p8', 'RES_0p8', 'MEC_0p8', "
+                         f"'Q2_suppression', None.")
 
     df_sel = df_all.query(signal_expr)[[nuisance_var, 'FinalWeight']].copy()
     return df_sel, flux_integral, len(files)
@@ -314,8 +334,13 @@ def overlay_genie_nuisance_xsec(fig, ax,
     extracted_xsec, extracted_xsec_errors : np.ndarray, optional
         Extracted cross-section values and 1-sigma errors per coarse bin.
         If both provided, χ²/ndof is computed and added to the label.
-    reweight_mode : {'QE_0p8', 'RES_0p8', None}
-        Optional truth-level reweight by GENIE Mode.
+    reweight_mode : {'QE_0p8', 'RES_0p8', 'MEC_0p8', 'Q2_suppression', None}
+        Optional truth-level reweight. 'QE_0p8'/'RES_0p8'/'MEC_0p8' scale by
+        GENIE Mode. 'Q2_suppression' applies the same Q2-dependent
+        suppression as the GUNDAM FakeData_Q2 dataset config (see
+        _read_nuisflat_dir), using the 'Q2_true' branch; it does not apply
+        that config's category-4-7 cut (no equivalent branch in the
+        nuisflat tree) -- signal_expr is relied on instead.
     finer_binning : bool
         If True, GENIE is drawn as a smooth continuous curve on a fine grid
         of `n_fine_bins` uniform bins spanning [bin_edges[0], bin_edges[-1]].

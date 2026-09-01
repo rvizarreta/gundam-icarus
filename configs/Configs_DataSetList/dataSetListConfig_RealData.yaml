@@ -6,7 +6,7 @@
   mc:
     tree: "events/full/selected"
     filePathList:
-      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
     nominalWeightFormula: "((ppfx_cv_weight) * (2.36124e+19/7.178390e20))" #2.21627e+19/1.471115e+20
   data:
     # data from the same MC
@@ -14,7 +14,7 @@
       tree: "events/onbeam/selected"
       nominalWeightFormula: "(1.0)"
       filePathList:
-      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
 
 - name: "ICARUS_NuMI_1muNp0pi_sideband"
   isEnabled: true
@@ -24,7 +24,7 @@
   mc:
     tree: "events/full/sideband"
     filePathList:
-      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
     nominalWeightFormula: "((ppfx_cv_weight) * (2.36124e+19/7.178390e20))" #2.21627e+19/1.471115e+20
   data:
     # data from the same MC
@@ -32,7 +32,7 @@
       tree: "events/onbeam/sideband"
       nominalWeightFormula: "(1.0)"
       filePathList:
-      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
 
 ## In-time cosmics from offbeam data. Prediction-only: the onbeam data above
 ## already contains cosmics, so these entries have no "data" block.
@@ -44,7 +44,7 @@
 #  mc:
 #    tree: "events/offbeam/selected"
 #    filePathList:
-#      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+#      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
 #    nominalWeightFormula: "(483958.0/50788498.0)"
 #
 #- name: "ICARUS_NuMI_1muNp0pi_cosmics_sideband"
@@ -54,5 +54,5 @@
 #  mc:
 #    tree: "events/offbeam/sideband"
 #    filePathList:
-#      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+#      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
 #    nominalWeightFormula: "(483958.0/50788498.0)"

@@ -1,74 +1,74 @@
-- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpA1CCQE"
-  isEnabled: false
-  dialSetDefinitions:
-    - dialType: Spline
-      minimumSplineResponse: 0
-      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpA1CCQE"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
-      applyCondition: "[is_nu]==1"
-
-- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpA2CCQE"
-  isEnabled: false
-  dialSetDefinitions:
-    - dialType: Spline
-      minimumSplineResponse: 0
-      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpA2CCQE"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
-      applyCondition: "[is_nu]==1"
-
-- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpA3CCQE"
-  isEnabled: false
-  dialSetDefinitions:
-    - dialType: Spline
-      minimumSplineResponse: 0
-      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpA3CCQE"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
-      applyCondition: "[is_nu]==1"
-
-- parameterName: "GENIEReWeight_SBN_v1_multisigma_ZExpA4CCQE"
-  isEnabled: false
-  dialSetDefinitions:
-    - dialType: Spline
-      minimumSplineResponse: 0
-      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ZExpA4CCQE"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
-      applyCondition: "[is_nu]==1"
-
-- parameterName: "ZExpPCAWeighter_myreweighter_b1"
+- parameterName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b1"
   isEnabled: true
   dialSetDefinitions:
-    - dialType: Spline
-      minimumSplineResponse: 0
-      dialLeafName: "ZExpPCAWeighter_myreweighter_b1"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
-      applyCondition: "[is_nu]==1"
+     - dialType: Spline
+       minimumSplineResponse: 0
+       dialLeafName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b1"
+       applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+       applyCondition: "[is_nu]==1"
 
-- parameterName: "ZExpPCAWeighter_myreweighter_b2"
+- parameterName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b2"
   isEnabled: true
   dialSetDefinitions:
-    - dialType: Spline
-      minimumSplineResponse: 0
-      dialLeafName: "ZExpPCAWeighter_myreweighter_b2"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
-      applyCondition: "[is_nu]==1"
+     - dialType: Spline
+       minimumSplineResponse: 0
+       dialLeafName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b2"
+       applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+       applyCondition: "[is_nu]==1"
 
-- parameterName: "ZExpPCAWeighter_myreweighter_b3"
+- parameterName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b3"
   isEnabled: true
   dialSetDefinitions:
-    - dialType: Spline
-      minimumSplineResponse: 0
-      dialLeafName: "ZExpPCAWeighter_myreweighter_b3"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
-      applyCondition: "[is_nu]==1"
+     - dialType: Spline
+       minimumSplineResponse: 0
+       dialLeafName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b3"
+       applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+       applyCondition: "[is_nu]==1"
 
-- parameterName: "ZExpPCAWeighter_myreweighter_b4"
+- parameterName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b4"
   isEnabled: true
   dialSetDefinitions:
-    - dialType: Spline
-      minimumSplineResponse: 0
-      dialLeafName: "ZExpPCAWeighter_myreweighter_b4"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
-      applyCondition: "[is_nu]==1"
+     - dialType: Spline
+       minimumSplineResponse: 0
+       dialLeafName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b4"
+       applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+       applyCondition: "[is_nu]==1"
+
+#- parameterName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b1"
+#  isEnabled: true
+#  dialSetDefinitions:
+#    - dialType: Spline
+#      minimumSplineResponse: 0
+#      dialLeafName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b1"
+#      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+#      applyCondition: "[is_nu]==1"
+#
+#- parameterName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b2"
+#  isEnabled: true
+#  dialSetDefinitions:
+#    - dialType: Spline
+#      minimumSplineResponse: 0
+#      dialLeafName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b2"
+#      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+#      applyCondition: "[is_nu]==1"
+#
+#- parameterName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b3"
+#  isEnabled: true
+#  dialSetDefinitions:
+#    - dialType: Spline
+#      minimumSplineResponse: 0
+#      dialLeafName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b3"
+#      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+#      applyCondition: "[is_nu]==1"
+#
+#- parameterName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b4"
+#  isEnabled: true
+#  dialSetDefinitions:
+#    - dialType: Spline
+#      minimumSplineResponse: 0
+#      dialLeafName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b4"
+#      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+#      applyCondition: "[is_nu]==1"
 #
 #- parameterName: "Synthetic_multisigma_NormCCRES"
 #  isEnabled: true

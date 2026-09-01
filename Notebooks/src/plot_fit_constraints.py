@@ -15,6 +15,10 @@ DETSYS_LABEL_MAP = {
     '#1_ZExpPCAWeighter_myreweighter_b2' : 'ZExp_PCA_b2',
     '#2_ZExpPCAWeighter_myreweighter_b3' : 'ZExp_PCA_b3',
     '#3_ZExpPCAWeighter_myreweighter_b4' : 'ZExp_PCA_b4',
+    '#0_GENIEReWeight_SBN_v1_multisigma_ZExpA1CCQE' : 'ZExp_PCA_A1',
+    '#1_GENIEReWeight_SBN_v1_multisigma_ZExpA2CCQE' : 'ZExp_PCA_A2',
+    '#2_GENIEReWeight_SBN_v1_multisigma_ZExpA3CCQE' : 'ZExp_PCA_A3',
+    '#3_GENIEReWeight_SBN_v1_multisigma_ZExpA4CCQE' : 'ZExp_PCA_A4',
     # ── Detector systematics ────────────────────────────────────────────
     'var01': 'Induction Gain',
     'var02': 'TPC Coherent Noise',

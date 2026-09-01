@@ -6,7 +6,7 @@
   mc:
     tree: "events/full/selected"
     filePathList:
-      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
     nominalWeightFormula: "(ppfx_cv_weight)"
   data:
     # data from the same MC
@@ -14,7 +14,7 @@
       tree: "events/full/selected"
       nominalWeightFormula: "(ppfx_cv_weight) * (true_interaction_mode == 10 ? 0.8 : 1.0)"
       filePathList:
-      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
 
 - name: "ICARUS_NuMI_1muNp0pi_sideband"
   isEnabled: true
@@ -24,7 +24,7 @@
   mc:
     tree: "events/full/sideband"
     filePathList:
-      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
     nominalWeightFormula: "(ppfx_cv_weight)"
   data:
     # data from the same MC
@@ -32,7 +32,7 @@
       tree: "events/full/sideband"
       nominalWeightFormula: "(ppfx_cv_weight) * (true_interaction_mode == 10 ? 0.8 : 1.0)"
       filePathList:
-      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
 
 - name: "ICARUS_NuMI_1muNp0pi_cosmics"
   isEnabled: true
@@ -42,7 +42,7 @@
   mc:
     tree: "events/offbeam/selected"
     filePathList:
-      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
     nominalWeightFormula: "(1.0)"
   data:
     # No MEC suppression: offbeam cosmics have no true interaction mode.
@@ -50,7 +50,7 @@
       tree: "events/offbeam/selected"
       nominalWeightFormula: "(1.0)"
       filePathList:
-      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
 
 - name: "ICARUS_NuMI_1muNp0pi_cosmics_sideband"
   isEnabled: true
@@ -60,11 +60,11 @@
   mc:
     tree: "events/offbeam/sideband"
     filePathList:
-      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
     nominalWeightFormula: "(1.0)"
   data:
     - name: "FakeDataFromMC_cosmics_sideband"
       tree: "events/offbeam/sideband"
       nominalWeightFormula: "(1.0)"
       filePathList:
-      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam_withPCA.root"
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"

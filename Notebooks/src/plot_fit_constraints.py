@@ -188,12 +188,7 @@ def plot_fit_constraints(filename, directory_path,
                 ha='right', va='center', fontsize=8)
 
     # Set x-axis limits
-    all_values = np.concatenate([prefit_values + prefit_errors,
-                                  prefit_values - prefit_errors,
-                                  postfit_values + postfit_errors,
-                                  postfit_values - postfit_errors])
-    x_max = max(abs(np.max(all_values)), abs(np.min(all_values)))
-    ax.set_xlim(-x_max * 1.15, x_max * 1.15)
+    ax.set_xlim(-1.25, 1.25)
 
     # Set tick parameters
     ax.tick_params(axis='both', which='major',

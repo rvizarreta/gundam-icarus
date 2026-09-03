@@ -97,7 +97,7 @@
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_NormCCMEC"
-  isEnabled: true
+  isEnabled: false
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0

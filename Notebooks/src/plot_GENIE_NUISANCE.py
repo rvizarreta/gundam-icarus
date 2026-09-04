@@ -31,7 +31,7 @@ def _read_nuisflat_dir(file_dir, generator_name, branches, signal_expr,
     for f_path in files:
         with uproot.open(f_path) as f:
             read_branches = list(branches)
-            if reweight_mode in ('QE_0p8', 'RES_0p8', 'MEC_0p8') and 'Mode' not in read_branches:
+            if reweight_mode in ('QE_0p8', 'RES_0p8', 'MEC_0p8', 'QE_dpTShape') and 'Mode' not in read_branches:
                 read_branches.append('Mode')
             elif reweight_mode == 'Q2_suppression' and 'Q2_true' not in read_branches:
                 read_branches.append('Q2_true')
@@ -79,10 +79,35 @@ def _read_nuisflat_dir(file_dir, generator_name, branches, signal_expr,
         suppression = 1.0 - 0.7 * np.power(1.0 - f_q2, 2)
         in_range = (q2 >= 0.0) & (q2 <= 0.7)
         df_all['FinalWeight'] = df_all['FinalWeight'] * np.where(in_range, suppression, 1.0)
+    elif reweight_mode == 'QE_dpTShape':
+        # QE-only true delta_pT SHAPE reweight (not a flat scale): ratio of
+        # the NEUT and GENIE true delta_pT shapes for QE (Mode==1) events,
+        # each area-normalized in the true_dpT_lp_genie binning used by the
+        # template parameters (binnings/binning_true_dpT.txt, MeV/c):
+        #   [0, 135, 246, 352, 465, 598, 800, inf]
+        # NEUT shape built from the fhc_Nu14 + fhc_Nu-14 nuisflat samples
+        # (InputWeight*fScaleFactor-weighted per species, to correctly
+        # combine the numu/numubar statistics -- both were generated with
+        # equal raw event counts, not proportional to their real flux
+        # fractions, so an unweighted sum over-represents the numubar
+        # component). GENIE shape from the true_interaction_mode==0 (QE)
+        # subset of the GUNDAM input's events/full/signal tree, weighted by
+        # ppfx_cv_weight. This ratio-of-normalized-shapes construction
+        # preserves the total QE integral by construction (it is not an
+        # extra normalization step). See
+        # Configs_DataSetList/dataSetListConfig_FakeData_QE_dpTShape.yaml,
+        # which applies the identical per-bin weights at reco level to the
+        # fake data itself -- this reweight is what the fit must recover.
+        dpt_edges_gev = np.array([0.0, 0.135, 0.246, 0.352, 0.465, 0.598, 0.800, np.inf])
+        dpt_weights = np.array([0.8155, 1.0205, 1.3613, 1.3321, 1.2365, 1.0090, 0.7478])
+        dpt_vals = df_all[nuisance_var].to_numpy(dtype=float)
+        bin_idx = np.clip(np.digitize(dpt_vals, dpt_edges_gev) - 1, 0, len(dpt_weights) - 1)
+        qe_shape_weight = np.where(df_all['Mode'] == 1, dpt_weights[bin_idx], 1.0)
+        df_all['FinalWeight'] = df_all['FinalWeight'] * qe_shape_weight
     elif reweight_mode is not None:
         raise ValueError(f"Unknown reweight_mode: '{reweight_mode}'. "
                          f"Supported values: 'QE_0p8', 'RES_0p8', 'MEC_0p8', "
-                         f"'Q2_suppression', None.")
+                         f"'Q2_suppression', 'QE_dpTShape', None.")
 
     df_sel = df_all.query(signal_expr)[[nuisance_var, 'FinalWeight']].copy()
     return df_sel, flux_integral, len(files)
@@ -334,13 +359,16 @@ def overlay_genie_nuisance_xsec(fig, ax,
     extracted_xsec, extracted_xsec_errors : np.ndarray, optional
         Extracted cross-section values and 1-sigma errors per coarse bin.
         If both provided, χ²/ndof is computed and added to the label.
-    reweight_mode : {'QE_0p8', 'RES_0p8', 'MEC_0p8', 'Q2_suppression', None}
+    reweight_mode : {'QE_0p8', 'RES_0p8', 'MEC_0p8', 'Q2_suppression', 'QE_dpTShape', None}
         Optional truth-level reweight. 'QE_0p8'/'RES_0p8'/'MEC_0p8' scale by
         GENIE Mode. 'Q2_suppression' applies the same Q2-dependent
         suppression as the GUNDAM FakeData_Q2 dataset config (see
         _read_nuisflat_dir), using the 'Q2_true' branch; it does not apply
         that config's category-4-7 cut (no equivalent branch in the
-        nuisflat tree) -- signal_expr is relied on instead.
+        nuisflat tree) -- signal_expr is relied on instead. 'QE_dpTShape'
+        applies the NEUT/GENIE QE true-delta_pT shape-ratio reweight used by
+        the FakeData_QE_dpTShape study (see _read_nuisflat_dir); it needs
+        `nuisance_var` to be the true delta_pT branch.
     finer_binning : bool
         If True, GENIE is drawn as a smooth continuous curve on a fine grid
         of `n_fine_bins` uniform bins spanning [bin_edges[0], bin_edges[-1]].

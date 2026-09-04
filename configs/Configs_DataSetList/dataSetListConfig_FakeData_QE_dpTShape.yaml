@@ -1,0 +1,88 @@
+- name: "ICARUS_NuMI_1muNp0pi_selection"
+  isEnabled: true
+  selectedDataEntry: "FakeDataFromMC" # Irrelevant naming, please ignore
+  showSelectedEventCount: true
+
+  mc:
+    tree: "events/full/selected"
+    filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+    nominalWeightFormula: "(ppfx_cv_weight)"
+  data:
+    # data from the same MC, with QE (true_interaction_mode==0) events
+    # reweighted as a function of true_dpT_lp_genie instead of by a flat
+    # factor. The per-bin weights are the ratio of the NEUT and GENIE true
+    # delta_pT shapes for QE-only events (each area-normalized over the same
+    # 7 bins used by the true_dpT_lp_genie template dial set --
+    # binnings/binning_true_dpT.txt), so this reweight changes the QE SHAPE
+    # in delta_pT while preserving its total integral -- unlike the flat 0.8
+    # scale in dataSetListConfig_FakeData_InteractionMode_QE.yaml, which is
+    # largely degenerate with a normalization shift (see committee review,
+    # Sec. 7.5: "QE distribution is roughly constant across many kinematic
+    # variables... suppression is largely described as a normalization
+    # shift"). Bin edges (MeV/c) and weights:
+    #   [0,135)     -> 0.8155
+    #   [135,246)   -> 1.0205
+    #   [246,352)   -> 1.3613
+    #   [352,465)   -> 1.3321
+    #   [465,598)   -> 1.2365
+    #   [598,800)   -> 1.0090
+    #   [800,inf)   -> 0.7478
+    - name: "FakeDataFromMC"
+      tree: "events/full/selected"
+      nominalWeightFormula: "(ppfx_cv_weight) * (true_interaction_mode == 0 ? (true_dpT_lp_genie<135 ? 0.8155 : true_dpT_lp_genie<246 ? 1.0205 : true_dpT_lp_genie<352 ? 1.3613 : true_dpT_lp_genie<465 ? 1.3321 : true_dpT_lp_genie<598 ? 1.2365 : true_dpT_lp_genie<800 ? 1.0090 : 0.7478) : 1.0)"
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+
+- name: "ICARUS_NuMI_1muNp0pi_sideband"
+  isEnabled: true
+  selectedDataEntry: "FakeDataFromMC_sideband"
+  showSelectedEventCount: true
+
+  mc:
+    tree: "events/full/sideband"
+    filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+    nominalWeightFormula: "(ppfx_cv_weight)"
+  data:
+    # data from the same MC -- same QE true_dpT-shape reweight as above,
+    # applied to the sideband tree.
+    - name: "FakeDataFromMC_sideband"
+      tree: "events/full/sideband"
+      nominalWeightFormula: "(ppfx_cv_weight) * (true_interaction_mode == 0 ? (true_dpT_lp_genie<135 ? 0.8155 : true_dpT_lp_genie<246 ? 1.0205 : true_dpT_lp_genie<352 ? 1.3613 : true_dpT_lp_genie<465 ? 1.3321 : true_dpT_lp_genie<598 ? 1.2365 : true_dpT_lp_genie<800 ? 1.0090 : 0.7478) : 1.0)"
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+
+- name: "ICARUS_NuMI_1muNp0pi_cosmics"
+  isEnabled: true
+  selectedDataEntry: "FakeDataFromMC_cosmics"
+  showSelectedEventCount: true
+
+  mc:
+    tree: "events/offbeam/selected"
+    filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+    nominalWeightFormula: "(1.0)"
+  data:
+    - name: "FakeDataFromMC_cosmics"
+      tree: "events/offbeam/selected"
+      nominalWeightFormula: "(1.0)"
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+
+- name: "ICARUS_NuMI_1muNp0pi_cosmics_sideband"
+  isEnabled: true
+  selectedDataEntry: "FakeDataFromMC_cosmics_sideband"
+  showSelectedEventCount: true
+
+  mc:
+    tree: "events/offbeam/sideband"
+    filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+    nominalWeightFormula: "(1.0)"
+  data:
+    - name: "FakeDataFromMC_cosmics_sideband"
+      tree: "events/offbeam/sideband"
+      nominalWeightFormula: "(1.0)"
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"

@@ -1,0 +1,112 @@
+- name: "ICARUS_NuMI_1muNp0pi_selection"
+  isEnabled: true
+  selectedDataEntry: "FakeDataFromMC" # Irrelevant naming, please ignore
+  showSelectedEventCount: true
+
+  mc:
+    tree: "events/full/selected"
+    filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+    nominalWeightFormula: "(ppfx_cv_weight)"
+  data:
+    # data from the same MC, with QE (true_interaction_mode==0) events
+    # reweighted as a function of true_dpT_lp_genie to mimic a 15% reduction
+    # of the leading proton's true momentum magnitude (direction unchanged).
+    # Motivated by committee review comment Sec. 7.5: "a 10-20% reduction in
+    # the leading proton momentum would directly impact [the] distribution
+    # shape ... in ways that differ from normalization" -- offered there as
+    # an alternative to a flat QE suppression, which is largely degenerate
+    # with a normalization shift since QE's true delta_pT distribution is
+    # fairly flat.
+    #
+    # Derivation (single-generator, GENIE only -- unlike
+    # dataSetListConfig_FakeData_QE_dpTShape.yaml, which uses a NEUT/GENIE
+    # cross-generator shape ratio): for each GENIE QE (|Mode|==1) truth event
+    # in the fhc_Nu14 + fhc_Nu-14 nuisflat samples, delta_pT was recomputed
+    # twice from the raw nu_4mom/pmu_4mom/hm_pprot_4mom branches using the
+    # same transverse-momentum-imbalance construction as
+    # ICARUS-NuMI-CC0pi-Selection/selection/include/mctruth.h::dpT_lp_genie
+    # (verified to reproduce ICARUS_1muNp0pi_deltaPT event-by-event to 5-6
+    # sig figs): once with the leading proton's momentum unchanged
+    # ("nominal"), once with its 3-momentum scaled by 0.85 before the
+    # transverse projection ("shifted"). Because the transverse-projection
+    # operator is linear, scaling the full 3-momentum by f scales its
+    # transverse component by exactly f, so
+    #   dpT_shifted = |transverse(p_mu) + 0.85 * transverse(p_proton)|
+    # Both the nominal and shifted delta_pT values were binned (weighted by
+    # InputWeight*fScaleFactor, combining numu/numubar with proper flux
+    # weighting) in the true_dpT_lp_genie template binning
+    # (binnings/binning_true_dpT.txt, MeV/c) and area-normalized; the per-bin
+    # weight is shifted_shape_i / nominal_shape_i, which preserves the total
+    # QE integral by construction (same ratio-of-normalized-shapes
+    # construction as FakeData_QE_dpTShape). See
+    # Notebooks/src/plot_GENIE_NUISANCE.py's 'QE_ProtonPShape' reweight_mode
+    # for the matching ground-truth overlay curve and the full derivation
+    # notes (including a caught sign-convention bug: Mode is signed in the
+    # NEUT/GENIE convention, negative for antineutrino events, so QE
+    # selection here uses abs(Mode)==1). Bin edges (MeV/c) and weights:
+    #   [0,135)     -> 0.9917
+    #   [135,246)   -> 0.9598
+    #   [246,352)   -> 1.1602
+    #   [352,465)   -> 1.0216
+    #   [465,598)   -> 1.0199
+    #   [598,800)   -> 1.0084
+    #   [800,inf)   -> 0.8977
+    - name: "FakeDataFromMC"
+      tree: "events/full/selected"
+      nominalWeightFormula: "(ppfx_cv_weight) * (true_interaction_mode == 0 ? (true_dpT_lp_genie<135 ? 0.9917 : true_dpT_lp_genie<246 ? 0.9598 : true_dpT_lp_genie<352 ? 1.1602 : true_dpT_lp_genie<465 ? 1.0216 : true_dpT_lp_genie<598 ? 1.0199 : true_dpT_lp_genie<800 ? 1.0084 : 0.8977) : 1.0)"
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+
+- name: "ICARUS_NuMI_1muNp0pi_sideband"
+  isEnabled: true
+  selectedDataEntry: "FakeDataFromMC_sideband"
+  showSelectedEventCount: true
+
+  mc:
+    tree: "events/full/sideband"
+    filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+    nominalWeightFormula: "(ppfx_cv_weight)"
+  data:
+    # data from the same MC -- same QE true_dpT-shape (proton-momentum) reweight
+    # as above, applied to the sideband tree.
+    - name: "FakeDataFromMC_sideband"
+      tree: "events/full/sideband"
+      nominalWeightFormula: "(ppfx_cv_weight) * (true_interaction_mode == 0 ? (true_dpT_lp_genie<135 ? 0.9917 : true_dpT_lp_genie<246 ? 0.9598 : true_dpT_lp_genie<352 ? 1.1602 : true_dpT_lp_genie<465 ? 1.0216 : true_dpT_lp_genie<598 ? 1.0199 : true_dpT_lp_genie<800 ? 1.0084 : 0.8977) : 1.0)"
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+
+- name: "ICARUS_NuMI_1muNp0pi_cosmics"
+  isEnabled: true
+  selectedDataEntry: "FakeDataFromMC_cosmics"
+  showSelectedEventCount: true
+
+  mc:
+    tree: "events/offbeam/selected"
+    filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+    nominalWeightFormula: "(1.0)"
+  data:
+    - name: "FakeDataFromMC_cosmics"
+      tree: "events/offbeam/selected"
+      nominalWeightFormula: "(1.0)"
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+
+- name: "ICARUS_NuMI_1muNp0pi_cosmics_sideband"
+  isEnabled: true
+  selectedDataEntry: "FakeDataFromMC_cosmics_sideband"
+  showSelectedEventCount: true
+
+  mc:
+    tree: "events/offbeam/sideband"
+    filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+    nominalWeightFormula: "(1.0)"
+  data:
+    - name: "FakeDataFromMC_cosmics_sideband"
+      tree: "events/offbeam/sideband"
+      nominalWeightFormula: "(1.0)"
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"

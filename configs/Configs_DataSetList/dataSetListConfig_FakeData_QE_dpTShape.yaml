@@ -20,17 +20,33 @@
     # largely degenerate with a normalization shift (see committee review,
     # Sec. 7.5: "QE distribution is roughly constant across many kinematic
     # variables... suppression is largely described as a normalization
-    # shift"). Bin edges (MeV/c) and weights:
-    #   [0,135)     -> 0.8155
-    #   [135,246)   -> 1.0205
-    #   [246,352)   -> 1.3613
-    #   [352,465)   -> 1.3321
-    #   [465,598)   -> 1.2365
-    #   [598,800)   -> 1.0090
-    #   [800,inf)   -> 0.7478
+    # shift").
+    #
+    # BUGFIX: the weights below were recomputed after finding that the
+    # original derivation selected NEUT QE events via Mode==1 only. NEUT and
+    # GENIE use a signed mode convention (negative for antineutrino
+    # interactions), so the fhc_Nu-14 (numubar) sample's QE events
+    # (Mode==-1) were silently excluded from the NEUT shape -- despite the
+    # derivation intending to combine both numu and numubar statistics
+    # (InputWeight*fScaleFactor-weighted per species). Recomputed with
+    # abs(Mode)==1 (adding 386,313 numubar QE signal events that were
+    # previously dropped, on top of 1,793,799 numu-only before): the
+    # correction factor (new_shape/old_shape) ranges 0.96-1.10 across the 7
+    # bins, growing with delta_pT -- not a rounding-level effect on the high
+    # bins (largest single-bin change: [598,800) MeV/c, 1.0090 -> 1.0962,
+    # +8.6%). See Notebooks/src/plot_GENIE_NUISANCE.py's 'QE_dpTShape'
+    # reweight_mode for the corrected derivation notes and the matching
+    # ground-truth overlay curve. Bin edges (MeV/c) and CORRECTED weights:
+    #   [0,135)     -> 0.7846  (was 0.8155)
+    #   [135,246)   -> 0.9967  (was 1.0205)
+    #   [246,352)   -> 1.4091  (was 1.3613)
+    #   [352,465)   -> 1.4249  (was 1.3321)
+    #   [465,598)   -> 1.3291  (was 1.2365)
+    #   [598,800)   -> 1.0962  (was 1.0090)
+    #   [800,inf)   -> 0.8216  (was 0.7478)
     - name: "FakeDataFromMC"
       tree: "events/full/selected"
-      nominalWeightFormula: "(ppfx_cv_weight) * (true_interaction_mode == 0 ? (true_dpT_lp_genie<135 ? 0.8155 : true_dpT_lp_genie<246 ? 1.0205 : true_dpT_lp_genie<352 ? 1.3613 : true_dpT_lp_genie<465 ? 1.3321 : true_dpT_lp_genie<598 ? 1.2365 : true_dpT_lp_genie<800 ? 1.0090 : 0.7478) : 1.0)"
+      nominalWeightFormula: "(ppfx_cv_weight) * (true_interaction_mode == 0 ? (true_dpT_lp_genie<135 ? 0.7846 : true_dpT_lp_genie<246 ? 0.9967 : true_dpT_lp_genie<352 ? 1.4091 : true_dpT_lp_genie<465 ? 1.4249 : true_dpT_lp_genie<598 ? 1.3291 : true_dpT_lp_genie<800 ? 1.0962 : 0.8216) : 1.0)"
       filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
 
@@ -46,10 +62,10 @@
     nominalWeightFormula: "(ppfx_cv_weight)"
   data:
     # data from the same MC -- same QE true_dpT-shape reweight as above,
-    # applied to the sideband tree.
+    # applied to the sideband tree. See the CORRECTED weights note above.
     - name: "FakeDataFromMC_sideband"
       tree: "events/full/sideband"
-      nominalWeightFormula: "(ppfx_cv_weight) * (true_interaction_mode == 0 ? (true_dpT_lp_genie<135 ? 0.8155 : true_dpT_lp_genie<246 ? 1.0205 : true_dpT_lp_genie<352 ? 1.3613 : true_dpT_lp_genie<465 ? 1.3321 : true_dpT_lp_genie<598 ? 1.2365 : true_dpT_lp_genie<800 ? 1.0090 : 0.7478) : 1.0)"
+      nominalWeightFormula: "(ppfx_cv_weight) * (true_interaction_mode == 0 ? (true_dpT_lp_genie<135 ? 0.7846 : true_dpT_lp_genie<246 ? 0.9967 : true_dpT_lp_genie<352 ? 1.4091 : true_dpT_lp_genie<465 ? 1.4249 : true_dpT_lp_genie<598 ? 1.3291 : true_dpT_lp_genie<800 ? 1.0962 : 0.8216) : 1.0)"
       filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
 

@@ -31,7 +31,7 @@ def _read_nuisflat_dir(file_dir, generator_name, branches, signal_expr,
     for f_path in files:
         with uproot.open(f_path) as f:
             read_branches = list(branches)
-            if reweight_mode in ('QE_0p8', 'RES_0p8', 'MEC_0p8', 'QE_dpTShape') and 'Mode' not in read_branches:
+            if reweight_mode in ('QE_0p8', 'RES_0p8', 'MEC_0p8', 'QE_dpTShape', 'QE_ProtonPShape') and 'Mode' not in read_branches:
                 read_branches.append('Mode')
             elif reweight_mode == 'Q2_suppression' and 'Q2_true' not in read_branches:
                 read_branches.append('Q2_true')
@@ -81,9 +81,9 @@ def _read_nuisflat_dir(file_dir, generator_name, branches, signal_expr,
         df_all['FinalWeight'] = df_all['FinalWeight'] * np.where(in_range, suppression, 1.0)
     elif reweight_mode == 'QE_dpTShape':
         # QE-only true delta_pT SHAPE reweight (not a flat scale): ratio of
-        # the NEUT and GENIE true delta_pT shapes for QE (Mode==1) events,
-        # each area-normalized in the true_dpT_lp_genie binning used by the
-        # template parameters (binnings/binning_true_dpT.txt, MeV/c):
+        # the NEUT and GENIE true delta_pT shapes for QE (abs(Mode)==1)
+        # events, each area-normalized in the true_dpT_lp_genie binning used
+        # by the template parameters (binnings/binning_true_dpT.txt, MeV/c):
         #   [0, 135, 246, 352, 465, 598, 800, inf]
         # NEUT shape built from the fhc_Nu14 + fhc_Nu-14 nuisflat samples
         # (InputWeight*fScaleFactor-weighted per species, to correctly
@@ -98,16 +98,75 @@ def _read_nuisflat_dir(file_dir, generator_name, branches, signal_expr,
         # Configs_DataSetList/dataSetListConfig_FakeData_QE_dpTShape.yaml,
         # which applies the identical per-bin weights at reco level to the
         # fake data itself -- this reweight is what the fit must recover.
+        #
+        # BUGFIX (this line only, applied retroactively -- see git history /
+        # conversation log for the original values): Mode is signed in the
+        # NEUT/GENIE convention (negative for antineutrino interactions), so
+        # QE must be selected via abs(Mode)==1, not Mode==1. The original
+        # weights below were derived with Mode==1 only, which silently
+        # selected zero events from the fhc_Nu-14 (numubar) sample for the
+        # NEUT shape (verified: every Mode value in that sample is negative,
+        # with QE at Mode==-1, ~19% of its signal events) -- i.e. the NEUT
+        # shape was built from numu statistics alone despite the docstring
+        # above describing a combined numu+numubar shape. Recomputed with
+        # abs(Mode)==1 (numu=1,793,799 + numubar=386,313 QE signal events,
+        # vs. numu-only=1,793,799 before): the correction factor
+        # (new_shape/old_shape) is 0.96-1.10 across the 7 bins, growing with
+        # delta_pT, i.e. NOT a rounding-level effect on the high bins.
         dpt_edges_gev = np.array([0.0, 0.135, 0.246, 0.352, 0.465, 0.598, 0.800, np.inf])
-        dpt_weights = np.array([0.8155, 1.0205, 1.3613, 1.3321, 1.2365, 1.0090, 0.7478])
+        dpt_weights = np.array([0.7846, 0.9967, 1.4091, 1.4249, 1.3291, 1.0962, 0.8216])
         dpt_vals = df_all[nuisance_var].to_numpy(dtype=float)
         bin_idx = np.clip(np.digitize(dpt_vals, dpt_edges_gev) - 1, 0, len(dpt_weights) - 1)
-        qe_shape_weight = np.where(df_all['Mode'] == 1, dpt_weights[bin_idx], 1.0)
+        qe_shape_weight = np.where(np.abs(df_all['Mode']) == 1, dpt_weights[bin_idx], 1.0)
         df_all['FinalWeight'] = df_all['FinalWeight'] * qe_shape_weight
+    elif reweight_mode == 'QE_ProtonPShape':
+        # QE-only true delta_pT SHAPE reweight from an ad hoc 15% reduction of
+        # the leading proton's true momentum magnitude (direction unchanged),
+        # motivated by committee review comment (Sec. 7.5): "a 10-20% reduction
+        # in the leading proton momentum would directly impact [the] distribution
+        # shape ... in ways that differ from normalization." Unlike QE_dpTShape
+        # (a NEUT/GENIE cross-generator shape ratio), this is a single-generator
+        # (GENIE) closure test: the "nominal" and "shifted" delta_pT shapes are
+        # both built from the same GENIE QE (|Mode|==1) events, using the exact
+        # transverse-momentum-imbalance construction in
+        # ICARUS-NuMI-CC0pi-Selection/selection/include/mctruth.h::dpT_lp_genie
+        # (verified to reproduce ICARUS_1muNp0pi_deltaPT event-by-event to
+        # 5-6 sig figs from the raw nu_4mom/pmu_4mom/hm_pprot_4mom branches),
+        # but with the leading proton's 3-momentum scaled by 0.85 before the
+        # transverse projection. Because the transverse-projection operator is
+        # linear, scaling the full 3-momentum by f scales its transverse
+        # component by exactly f, so
+        #   dpT_shifted = |transverse(p_mu) + 0.85 * transverse(p_proton)|
+        # Both shapes are binned in the true_dpT_lp_genie template binning
+        # (MeV/c): [0, 135, 246, 352, 465, 598, 800, inf], area-normalized, and
+        # weight_i = shifted_shape_i / nominal_shape_i -- same
+        # ratio-of-normalized-shapes construction as QE_dpTShape, so the total
+        # QE integral is preserved by construction. NOTE: Mode is signed in the
+        # NEUT/GENIE convention (negative for antineutrino interactions), so QE
+        # is selected via abs(Mode)==1, not Mode==1 -- unlike the QE_dpTShape
+        # block above, which only catches Mode==1 and silently drops the
+        # fhc_Nu-14 (numubar) QE contribution. See
+        # Configs_DataSetList/dataSetListConfig_FakeData_QE_ProtonP.yaml, which
+        # applies the identical per-bin weights at reco level to the fake data
+        # itself. Weights (computed once from the nuisflat sample, not derived
+        # on the fly here):
+        #   [0,135)     -> 0.9917
+        #   [135,246)   -> 0.9598
+        #   [246,352)   -> 1.1602
+        #   [352,465)   -> 1.0216
+        #   [465,598)   -> 1.0199
+        #   [598,800)   -> 1.0084
+        #   [800,inf)   -> 0.8977
+        dpt_edges_gev = np.array([0.0, 0.135, 0.246, 0.352, 0.465, 0.598, 0.800, np.inf])
+        dpt_weights = np.array([0.9917, 0.9598, 1.1602, 1.0216, 1.0199, 1.0084, 0.8977])
+        dpt_vals = df_all[nuisance_var].to_numpy(dtype=float)
+        bin_idx = np.clip(np.digitize(dpt_vals, dpt_edges_gev) - 1, 0, len(dpt_weights) - 1)
+        qe_protonp_weight = np.where(np.abs(df_all['Mode']) == 1, dpt_weights[bin_idx], 1.0)
+        df_all['FinalWeight'] = df_all['FinalWeight'] * qe_protonp_weight
     elif reweight_mode is not None:
         raise ValueError(f"Unknown reweight_mode: '{reweight_mode}'. "
                          f"Supported values: 'QE_0p8', 'RES_0p8', 'MEC_0p8', "
-                         f"'Q2_suppression', 'QE_dpTShape', None.")
+                         f"'Q2_suppression', 'QE_dpTShape', 'QE_ProtonPShape', None.")
 
     df_sel = df_all.query(signal_expr)[[nuisance_var, 'FinalWeight']].copy()
     return df_sel, flux_integral, len(files)

@@ -16,14 +16,17 @@
     # correction_ZExpAVariationResponse") is a "multisim" type with a single
     # meaningful universe, so rather than exporting a full TGraph response
     # for the fit to interpolate, to_gundam.cc exports just that one
-    # correction weight (weights.front(), defaulting to 1.0 if absent or
-    # non-finite) directly as a flat branch named
-    # "LQCDZExpFitCorrection_weight" in the GUNDAM input tree. Because this
-    # is a GENIEReWeight-computed physics weight (not a hand-built binned
-    # table), it already returns ~1.0 for events outside the axial form
-    # factor dial's applicability (i.e. no manual true_interaction_mode cut
-    # needed here, unlike FakeData_QE_dpTShape/FakeData_QE_ProtonP) -- so the
-    # fake data formula is just the nominal weight times this branch.
+    # correction weight (weights.front()) directly as a flat branch named
+    # "LQCDZExpFitCorrection_weight" in the GUNDAM input tree. No manual
+    # true_interaction_mode cut is needed here (unlike
+    # FakeData_QE_dpTShape/FakeData_QE_ProtonP), since this is a
+    # GENIEReWeight-computed physics weight, not a hand-built binned table.
+    #
+    # Negative-value guard: matches Kiyoung's own dataSetListConfig for this
+    # dial (his 1mu1pi analysis config uses the identical
+    # "WEIGHT < 0 ? 1 : WEIGHT" pattern), so the branch's fallback/error
+    # sentinel is not assumed to be a safe multiplicative weight -- it is
+    # replaced with 1.0 (no correction) instead of being applied as-is.
     #
     # PREREQUISITE (not yet satisfied as of this file's creation): this
     # branch does not exist in the current GUNDAM input file
@@ -32,7 +35,7 @@
     # generation step and regenerating the file before this study can run.
     - name: "FakeDataFromMC"
       tree: "events/full/selected"
-      nominalWeightFormula: "(ppfx_cv_weight) * (LQCDZExpFitCorrection_weight)"
+      nominalWeightFormula: "(ppfx_cv_weight) * (LQCDZExpFitCorrection_weight < 0 ? 1 : LQCDZExpFitCorrection_weight)"
       filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
 
@@ -47,11 +50,11 @@
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
     nominalWeightFormula: "(ppfx_cv_weight)"
   data:
-    # data from the same MC -- same LQCD Z-exp correction reweight as above,
-    # applied to the sideband tree.
+    # data from the same MC -- same LQCD Z-exp correction reweight as above
+    # (with the same negative-value guard), applied to the sideband tree.
     - name: "FakeDataFromMC_sideband"
       tree: "events/full/sideband"
-      nominalWeightFormula: "(ppfx_cv_weight) * (LQCDZExpFitCorrection_weight)"
+      nominalWeightFormula: "(ppfx_cv_weight) * (LQCDZExpFitCorrection_weight < 0 ? 1 : LQCDZExpFitCorrection_weight)"
       filePathList:
       - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
 

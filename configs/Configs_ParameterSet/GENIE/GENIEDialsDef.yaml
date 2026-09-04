@@ -495,7 +495,7 @@
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape"
   isEnabled: true
   #isFixed: true
-  #priorValue: 0.1
+  priorValue: 0.005
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
@@ -509,7 +509,7 @@
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_DecayAngMEC"
   isEnabled: true
   #isFixed: true
-  #priorValue: 1
+  priorValue: 0.005
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0
@@ -523,7 +523,7 @@
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_Theta_Delta2Npi"
   isEnabled: true
   #isFixed: true
-  #priorValue: 0.005
+  priorValue: 0.005
   dialSetDefinitions:
     - dialType: Spline
       minimumSplineResponse: 0

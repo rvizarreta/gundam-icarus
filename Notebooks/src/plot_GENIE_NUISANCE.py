@@ -185,6 +185,91 @@ def _xsec_from_df(df_sel, nuisance_var, bin_edges, n_files, n_nucleons):
     return h / bin_widths / n_files * n_nucleons
 
 
+def _read_expected_xsec_txt(path):
+    """
+    Parse the plain-text "expected fake-data cross section" table (e.g.
+    Notebooks/dpT/expected_fakedata_xsec.txt), generated from the truth-level
+    events/full/signal tree in the GUNDAM input file -- see
+    signal_xs_studies.ipynb Part 4 for the per-study weight formulas and
+    Notebooks/export_expected_fakedata_xsec.py for the script that writes it.
+
+    File format: a '#'-prefixed header line naming the columns, then one row
+    per bin:
+        bin_low_GeV   bin_high_GeV   <study_1>   <study_2>   ...
+    The two bin-edge columns must be named 'bin_low' and 'bin_high' in the
+    header (with or without the trailing '_GeV'/'_MeV' the header text may
+    add for readability -- only the first token up to '_' is compared).
+
+    Units: these values are already expressed in the shared display
+    convention used throughout this file ("1e-37 cm^2/(GeV/c)/Ar", i.e. the
+    same convention `scaling_power_of_10=1e37` produces from the NUISANCE
+    flat trees) -- they are used as-is, with no further scaling applied.
+
+    Returns
+    -------
+    bin_edges : np.ndarray, shape (n_bins+1,)
+        Bin edges reconstructed from the low/high columns (validated to be
+        contiguous: row i's high edge must equal row i+1's low edge).
+    columns : dict[str, np.ndarray]
+        One array per study column (as named in the header), each of shape
+        (n_bins,).
+    """
+    import numpy as np
+
+    with open(path) as f:
+        raw_lines = [ln.rstrip('\n') for ln in f if ln.strip()]
+
+    header_line = None
+    data_lines = []
+    for ln in raw_lines:
+        if ln.lstrip().startswith('#'):
+            # Keep the last (most complete) '#' line as the header -- earlier
+            # ones may just be free-text provenance comments.
+            if len(ln.split()) >= 3:
+                header_line = ln
+            continue
+        data_lines.append(ln)
+
+    if header_line is None:
+        raise ValueError(
+            f"No '#'-prefixed column-header line (with >=3 whitespace-"
+            f"separated fields) found in {path}."
+        )
+
+    col_names = header_line.lstrip('#').split()
+    first_two = [c.split('_')[0] for c in col_names[:2]]
+    if first_two != ['bin', 'bin']:
+        raise ValueError(
+            f"Expected the first two columns of {path} to be bin-edge "
+            f"columns named 'bin_low...' and 'bin_high...', got: "
+            f"{col_names[:2]}"
+        )
+    study_names = col_names[2:]
+    if not study_names:
+        raise ValueError(f"No study columns found in the header of {path}.")
+
+    rows = [[float(x) for x in ln.split()] for ln in data_lines]
+    if not rows:
+        raise ValueError(f"No data rows found in {path}.")
+    rows = np.array(rows)
+    if rows.shape[1] != len(col_names):
+        raise ValueError(
+            f"{path}: header has {len(col_names)} columns but data rows "
+            f"have {rows.shape[1]}."
+        )
+
+    bin_low, bin_high = rows[:, 0], rows[:, 1]
+    if not np.allclose(bin_low[1:], bin_high[:-1]):
+        raise ValueError(
+            f"Bin edges in {path} are not contiguous -- row i's high edge "
+            f"must equal row i+1's low edge."
+        )
+    bin_edges = np.concatenate([bin_low, bin_high[-1:]])
+
+    columns = {name: rows[:, 2 + i] for i, name in enumerate(study_names)}
+    return bin_edges, columns
+
+
 def _all_panels(fig, ax):
     """Main axes plus the ratio panel, if one has been created."""
     panels = [ax]
@@ -281,8 +366,8 @@ def _adaptive_legend(ax, max_models_inside=2, widen_factor=1.55,
     )
 
     if n_models <= max_models_inside:
-        ax.legend(handles[::-1], labels[::-1], loc='best',
-                  borderaxespad=0.5, **common)
+        ax.legend(handles[::-1], labels[::-1], loc='upper left',
+                  borderaxespad=0.8, **common)
         return
 
     # Outside, to the right. Widen the canvas once.
@@ -362,8 +447,8 @@ def _get_or_make_ratio_ax(fig, ax, height_frac=0.28, gap=0.08):
 
 
 def overlay_genie_nuisance_xsec(fig, ax,
-                                nuisance_file_dir,
-                                bin_edges,
+                                nuisance_file_dir=None,
+                                bin_edges=None,
                                 nuisance_file_dir_numubar=None,
                                 generator_name='GENIE',
                                 n_nucleons=40,
@@ -384,20 +469,26 @@ def overlay_genie_nuisance_xsec(fig, ax,
                                 ratio_ax=None,
                                 nominal_label='GENIE AR23_20i',
                                 nominal_xsec=None,
-                                ratio_ylabel='Ratio to\nnominal',
+                                ratio_ylabel=r'Model / AR23_20i',
                                 ratio_ylim=(0.5, 1.5),
-                                draw_extracted_ratio=True):
+                                draw_extracted_ratio=True,
+                                expected_xsec_file=None,
+                                expected_xsec_study=None):
     """
-    Overlay GENIE NUISANCE flat-tree cross-section on an existing plot.
+    Overlay a GENIE NUISANCE flat-tree cross-section -- OR an already-computed
+    "expected fake-data" cross-section read from a text file -- on an
+    existing plot.
 
     Parameters
     ----------
     fig, ax : existing matplotlib figure and axes
     nuisance_file_dir : str
         Directory containing numu output_GENIE_*.nuisflat.root files.
+        Required unless `expected_xsec_file`/`expected_xsec_study` are used
+        instead (see below).
     bin_edges : array-like
         Coarse analysis bin edges. χ² against extracted_xsec is ALWAYS
-        computed on these bins.
+        computed on these bins. Always required.
     nuisance_file_dir_numubar : str, optional
         Directory containing numubar output_GENIE_*.nuisflat.root files.
     generator_name : str
@@ -454,6 +545,25 @@ def overlay_genie_nuisance_xsec(fig, ax,
     draw_extracted_ratio : bool
         If True, draw extracted_xsec / nominal as points with errors in the
         ratio panel. Drawn only once per ratio_ax.
+    expected_xsec_file : str, optional
+        Path to a plain-text "expected fake-data cross section" table (see
+        `_read_expected_xsec_txt`), e.g. Notebooks/dpT/expected_fakedata_xsec.txt.
+        When given together with `expected_xsec_study`, the "modified with
+        fake-data criteria" curve is read directly from this file's column
+        instead of being recomputed from the NUISANCE flat-tree Mode/Q2_true
+        branches -- this is what LQCD and MINERvA (which have no native
+        `reweight_mode` support, and use a different truth-level
+        interaction-mode convention than the GUNDAM signal tree in the first
+        place) should use. Mutually exclusive with `reweight_mode` and with
+        `finer_binning`. `nuisance_file_dir` is not required in this mode.
+        `bin_edges` must match the edges stored in the file exactly (checked;
+        raises ValueError on mismatch rather than silently rebinning).
+        `scaling_power_of_10` must be left at its default (1.0): the file's
+        values are already expressed in the shared display convention.
+    expected_xsec_study : str, optional
+        Column name to read from `expected_xsec_file` (e.g. 'LQCD',
+        'MINERvA', 'QE', 'QE_dpTShape', 'GENIE_nominal', ...). Required
+        together with `expected_xsec_file`.
 
     Returns
     -------
@@ -463,8 +573,48 @@ def overlay_genie_nuisance_xsec(fig, ax,
     chi2_info : dict or None
         {'chi2', 'ndof', 'p_value'} if extracted_xsec was provided, else None.
     """
+    import os
     import numpy as np
     from scipy.stats import chi2 as chi2_dist
+
+    if bin_edges is None:
+        raise ValueError("bin_edges is required.")
+
+    using_expected_file = (expected_xsec_file is not None
+                           or expected_xsec_study is not None)
+    if using_expected_file:
+        if expected_xsec_file is None or expected_xsec_study is None:
+            raise ValueError(
+                "expected_xsec_file and expected_xsec_study must both be "
+                "given together (got only one of the two)."
+            )
+        if reweight_mode is not None:
+            raise ValueError(
+                "reweight_mode and expected_xsec_file are mutually "
+                "exclusive: reweight_mode recomputes the modified curve "
+                "from the NUISANCE flat-tree Mode/Q2_true branches; "
+                "expected_xsec_file reads an already-computed curve "
+                "instead. Pick one."
+            )
+        if finer_binning:
+            raise ValueError(
+                "finer_binning is not supported together with "
+                "expected_xsec_file -- the file only has values on the "
+                "coarse analysis bins."
+            )
+        if scaling_power_of_10 != 1.0:
+            raise ValueError(
+                "scaling_power_of_10 must be left at its default (1.0) "
+                "when using expected_xsec_file: the file's values are "
+                "already expressed in the shared '1e-37 cm^2/(GeV/c)/Ar' "
+                "display convention, so scaling them again here would "
+                "double-count the factor."
+            )
+    elif nuisance_file_dir is None:
+        raise ValueError(
+            "nuisance_file_dir is required unless expected_xsec_file and "
+            "expected_xsec_study are both given."
+        )
 
     branches = [
         'InputWeight', 'fScaleFactor', 'ELep', 'MLep',
@@ -483,45 +633,72 @@ def overlay_genie_nuisance_xsec(fig, ax,
     else:
         fine_bin_edges = None
 
-    # ── load selected dfs once per directory ────────────────────────────────
-    df_numu, flux_numu, n_files_numu = _read_nuisflat_dir(
-        nuisance_file_dir, generator_name, branches, signal_expr,
-        nuisance_var, flux_binwidth_divided, reweight_mode=reweight_mode
-    )
-
-    if nuisance_file_dir_numubar is not None:
-        df_numubar, flux_numubar, n_files_numubar = _read_nuisflat_dir(
-            nuisance_file_dir_numubar, generator_name, branches, signal_expr,
+    if using_expected_file:
+        # ── read the "modified with fake-data criteria" curve straight from
+        # the pre-computed text table instead of the NUISANCE flat trees ────
+        file_bin_edges, file_columns = _read_expected_xsec_txt(expected_xsec_file)
+        if expected_xsec_study not in file_columns:
+            raise ValueError(
+                f"'{expected_xsec_study}' is not a column in "
+                f"{expected_xsec_file}. Available columns: "
+                f"{sorted(file_columns)}"
+            )
+        if (file_bin_edges.shape != bin_edges.shape
+                or not np.allclose(file_bin_edges, bin_edges)):
+            raise ValueError(
+                f"bin_edges passed to overlay_genie_nuisance_xsec do not "
+                f"match the bin edges stored in {expected_xsec_file}.\n"
+                f"  requested: {list(bin_edges)}\n"
+                f"  in file:   {list(file_bin_edges)}\n"
+                f"Use the exact edges from that file, or regenerate the "
+                f"file on the edges you need."
+            )
+        xsec = file_columns[expected_xsec_study].copy()
+        xsec_fine = None
+    else:
+        # ── load selected dfs once per directory ────────────────────────────
+        df_numu, flux_numu, n_files_numu = _read_nuisflat_dir(
+            nuisance_file_dir, generator_name, branches, signal_expr,
             nuisance_var, flux_binwidth_divided, reweight_mode=reweight_mode
         )
 
-    # ── helper: flux-combined, fully scaled xsec on any grid ────────────────
-    def _build_xsec(edges):
-        xsec_numu_only = _xsec_from_df(df_numu, nuisance_var, edges,
-                                       n_files_numu, n_nucleons)
         if nuisance_file_dir_numubar is not None:
-            xsec_nbar = _xsec_from_df(df_numubar, nuisance_var, edges,
-                                      n_files_numubar, n_nucleons)
-            flux_sum = flux_numu + flux_numubar
-            xsec_out = (xsec_numu_only * flux_numu
-                        + xsec_nbar * flux_numubar) / flux_sum
-        else:
-            xsec_out = xsec_numu_only
-        if do_per_nucleon:
-            xsec_out = xsec_out / n_nucleons
-        xsec_out = xsec_out * scaling_power_of_10
-        return xsec_out
+            df_numubar, flux_numubar, n_files_numubar = _read_nuisflat_dir(
+                nuisance_file_dir_numubar, generator_name, branches, signal_expr,
+                nuisance_var, flux_binwidth_divided, reweight_mode=reweight_mode
+            )
 
-    # Coarse xsec — printout AND χ² against extracted data
-    xsec = _build_xsec(bin_edges)
+        # ── helper: flux-combined, fully scaled xsec on any grid ────────────
+        def _build_xsec(edges):
+            xsec_numu_only = _xsec_from_df(df_numu, nuisance_var, edges,
+                                           n_files_numu, n_nucleons)
+            if nuisance_file_dir_numubar is not None:
+                xsec_nbar = _xsec_from_df(df_numubar, nuisance_var, edges,
+                                          n_files_numubar, n_nucleons)
+                flux_sum = flux_numu + flux_numubar
+                xsec_out = (xsec_numu_only * flux_numu
+                            + xsec_nbar * flux_numubar) / flux_sum
+            else:
+                xsec_out = xsec_numu_only
+            if do_per_nucleon:
+                xsec_out = xsec_out / n_nucleons
+            xsec_out = xsec_out * scaling_power_of_10
+            return xsec_out
 
-    # Fine xsec — only used for plotting when finer_binning=True
-    xsec_fine = _build_xsec(fine_bin_edges) if finer_binning else None
+        # Coarse xsec — printout AND χ² against extracted data
+        xsec = _build_xsec(bin_edges)
+
+        # Fine xsec — only used for plotting when finer_binning=True
+        xsec_fine = _build_xsec(fine_bin_edges) if finer_binning else None
 
     # ── printout (always on the coarse, analysis bins) ──────────────────────
     print("\n" + "="*70)
-    print(f"GENIE NUISANCE Cross-Section ({nuisance_var})"
-          + (f" [{reweight_mode}]" if reweight_mode else ""))
+    if using_expected_file:
+        print(f"Expected fake-data Cross-Section ({expected_xsec_study}, "
+              f"from {os.path.basename(expected_xsec_file)})")
+    else:
+        print(f"GENIE NUISANCE Cross-Section ({nuisance_var})"
+              + (f" [{reweight_mode}]" if reweight_mode else ""))
     print("="*70)
     print(f"{'Bin range':<25} {'xsec':>20}")
     print("-"*70)

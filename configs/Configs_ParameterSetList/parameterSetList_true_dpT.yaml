@@ -1,6 +1,9 @@
 # Template
 - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/TemplateParameters/parameterSet_true_dpT.yaml"
 
+# BACKGROUND FIT (true_generator_q2, categories 4-7)
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_q2.yaml"
+
 # GENIE
 - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/GENIE/parameterSet_GENIE.yaml"
 

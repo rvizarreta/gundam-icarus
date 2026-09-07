@@ -1,0 +1,30 @@
+name: BackgroundFit true_generator_q2
+isEnabled: true
+
+printDialSetsSummary: true
+
+nominalStepSize: 0.1
+useOnlyOneParameterPerEvent: true
+
+# No covarianceMatrixFilePath -- these parameters float free (Flat, unconstrained
+# prior), exactly like the signal template parameters in
+# TemplateParameters/parameterSet_true_dpT.yaml (default dialType is Norm/
+# Normalization -- see DialCollection.h -- so this is the same template-parameter
+# mechanism, just scoped to the background categories below).
+dialSetDefinitions:
+  - name: BackgroundFit true_generator_q2 dialSetDefinitions
+    # 'applyOnDataSets' can take a list or a wildcard
+    applyOnDataSets: ["*"]
+    parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_true_generator_q2.txt"
+    # Same background categories targeted by the Q2 and Pion fake-data reweights
+    # (Configs_DataSetList/dataSetListConfig_FakeData_Q2.yaml and
+    # dataSetListConfig_FakeData_Pion.yaml): true charged-pion final states that
+    # survive the 1muNp0pi selection (categories 0,1,2 are the signal topologies
+    # and are explicitly excluded -- matches parameterSet_true_dpT.yaml's own
+    # applyCondition on categories 0,1,2, just on the complementary categories).
+    applyCondition: "([category]==4) || ([category]==5) || ([category]==6) || ([category]==7)"
+    printDialsSummary: true
+
+parameterLimits:
+  minValue: 0.
+  maxValue: 3.0

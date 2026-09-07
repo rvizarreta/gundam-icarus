@@ -6,11 +6,23 @@ printDialSetsSummary: true
 nominalStepSize: 0.1
 useOnlyOneParameterPerEvent: true
 
-# No covarianceMatrixFilePath -- these parameters float free (Flat, unconstrained
-# prior), exactly like the signal template parameters in
-# TemplateParameters/parameterSet_true_dpT.yaml (default dialType is Norm/
-# Normalization -- see DialCollection.h -- so this is the same template-parameter
-# mechanism, just scoped to the background categories below).
+# Gaussian prior (flat 40% uncertainty per bin, diagonal -- see
+# GenerateBackgroundFitQ2Cov.C), matching Howard et al.'s first and simplest
+# choice for their "BackgroundFit" template parameters on nu-CC-other events.
+# Unlike the signal template parameters (TemplateParameters/parameterSet_true_dpT.yaml,
+# which have no covariance and float free), these parameters compete on equal
+# footing with the GENIE/Flux/Detector nuisance parameters -- otherwise a
+# free-floating background parameter always absorbs the full discrepancy before
+# any Gaussian-constrained dial is pulled at all, which defeats the point of
+# checking whether the GENIE dials are implicated.
+#
+# No parameterPriorTVectorD/parameterNameTObjArray/bounds vectors are given --
+# ParameterSet::defineParameters() defaults an omitted prior to 1.0 per
+# parameter, and bounds fall back to the top-level parameterLimits below.
+# Same minimal pattern as the existing G4/parameterSet_G4_Proton.yaml.
+covarianceMatrixFilePath: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/gundaminput_backgroundfit_true_q2.root"
+covarianceMatrixTMatrixD: backgroundfit_q2_cov
+
 dialSetDefinitions:
   - name: BackgroundFit true_generator_q2 dialSetDefinitions
     # 'applyOnDataSets' can take a list or a wildcard

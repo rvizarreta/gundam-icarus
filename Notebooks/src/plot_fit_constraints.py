@@ -188,7 +188,7 @@ def plot_fit_constraints(filename, directory_path,
                 ha='right', va='center', fontsize=8)
 
     # Set x-axis limits
-    ax.set_xlim(-1.25, 1.25)
+    #ax.set_xlim(-1.25, 1.25)
 
     # Set tick parameters
     ax.tick_params(axis='both', which='major',

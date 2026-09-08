@@ -5,7 +5,9 @@ import numpy as np
 
 def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edges_labels, is_y_errors,
                        title_line1=None, label=None, hline_nuisance=False,
-                       figsize=(5, 4), pot='POT', remove_last_bin=True, scaling_power_of_10=1.0):
+                       figsize=(5, 4), pot='POT', remove_last_bin=True, scaling_power_of_10=1.0,
+                       show_prior=False, prior_hist_path=None, prior_label='Pre-fit value',
+                       prior_color='salmon', prior_alpha=0.6):
     """
     Plot cross-section data from a ROOT file with error bars.
 
@@ -39,6 +41,23 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
         Legend label for the data points
     hline_nuisance : bool, optional
         Whether to add a horizontal line at y=1. Default is False
+    show_prior : bool, optional
+        Whether to draw a shaded pre-fit (prior) band behind the post-fit points, the
+        same way plot_fit_constraints does for nuisance parameters. Default is False.
+    prior_hist_path : str, optional
+        Path to the pre-fit histogram within the ROOT file. If None (default) and
+        show_prior is True, it is derived from hist_path by replacing
+        "postFitErrors_TH1D" with "preFitErrors_TH1D" -- the convention GUNDAM uses
+        for every parameterSet (both histograms live side by side in the same
+        directory, e.g. ".../BackgroundFit true_generator_q2/values/"). Pass this
+        explicitly if hist_path doesn't follow that convention.
+    prior_label : str, optional
+        Legend label for the prior band. Default is 'Pre-fit value' (matches
+        plot_fit_constraints' legend wording). Pass None to omit it from the legend.
+    prior_color : str, optional
+        Color of the prior band. Default is 'salmon' (matches plot_fit_constraints).
+    prior_alpha : float, optional
+        Alpha of the prior band. Default is 0.6 (matches plot_fit_constraints).
 
     Returns
     -------
@@ -70,6 +89,33 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
         bin_values = bin_values_raw
         bin_errors = bin_errors_raw
 
+    # Optionally fetch the pre-fit (prior) histogram, same bin-removal/scaling treatment
+    # as the post-fit one above, so the two are directly comparable bin-for-bin.
+    if show_prior:
+        if prior_hist_path is None:
+            if "postFitErrors_TH1D" not in hist_path:
+                raise ValueError(
+                    "show_prior=True but prior_hist_path was not given and hist_path "
+                    "does not contain 'postFitErrors_TH1D', so the pre-fit histogram "
+                    "path can't be derived automatically. Pass prior_hist_path explicitly."
+                )
+            prior_hist_path = hist_path.replace("postFitErrors_TH1D", "preFitErrors_TH1D")
+        prior_hist = file[prior_hist_path]
+
+        if remove_last_bin:
+            prior_values_raw = prior_hist.values()[:-1]
+            prior_errors_raw = prior_hist.errors()[:-1]
+        else:
+            prior_values_raw = prior_hist.values()
+            prior_errors_raw = prior_hist.errors()
+
+        if is_cross_section:
+            prior_values = prior_values_raw * scaling_power_of_10
+            prior_errors = prior_errors_raw * scaling_power_of_10
+        else:
+            prior_values = prior_values_raw
+            prior_errors = prior_errors_raw
+
     # Calculate bin centers from provided bin edges
     bin_edges_array = np.array(bin_edges_labels)
     bin_centers = (bin_edges_array[:-1] + bin_edges_array[1:]) / 2
@@ -78,8 +124,27 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
     # Create the plot
     fig, ax = plt.subplots(figsize=figsize)
 
+    # Default the data-point legend label to match plot_fit_constraints' wording
+    # ('Post-fit value') whenever the prior band is shown, so the two legend entries
+    # are consistent with the knob-pulling plots. Only kicks in when show_prior=True
+    # and the caller didn't already ask for a specific label.
+    if show_prior and label is None:
+        label = 'Post-fit value'
+
+    # Draw the prior band first (zorder=1) so the post-fit points (zorder=3) sit on top
+    prior_bar = None
+    if show_prior:
+        prior_bar = ax.bar(bin_centers,
+                            height=2 * prior_errors,
+                            bottom=prior_values - prior_errors,
+                            width=bin_widths,
+                            color=prior_color,
+                            alpha=prior_alpha,
+                            zorder=1,
+                            label=prior_label)
+
     # Plot using errorbar
-    ax.errorbar(bin_centers,
+    data_points = ax.errorbar(bin_centers,
                 bin_values,
                 xerr=bin_widths / 2,  # Half bin width for symmetric error bars
                 yerr=bin_errors if is_y_errors else None,
@@ -92,6 +157,7 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
                 capthick=1.5,
                 elinewidth=1.75,
                 label=label,
+                zorder=3,
                 linewidth=2)
 
     # Set axis labels
@@ -101,7 +167,10 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
     # Set axis limits
     ax.set_xlim(bin_edges_array[0], bin_edges_array[-1])
     y_min = 0
-    y_max = np.max(bin_values + bin_errors) * 1.6
+    y_max_candidates = [np.max(bin_values + bin_errors)]
+    if show_prior:
+        y_max_candidates.append(np.max(prior_values + prior_errors))
+    y_max = np.max(y_max_candidates) * 1.6
     ax.set_ylim(y_min, y_max)
 
     if hline_nuisance:
@@ -138,14 +207,36 @@ def plot_scatter(filename, is_cross_section, hist_path, xlabel, ylabel, bin_edge
                 verticalalignment='bottom', horizontalalignment='right')
 
     # Force font family on tick labels
-    for label in ax.get_xticklabels() + ax.get_yticklabels():
-        label.set_fontfamily('sans-serif')
+    # (named label_tick, not label, so it doesn't shadow the "label" parameter --
+    # we still need the original legend-label string below)
+    for label_tick in ax.get_xticklabels() + ax.get_yticklabels():
+        label_tick.set_fontfamily('sans-serif')
 
     ax.yaxis.get_offset_text().set_fontfamily('sans-serif')
     ax.xaxis.get_offset_text().set_fontfamily('sans-serif')
 
     # Grid
     ax.grid(True, alpha=0.3)
+
+    # Legend: only draw one if there's something to label (prior band and/or data points)
+    legend_handles, legend_labels = [], []
+    if show_prior and prior_bar is not None and prior_label:
+        legend_handles.append(prior_bar)
+        legend_labels.append(prior_label)
+    if label:
+        legend_handles.append(data_points)
+        legend_labels.append(label)
+    if legend_handles:
+        # Same legend styling as plot_fit_constraints (fontsize, framealpha, two
+        # columns) so the two plot types read consistently; placed inside the
+        # axes' upper-right corner rather than plot_fit_constraints' above-the-frame
+        # bbox_to_anchor, since that spot is already used here by the pot/title text.
+        ax.legend(legend_handles, legend_labels,
+                  loc='upper right',
+                  fontsize=10,
+                  framealpha=0.9,
+                  ncol=2,
+                  columnspacing=1)
 
     # Return the plot AND the raw (unscaled) values for reuse
     return fig, ax, bin_values_raw, bin_errors_raw

@@ -6,9 +6,13 @@ printDialSetsSummary: true
 nominalStepSize: 0.1
 useOnlyOneParameterPerEvent: true
 
-# Gaussian prior (flat 40% uncertainty per bin, diagonal -- see
-# GenerateBackgroundFitQ2Cov.C), matching Howard et al.'s first and simplest
-# choice for their "BackgroundFit" template parameters on nu-CC-other events.
+# Gaussian prior (bin-by-bin fractional uncertainty per true_generator_q2 bin,
+# diagonal -- see GenerateBackgroundFitQ2Cov.C), derived from a GENIE-vs-NuWro
+# CC-other/Q2 comparison (Notebooks/dpT/BackgroungTemplates.ipynb, Step 5)
+# rather than borrowed from Howard et al.'s flat 40% choice. Widths run from
+# 42% at the lowest Q2 bin down to 1.5% in the middle bins, back up to ~20% at
+# the high end -- non-uniform because GENIE and NuWro genuinely disagree more
+# in some bins than others, not a stand-in for one round number.
 # Unlike the signal template parameters (TemplateParameters/parameterSet_true_dpT.yaml,
 # which have no covariance and float free), these parameters compete on equal
 # footing with the GENIE/Flux/Detector nuisance parameters -- otherwise a

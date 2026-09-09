@@ -8,7 +8,7 @@
 # Only one should be enabled at a time: both target the same categories 4-7,
 # so running both together double-scales the same events.
 # - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_q2.yaml"
-- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_w.yaml"
+#- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_w.yaml"
 
 # GENIE
 - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/GENIE/parameterSet_GENIE.yaml"

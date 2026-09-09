@@ -1,0 +1,112 @@
+- name: "ICARUS_NuMI_1muNp0pi_selection"
+  isEnabled: true
+  selectedDataEntry: "FakeDataFromMC" # Irrelevant naming, please ignore
+  showSelectedEventCount: true
+
+  mc:
+    tree: "events/full/selected"
+    filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+    nominalWeightFormula: "(ppfx_cv_weight)"
+  data:
+    # data from the same MC, with RES (true_interaction_mode==1) events
+    # reweighted as a function of true_dpT_lp_genie instead of by a flat
+    # factor -- the RES-suppression analog of dataSetListConfig_FakeData_QE_dpTShape.yaml.
+    # The per-bin weights are the ratio of the GiBUU and GENIE true delta_pT
+    # shapes for RES-only events (each area-normalized over the same 7 bins
+    # used by the true_dpT_lp_genie template dial set --
+    # binnings/binning_true_dpT.txt), so this reweight changes the RES SHAPE
+    # in delta_pT while preserving its total integral -- unlike the flat 0.8
+    # scale in dataSetListConfig_FakeData_InteractionMode.yaml.
+    #
+    # Motivated by Smedley et al. (CC>1p0pi multi-proton technote, "A Model
+    # Comparisons"): "GiBUU suggests a significantly more RES-dominated
+    # signal than any of the other event generators, likely owing to its
+    # unique treatment of FSI." GiBUU was checked (not assumed) to also
+    # differ from GENIE in RES delta_pT SHAPE, not just overall RES rate --
+    # see the per-bin ratio below, which ranges 0.63-1.14, i.e. real
+    # structure across the range rather than a flat normalization offset.
+    #
+    # Derivation (see Notebooks/src/plot_GENIE_NUISANCE.py's 'RES_dpTShape'
+    # reweight_mode for the full derivation notes):
+    #   GiBUU RES shape: fhc_Nu14 + fhc_Nu-14 nuisflat samples
+    #     (InputWeight*fScaleFactor-weighted per species), RES selected via
+    #     abs(Mode) in {11,12,13} (NEUT/NUISANCE convention, signed by
+    #     nu/nubar) -- 6,512,643 weighted RES events out of 45,821,245 total
+    #     rows across 1,871 files.
+    #   GENIE RES shape: events/full/signal tree, true_interaction_mode==1,
+    #     ppfx_cv_weight-weighted -- 16,466 weighted events (raw per-bin
+    #     counts: 1492, 3062, 3095, 2581, 2251, 2354, 1631, i.e. ~2.0-2.6%
+    #     relative statistical precision per bin).
+    #   Both shapes area-normalized (fraction of total per bin) on the same
+    #   7-bin true_dpT_lp_genie binning; weight_i = GiBUU_shape_i / GENIE_shape_i.
+    # Bin edges (MeV/c) and weights:
+    #   [0,135)     -> 1.1146
+    #   [135,246)   -> 1.0263
+    #   [246,352)   -> 1.0555
+    #   [352,465)   -> 1.1365
+    #   [465,598)   -> 1.0896
+    #   [598,800)   -> 0.8452
+    #   [800,inf)   -> 0.6291
+    - name: "FakeDataFromMC"
+      tree: "events/full/selected"
+      nominalWeightFormula: "(ppfx_cv_weight) * (true_interaction_mode == 1 ? (true_dpT_lp_genie<135 ? 1.1146 : true_dpT_lp_genie<246 ? 1.0263 : true_dpT_lp_genie<352 ? 1.0555 : true_dpT_lp_genie<465 ? 1.1365 : true_dpT_lp_genie<598 ? 1.0896 : true_dpT_lp_genie<800 ? 0.8452 : 0.6291) : 1.0)"
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+
+- name: "ICARUS_NuMI_1muNp0pi_sideband"
+  isEnabled: true
+  selectedDataEntry: "FakeDataFromMC_sideband"
+  showSelectedEventCount: true
+
+  mc:
+    tree: "events/full/sideband"
+    filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+    nominalWeightFormula: "(ppfx_cv_weight)"
+  data:
+    # data from the same MC -- same RES true_dpT-shape reweight as above,
+    # applied to the sideband tree. Unlike the QE study (where QE barely
+    # touches the pi+/- sideband), RES is the dominant mode in this
+    # sideband, so this reweight is expected to move the sideband
+    # noticeably -- that is the point: RES's shape mismodeling now shows up
+    # where RES actually lives, not just in the signal selection.
+    - name: "FakeDataFromMC_sideband"
+      tree: "events/full/sideband"
+      nominalWeightFormula: "(ppfx_cv_weight) * (true_interaction_mode == 1 ? (true_dpT_lp_genie<135 ? 1.1146 : true_dpT_lp_genie<246 ? 1.0263 : true_dpT_lp_genie<352 ? 1.0555 : true_dpT_lp_genie<465 ? 1.1365 : true_dpT_lp_genie<598 ? 1.0896 : true_dpT_lp_genie<800 ? 0.8452 : 0.6291) : 1.0)"
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+
+- name: "ICARUS_NuMI_1muNp0pi_cosmics"
+  isEnabled: true
+  selectedDataEntry: "FakeDataFromMC_cosmics"
+  showSelectedEventCount: true
+
+  mc:
+    tree: "events/offbeam/selected"
+    filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+    nominalWeightFormula: "(1.0)"
+  data:
+    - name: "FakeDataFromMC_cosmics"
+      tree: "events/offbeam/selected"
+      nominalWeightFormula: "(1.0)"
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+
+- name: "ICARUS_NuMI_1muNp0pi_cosmics_sideband"
+  isEnabled: true
+  selectedDataEntry: "FakeDataFromMC_cosmics_sideband"
+  showSelectedEventCount: true
+
+  mc:
+    tree: "events/offbeam/sideband"
+    filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"
+    nominalWeightFormula: "(1.0)"
+  data:
+    - name: "FakeDataFromMC_cosmics_sideband"
+      tree: "events/offbeam/sideband"
+      nominalWeightFormula: "(1.0)"
+      filePathList:
+      - "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_gundam.root"

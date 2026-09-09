@@ -1,8 +1,14 @@
 # Template
 - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/TemplateParameters/parameterSet_true_dpT.yaml"
 
-# BACKGROUND FIT (true_generator_q2, categories 4-7)
-- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_q2.yaml"
+# BACKGROUND FIT -- swap between these two to compare schemes:
+# true_generator_q2 (flat-40% everywhere, or bin-by-bin GENIE/NuWro widths --
+# see parameterSet_backgroundFit_true_q2.yaml) vs true_generator_w (Howard's
+# own flat 40%/60% low/high-W split -- see parameterSet_backgroundFit_true_w.yaml).
+# Only one should be enabled at a time: both target the same categories 4-7,
+# so running both together double-scales the same events.
+# - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_q2.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_w.yaml"
 
 # GENIE
 - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/GENIE/parameterSet_GENIE.yaml"

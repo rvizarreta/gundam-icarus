@@ -31,7 +31,7 @@ def _read_nuisflat_dir(file_dir, generator_name, branches, signal_expr,
     for f_path in files:
         with uproot.open(f_path) as f:
             read_branches = list(branches)
-            if reweight_mode in ('QE_0p8', 'RES_0p8', 'MEC_0p8', 'QE_dpTShape', 'QE_ProtonPShape') and 'Mode' not in read_branches:
+            if reweight_mode in ('QE_0p8', 'RES_0p8', 'MEC_0p8', 'QE_dpTShape', 'QE_ProtonPShape', 'RES_dpTShape') and 'Mode' not in read_branches:
                 read_branches.append('Mode')
             elif reweight_mode == 'Q2_suppression' and 'Q2_true' not in read_branches:
                 read_branches.append('Q2_true')
@@ -163,10 +163,57 @@ def _read_nuisflat_dir(file_dir, generator_name, branches, signal_expr,
         bin_idx = np.clip(np.digitize(dpt_vals, dpt_edges_gev) - 1, 0, len(dpt_weights) - 1)
         qe_protonp_weight = np.where(np.abs(df_all['Mode']) == 1, dpt_weights[bin_idx], 1.0)
         df_all['FinalWeight'] = df_all['FinalWeight'] * qe_protonp_weight
+    elif reweight_mode == 'RES_dpTShape':
+        # RES-only true delta_pT SHAPE reweight (not a flat scale): ratio of
+        # the GiBUU and GENIE true delta_pT shapes for RES (abs(Mode) in
+        # {11,12,13}) events, each area-normalized in the true_dpT_lp_genie
+        # binning used by the template parameters
+        # (binnings/binning_true_dpT.txt, MeV/c):
+        #   [0, 135, 246, 352, 465, 598, 800, inf]
+        # Motivated by Smedley et al. (CC>1p0pi multi-proton technote, "A
+        # Model Comparisons"): "GiBUU suggests a significantly more
+        # RES-dominated signal than any of the other event generators,
+        # likely owing to its unique treatment of FSI." (Fig. 33, relative
+        # interaction-mode rates per generator). GiBUU shape built from the
+        # fhc_Nu14 + fhc_Nu-14 nuisflat samples (InputWeight*fScaleFactor
+        # weighted per species, combining numu/numubar statistics via
+        # abs(Mode) -- same convention as QE_dpTShape/QE_ProtonPShape).
+        # GENIE shape from the true_interaction_mode==1 (RES) subset of the
+        # GUNDAM input's events/full/signal tree, weighted by
+        # ppfx_cv_weight. This ratio-of-normalized-shapes construction
+        # preserves the total RES integral by construction, exactly as
+        # QE_dpTShape does for QE. See
+        # Configs_DataSetList/dataSetListConfig_FakeData_RES_dpTShape.yaml,
+        # which applies the identical per-bin weights at reco level to the
+        # fake data itself -- this reweight is what the fit must recover.
+        #
+        # Weights computed once (not derived on the fly here), from:
+        #   GiBUU RES sample: 6,512,643 weighted signal-mode events (fhc_Nu14
+        #     + fhc_Nu-14, |Mode| in {11,12,13}, out of 45,821,245 total rows
+        #     across 1,871 nuisflat files)
+        #   GENIE RES sample: 16,466 weighted events from events/full/signal,
+        #     true_interaction_mode==1 (raw per-bin counts: 1492, 3062, 3095,
+        #     2581, 2251, 2354, 1631 -- ~2.0-2.6% relative statistical
+        #     precision per bin)
+        # Bin edges (MeV/c) and weights (GiBUU_shape_i / GENIE_shape_i):
+        #   [0,135)     -> 1.1146
+        #   [135,246)   -> 1.0263
+        #   [246,352)   -> 1.0555
+        #   [352,465)   -> 1.1365
+        #   [465,598)   -> 1.0896
+        #   [598,800)   -> 0.8452
+        #   [800,inf)   -> 0.6291
+        dpt_edges_gev = np.array([0.0, 0.135, 0.246, 0.352, 0.465, 0.598, 0.800, np.inf])
+        dpt_weights = np.array([1.1146, 1.0263, 1.0555, 1.1365, 1.0896, 0.8452, 0.6291])
+        dpt_vals = df_all[nuisance_var].to_numpy(dtype=float)
+        bin_idx = np.clip(np.digitize(dpt_vals, dpt_edges_gev) - 1, 0, len(dpt_weights) - 1)
+        res_shape_weight = np.where(df_all['Mode'].abs().isin([11, 12, 13]), dpt_weights[bin_idx], 1.0)
+        df_all['FinalWeight'] = df_all['FinalWeight'] * res_shape_weight
     elif reweight_mode is not None:
         raise ValueError(f"Unknown reweight_mode: '{reweight_mode}'. "
                          f"Supported values: 'QE_0p8', 'RES_0p8', 'MEC_0p8', "
-                         f"'Q2_suppression', 'QE_dpTShape', 'QE_ProtonPShape', None.")
+                         f"'Q2_suppression', 'QE_dpTShape', 'QE_ProtonPShape', "
+                         f"'RES_dpTShape', None.")
 
     df_sel = df_all.query(signal_expr)[[nuisance_var, 'FinalWeight']].copy()
     return df_sel, flux_integral, len(files)
@@ -509,7 +556,7 @@ def overlay_genie_nuisance_xsec(fig, ax,
     extracted_xsec, extracted_xsec_errors : np.ndarray, optional
         Extracted cross-section values and 1-sigma errors per coarse bin.
         If both provided, χ²/ndof is computed and added to the label.
-    reweight_mode : {'QE_0p8', 'RES_0p8', 'MEC_0p8', 'Q2_suppression', 'QE_dpTShape', None}
+    reweight_mode : {'QE_0p8', 'RES_0p8', 'MEC_0p8', 'Q2_suppression', 'QE_dpTShape', 'RES_dpTShape', None}
         Optional truth-level reweight. 'QE_0p8'/'RES_0p8'/'MEC_0p8' scale by
         GENIE Mode. 'Q2_suppression' applies the same Q2-dependent
         suppression as the GUNDAM FakeData_Q2 dataset config (see

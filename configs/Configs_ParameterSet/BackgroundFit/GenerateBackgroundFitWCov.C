@@ -2,47 +2,55 @@
 // parameter set (parameterSet_backgroundFit_true_w.yaml). Modeled directly on
 // GenerateBackgroundFitQ2Cov.C in this same folder.
 //
-// Unlike that Q2 version, this reproduces Howard et al. (ICARUS NuMI CC-mesonless
-// technote)'s own adopted BackgroundFit scheme as-is: of the three options he
-// tested (flat 40%, flat 40/60% split by low/high-W, bin-by-bin from a GENIE/NuWro
-// ratio), he kept flat 40% uncertainty on low-W and 60% on high-W. This is that
-// same 2-parameter split, just built on our own true_generator_w branch rather
-// than his.
-//
-// true_generator_w did not exist as a usable branch until now: the framework's
-// existing true_W (vars::W()) is NaN for 61-69% of background (categories 4-7)
-// events, because it depends on selectors::leading_muon() succeeding, which fails
-// for true background/pion-production events with no true muon in the final
-// state. true_generator_w reads obj.w directly (a generator-truth field,
-// independent of any downstream particle-loop/muon-matching step), confirmed
-// empirically to have <0.15% NaN fraction in every true_category, including
-// categories 4-7 specifically (see 1muNp0pi_Nge1_uncontained.root,
-// events/nominal/selected: true_generator_w NaN frac 0.0001 in categories 4-7,
-// vs 0.6712 for true_W in the same sample). It is NOT numerically the same
-// quantity as true_W (mean diff +0.46 GeV, correlation 0.38 on the overlap in
-// background) -- true_W is restricted to visible final-state energy only, while
-// true_generator_w is the generator's own truth hadronic invariant mass -- so
-// this is a distinct, not interchangeable, W definition.
-//
-// Deliberately uncorrelated (diagonal), same as the Q2 version and same as all
-// three of Howard's schemes.
+// CORRECTED from an earlier version of this file that used only 2 aggregate
+// parameters (one flat scale factor for all of low-W, one for all of high-W).
+// That was wrong: Howard et al.'s actual BackgroundFit scheme keeps the full
+// Q2 granularity within each W region --  "Template parameters for CC-other
+// events binned in true W and Q-squared... W: below or above 1.4 GeV; Q2:
+// uniform binning between 0 and 0.8 GeV^2, bin size of 0.1 GeV^2" -- i.e. 2
+// W-bins x 8 Q2-bins = 16 independent parameters. Only the *prior width*
+// (40% vs 60%) is flat across each W region, not the parameter itself. This
+// matches a 16-parameter BackgroundFit/#0..#15 postfit plot confirmed
+// directly against Howard's technote.
 //
 // NBins MUST match the number of bins in
-// ../../binnings/binning_true_generator_w.txt (currently 2: below and above
-// 1.4 GeV) -- ParameterSet::readParameterDefinitionFile() sets the parameter
-// count from this covariance matrix's dimension once it's present, so a
-// mismatch against the binning file's bin count is a hard error.
+// ../../binnings/binning_true_generator_w.txt (currently 16: 2 W-regions
+// [0,1.4) and [1.4,inf) GeV, each split into 8 true_generator_q2 bins of
+// 0.1 GeV^2 from 0 to 0.8 -- ParameterSet::readParameterDefinitionFile()
+// sets the parameter count from this covariance matrix's dimension once
+// it's present, so a mismatch against the binning file's bin count is a
+// hard error.
+//
+// Row order MUST match binning_true_generator_w.txt's row order exactly:
+// bins 0-7 are low-W (Q2 sub-bins 0-7, in order), bins 8-15 are high-W
+// (same 8 Q2 sub-bins, in order) -- so fracUnc is 8x0.40 followed by 8x0.60,
+// not interleaved.
+//
+// Caveat carried over from the binning file: unlike our own
+// true_generator_q2-only scheme (which has a 9th overflow bin covering
+// Q2 >= 0.8), this 16-bin scheme has NO overflow bin in Q2, matching
+// Howard's own stated binning as read from his technote. Any background
+// event with true_generator_q2 >= 0.8 GeV^2, in either W region, falls
+// outside all 16 bins and is left with NO BackgroundFit systematic applied
+// at all (implicitly untouched, not implicitly scaled by 1) -- this is a
+// real difference from the true_generator_q2-only scheme, not an oversight
+// to silently patch over.
+//
+// Deliberately uncorrelated (diagonal), same as the Q2 version and same as
+// all three of Howard's schemes.
 //
 // Run with: root -l -b -q GenerateBackgroundFitWCov.C
 
 void GenerateBackgroundFitWCov()
 {
-  const int NBins = 2;
+  const int NBins = 16;
 
-  // Howard's own flat 40% (low-W) / 60% (high-W) fractional prior widths.
-  // Same order as binning_true_generator_w.txt: [0.0,1.4) low-W, [1.4,inf) high-W.
-  const double fracUnc[2] = {
-    0.40, 0.60
+  // Howard's own flat 40% (low-W, bins 0-7) / 60% (high-W, bins 8-15)
+  // fractional prior widths -- flat WITHIN each W region, not derived
+  // bin-by-bin the way our true_generator_q2-only scheme's widths are.
+  const double fracUnc[16] = {
+    0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40,
+    0.60, 0.60, 0.60, 0.60, 0.60, 0.60, 0.60, 0.60
   };
 
   std::string outputname = "gundaminput_backgroundfit_true_w.root";
@@ -52,7 +60,7 @@ void GenerateBackgroundFitWCov()
   std::cout << "@@ Prefit error by covariance matrix" << std::endl;
   TMatrixTSym<double> backgroundfit_w_cov(NBins);
   for (int i = 0; i < NBins; i++) {
-    std::cout << "true_generator_w bin " << i << "\t" << fracUnc[i] << std::endl;
+    std::cout << "true_generator_w/q2 bin " << i << "\t" << fracUnc[i] << std::endl;
     backgroundfit_w_cov(i, i) = fracUnc[i] * fracUnc[i];
   }
 

@@ -6,11 +6,19 @@ printDialSetsSummary: true
 nominalStepSize: 0.1
 useOnlyOneParameterPerEvent: true
 
-# Gaussian prior (2 parameters, diagonal -- see GenerateBackgroundFitWCov.C),
-# reproducing Howard et al.'s own adopted BackgroundFit scheme: flat 40%
-# uncertainty on low-W (true_generator_w < 1.4 GeV) background, flat 60% on
-# high-W (>= 1.4 GeV), rather than either our flat-40%-everywhere or our
-# bin-by-bin-in-Q2 schemes (see parameterSet_backgroundFit_true_q2.yaml).
+# Gaussian prior (16 parameters, diagonal -- see GenerateBackgroundFitWCov.C),
+# reproducing Howard et al.'s own adopted BackgroundFit scheme.
+#
+# CORRECTED from an earlier version of this parameter set that used only 2
+# aggregate parameters (one for all of low-W, one for all of high-W). That
+# was a wrong simplification -- Howard's actual scheme is a full 2D binning:
+# "Template parameters for CC-other events binned in true W and Q-squared...
+# W: below or above 1.4 GeV; Q2: uniform binning between 0 and 0.8 GeV^2,
+# bin size of 0.1 GeV^2" -- i.e. 2 W-regions x 8 Q2 bins = 16 independent
+# parameters, confirmed against a 16-parameter BackgroundFit/#0..#15 postfit
+# plot from his technote. Only the *prior width* is flat within each W
+# region (40% low-W, 60% high-W) -- the parameters themselves are not
+# collapsed across Q2.
 #
 # Built on true_generator_w (reads obj.w directly), not the framework's
 # existing true_W (vars::W()) -- true_W is NaN for 61-69% of background
@@ -18,8 +26,14 @@ useOnlyOneParameterPerEvent: true
 # succeeding, which fails whenever there is no true muon in the final state.
 # true_generator_w has <0.15% NaN in every true_category, including 4-7,
 # confirmed against 1muNp0pi_Nge1_uncontained.root. It is a distinct quantity
-# from true_W (not a fixed-offset correction of it), so this is a genuinely
-# different W-based split, not a coverage patch on the old one.
+# from true_W (not a fixed-offset correction of it).
+#
+# Caveat carried from the binning file: there is NO Q2 overflow bin here
+# (unlike parameterSet_backgroundFit_true_q2.yaml's 9th bin covering
+# Q2 >= 0.8) -- any background event with true_generator_q2 >= 0.8 GeV^2
+# falls outside all 16 bins and gets no BackgroundFit systematic applied at
+# all, in either W region. This matches Howard's own stated binning as read
+# from his technote, not an oversight introduced here.
 #
 # Same competing-on-equal-footing rationale as parameterSet_backgroundFit_true_q2.yaml:
 # these parameters are Gaussian-constrained alongside the GENIE/Flux/Detector
@@ -35,6 +49,11 @@ dialSetDefinitions:
   - name: BackgroundFit true_generator_w dialSetDefinitions
     # 'applyOnDataSets' can take a list or a wildcard
     applyOnDataSets: ["*"]
+    # 2D binning file: variables listed twice each (true_generator_w twice,
+    # true_generator_q2 twice) so GUNDAM's BinSet parser (readTxtBinningDefinition
+    # in BinSet.cpp) reads each pair as a [lo,hi) range rather than a single
+    # point value -- confirmed directly against that parser's source, not
+    # assumed from the 1D file's pattern.
     parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_true_generator_w.txt"
     # Same background categories targeted by parameterSet_backgroundFit_true_q2.yaml
     # and the Q2/Pion fake-data reweights: categories 0,1,2 are the signal

@@ -295,7 +295,7 @@ def plot_gundam_stacked(
                                         alpha=1,
                                         hatch='xxx',
                                         linewidth=0.6)
-            syst_label = 'Stats & Interaction Uncertainty'
+            syst_label = 'All Systematics'
             continue
         elif 'Prediction' in label:
             new_handles.append(handle)

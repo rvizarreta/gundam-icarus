@@ -1,0 +1,24 @@
+name: G4 Piplus Fate (exiting)
+isEnabled: true
+
+printDialSetsSummary: true
+
+allowPca: true
+useEigenDecompInFit: true
+allowEigenDecompWithBounds: true
+
+covarianceMatrixFilePath: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piplus_exiting.root"
+covarianceMatrixTMatrixD: "G4Piplus_exiting/G4Piplus_exiting_covariance"
+
+parameterLimits:
+  minValue: 0
+  maxValue: 30
+
+useOnlyOneParameterPerEvent: true
+
+dialSetDefinitions:
+  - name: G4 Piplus Fate (exiting) dialSetDefinitions
+    applyOnDataSets: ["*"]
+    parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT_exiting.txt"
+    printDialsSummary: true
+    applyCondition: "([is_nu]==1) && ([reco_leading_muon_containment]==0)"

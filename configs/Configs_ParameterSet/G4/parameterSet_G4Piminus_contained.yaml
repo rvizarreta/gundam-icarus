@@ -1,0 +1,24 @@
+name: G4 Piminus Fate (contained)
+isEnabled: true
+
+printDialSetsSummary: true
+
+allowPca: true
+useEigenDecompInFit: true
+allowEigenDecompWithBounds: true
+
+covarianceMatrixFilePath: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus_contained.root"
+covarianceMatrixTMatrixD: "G4Piminus_contained/G4Piminus_contained_covariance"
+
+parameterLimits:
+  minValue: 0
+  maxValue: 30
+
+useOnlyOneParameterPerEvent: true
+
+dialSetDefinitions:
+  - name: G4 Piminus Fate (contained) dialSetDefinitions
+    applyOnDataSets: ["*"]
+    parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT_contained.txt"
+    printDialsSummary: true
+    applyCondition: "([is_nu]==1) && ([reco_leading_muon_containment]==1)"

@@ -1,0 +1,47 @@
+name: BackgroundFit true_generator_w
+isEnabled: true
+
+printDialSetsSummary: true
+
+nominalStepSize: 0.1
+useOnlyOneParameterPerEvent: true
+
+# Gaussian prior (2 parameters, diagonal -- see GenerateBackgroundFitWCov.C),
+# reproducing Howard et al.'s own adopted BackgroundFit scheme: flat 40%
+# uncertainty on low-W (true_generator_w < 1.4 GeV) background, flat 60% on
+# high-W (>= 1.4 GeV), rather than either our flat-40%-everywhere or our
+# bin-by-bin-in-Q2 schemes (see parameterSet_backgroundFit_true_q2.yaml).
+#
+# Built on true_generator_w (reads obj.w directly), not the framework's
+# existing true_W (vars::W()) -- true_W is NaN for 61-69% of background
+# (categories 4-7) events because it depends on selectors::leading_muon()
+# succeeding, which fails whenever there is no true muon in the final state.
+# true_generator_w has <0.15% NaN in every true_category, including 4-7,
+# confirmed against 1muNp0pi_Nge1_uncontained.root. It is a distinct quantity
+# from true_W (not a fixed-offset correction of it), so this is a genuinely
+# different W-based split, not a coverage patch on the old one.
+#
+# Same competing-on-equal-footing rationale as parameterSet_backgroundFit_true_q2.yaml:
+# these parameters are Gaussian-constrained alongside the GENIE/Flux/Detector
+# nuisance parameters, not free-floating.
+#
+# No parameterPriorTVectorD/parameterNameTObjArray/bounds vectors are given --
+# ParameterSet::defineParameters() defaults an omitted prior to 1.0 per
+# parameter, and bounds fall back to the top-level parameterLimits below.
+covarianceMatrixFilePath: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/gundaminput_backgroundfit_true_w.root"
+covarianceMatrixTMatrixD: backgroundfit_w_cov
+
+dialSetDefinitions:
+  - name: BackgroundFit true_generator_w dialSetDefinitions
+    # 'applyOnDataSets' can take a list or a wildcard
+    applyOnDataSets: ["*"]
+    parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_true_generator_w.txt"
+    # Same background categories targeted by parameterSet_backgroundFit_true_q2.yaml
+    # and the Q2/Pion fake-data reweights: categories 0,1,2 are the signal
+    # topologies and are explicitly excluded.
+    applyCondition: "([category]==4) || ([category]==5) || ([category]==6) || ([category]==7)"
+    printDialsSummary: true
+
+parameterLimits:
+  minValue: 0.
+  maxValue: 3.0

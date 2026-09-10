@@ -1,0 +1,20 @@
+{
+  "MainTree": {
+    "FilePath": "/exp/icarus/data/users/rvizarr/medulla/icarus_numi_numu_mc_onbeam_offbeam_syst_ppfx_G4.root",
+    "TreeKey": "events/full/selected"
+  },
+  "DialTree": {
+    "TreeKey": "events/full/selected_multisimTree"
+  },
+  "BinningFile": "/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_dpT_contained.txt",
+
+  "JobName": "G4Proton_contained",
+  "DialName": "reinteractions_proton_Geant4",
+  "NUniv": 1000,
+
+  "SelectionCutExpr": "reco_leading_muon_containment == 1",
+  "SampleSelectionExpr": "",
+  "SampleWeightExpr": "ppfx_cv_weight",
+
+  "OutputFileName": "output_CovMat_G4Proton_contained.root"
+}

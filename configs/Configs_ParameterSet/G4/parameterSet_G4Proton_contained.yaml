@@ -1,0 +1,33 @@
+name: G4 Proton Fate (contained)
+isEnabled: true
+
+printDialSetsSummary: true
+
+allowPca: true
+useEigenDecompInFit: true
+allowEigenDecompWithBounds: true
+
+# Covariance matrix produced by calc_geant4_covariance.py from
+# config_G4Proton_contained.json (input: events/full/selected +
+# events/full/selected_multisimTree in
+# icarus_numi_numu_mc_onbeam_offbeam_syst_ppfx_G4.root, dial
+# 'reinteractions_proton_Geant4', NUniv=1000, binned in reco_dpT_lp using
+# binning_reco_dpT_contained.txt). Kiyoung's fractional multisim-universe
+# covariance convention (see calc_geant4_covariance.py docstring), not yet
+# cross-checked against what this ParameterSet mechanism expects -- flag
+# back if GUNDAM wants the non-fractional Eq. 12 covariance instead.
+covarianceMatrixFilePath: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton_contained.root"
+covarianceMatrixTMatrixD: "G4Proton_contained/G4Proton_contained_covariance"
+
+parameterLimits:
+  minValue: 0
+  maxValue: 30
+
+useOnlyOneParameterPerEvent: true
+
+dialSetDefinitions:
+  - name: G4 Proton Fate (contained) dialSetDefinitions
+    applyOnDataSets: ["*"]
+    parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT_contained.txt"
+    printDialsSummary: true
+    applyCondition: "([is_nu]==1) && ([reco_leading_muon_containment]==1)"

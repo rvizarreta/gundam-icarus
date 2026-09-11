@@ -1,0 +1,50 @@
+name: BackgroundFit true_generator_w binbybin
+isEnabled: true
+
+printDialSetsSummary: true
+
+nominalStepSize: 0.1
+useOnlyOneParameterPerEvent: true
+
+# Gaussian prior (16 parameters, diagonal -- see GenerateBackgroundFitWBinByBinCov.C),
+# Howard et al.'s THIRD variant: "bin-by-bin uncertainties from Fig. 104," built
+# the way he actually built it -- from the GENIE/NuWro ratio, split by true W
+# (below/above 1.4 GeV), not collapsed to All-W.
+#
+# Same 2D (W, true_generator_q2) binning as parameterSet_backgroundFit_true_w.yaml
+# (2 W-regions x 8 Q2 bins = 16 parameters) -- only the prior WIDTH differs
+# between the two files. This one uses per-bin |R-1| (R = GENIE/NuWro CC-other
+# fraction ratio) instead of a flat 40%/60% split, so it is NOT interchangeable
+# with parameterSet_backgroundFit_true_w.yaml's covariance -- only one of the
+# two should be enabled at a time in parameterSetList_true_dpT.yaml.
+#
+# This is NOT the same file as the earlier (now superseded)
+# parameterSet_backgroundFit_true_q2.yaml, which was also called "bin-by-bin"
+# but varied only with true_generator_q2 and had no W split at all -- that
+# version was built (Notebooks/dpT/BackgroungTemplates.ipynb, Step 5) at a time
+# when true_W was NaN for ~61-67% of our background events, before
+# true_generator_w existed. This file redoes that same derivation keeping the W
+# split Howard's own Fig. 104 has.
+#
+# Built on true_generator_w (reads obj.w directly), same coverage rationale as
+# parameterSet_backgroundFit_true_w.yaml (<0.15% NaN in categories 4-7, vs
+# 61-69% for the framework's existing true_W).
+#
+# Caveat carried from the binning file: no Q2 overflow bin (same as
+# parameterSet_backgroundFit_true_w.yaml) -- any background event with
+# true_generator_q2 >= 0.8 GeV^2 gets no BackgroundFit systematic applied at all.
+covarianceMatrixFilePath: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/gundaminput_backgroundfit_w_binbybin.root"
+covarianceMatrixTMatrixD: backgroundfit_w_binbybin_cov
+
+dialSetDefinitions:
+  - name: BackgroundFit true_generator_w binbybin dialSetDefinitions
+    applyOnDataSets: ["*"]
+    # Same 2D binning file as parameterSet_backgroundFit_true_w.yaml -- only the
+    # covariance (prior widths) differs between the two variants.
+    parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_true_generator_w.txt"
+    applyCondition: "([category]==4) || ([category]==5) || ([category]==6) || ([category]==7)"
+    printDialsSummary: true
+
+parameterLimits:
+  minValue: 0.
+  maxValue: 3.0

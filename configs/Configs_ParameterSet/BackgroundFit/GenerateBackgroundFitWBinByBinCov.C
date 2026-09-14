@@ -3,58 +3,68 @@
 // Fig. 104," built the way he actually built it: from the GENIE/NuWro ratio,
 // split by true W (below/above 1.4 GeV), not just Q2.
 //
-// This replaces an earlier, WRONG stand-in for this variant
-// (parameterSet_backgroundFit_true_q2.yaml / GenerateBackgroundFitQ2Cov.C), which
-// only varied with true_generator_q2 and had no W-splitting at all. That version
-// was built (Notebooks/dpT/BackgroungTemplates.ipynb) at a time when true_W was
-// NaN for ~61-67% of our own background events -- before true_generator_w
-// existed. This file redoes that same derivation keeping the W split Howard's
-// own Fig. 104 has.
+// This is a corrected re-derivation of a previous version of this same file. The
+// previous version used a CC-other proxy (flagCCINC & !flagCC0pi) and a
+// per-W-region-normalized fraction ratio, and did not reproduce Howard's Fig.
+// 104 shape (it had the low-W and high-W curves backwards relative to his
+// published plot). Both the selection and the ratio construction have been
+// corrected below; see the two bullets marked CORRECTED.
 //
 // Derivation (run against our local GENIE/NuWro NUISANCE flat-tree productions,
 // data/Generators/{GENIE,NuWro}/{fhc_Nu14,fhc_Nu-14}/output_*.nuisflat.root):
 //   - Population: BOTH numu (fhc_Nu14) and numubar (fhc_Nu-14) samples combined,
-//     each event weighted by InputWeight*fScaleFactor -- NOT numu-only. An
-//     earlier pass used numu-only (inherited unexplained from the original
-//     Step-5 notebook, which never justified dropping numubar); checking it
-//     showed numubar is 21.4% (GENIE) / 21.3% (NuWro) of the total weighted
-//     CC-inclusive sample -- too large to drop, and the near-identical
-//     GENIE/NuWro numubar fractions (a cross-check the numu-only version can't
-//     make) confirms this combined version is on solid footing.
-//   - CC-other generator-truth proxy: flagCCINC & !flagCC0pi (same proxy as the
-//     original Step 5 -- approximates detector-level categories 4-7, since no
-//     ICARUS detector simulation or selection exists in these flat trees).
+//     each event weighted by InputWeight*fScaleFactor -- NOT numu-only. numubar
+//     is a non-negligible fraction of the combined weighted sample in both
+//     generators (checked under an earlier version of the selection below), so
+//     it is not dropped.
+//   - [CORRECTED] CC-other generator-truth proxy: abs(Mode) > 3 && abs(Mode) < 30
+//     (NEUT reaction-code convention, as used by NUISANCE), i.e. the CC
+//     resonance-production channel. This is the selection Howard's own Fig. 104
+//     is built from, per Stephen Dolan (via J. Park, private communication,
+//     Sept. 2026) -- not flagCCINC & !flagCC0pi, which was this file's original,
+//     unverified stand-in. Mode must be taken in absolute value: NUISANCE stores
+//     it with the NEUT sign convention, which is negative for antineutrino
+//     (fhc_Nu-14) events; without abs(), the numubar half of the sample would
+//     fail this cut entirely.
 //   - W: the flat trees' own W_nuc_rest branch (MeV), split at 1400 MeV --
 //     matches Howard's true-W cut point and our own true_generator_w binning.
+//     Events are additionally required to have W_nuc_rest > 0 (removes a
+//     negligible number of unphysical/unset entries, <0.001% of the CC-RES
+//     sample), matching the cut Stephen Dolan's plot applies.
 //   - Q2: Q2_true branch (MeV^2, converted to GeV^2), binned in the same 8
 //     bins of 0.1 GeV^2 from 0 to 0.8 used by binning_true_generator_w.txt.
-//   - Per (W-region, Q2-bin): f = sum(weight, CC-other AND in this Q2 bin) /
-//     sum(weight, CC-inclusive in this W region) -- normalizing by the
-//     W-region's own CC-inclusive weighted count (not the global one), so
-//     each W region is its own population, mirroring Fig. 104's three
-//     separately-normalized curves.
-//   - R = f_NuWro / f_GENIE; width = |R - 1|.
+//   - [CORRECTED] Per (W-region, Q2-bin): N_GENIE,i and N_NuWro,i are the raw
+//     weighted CC-RES counts in that bin (no normalization by the W-region's
+//     total population). R_i = N_NuWro,i / N_GENIE,i; width_i = |R_i - 1|.
+//     The previous version instead normalized each generator's per-bin count
+//     by its own W-region total before taking the ratio (f = N_i/N_region,
+//     R = f_NuWro/f_GENIE). That normalization is mathematically equivalent to
+//     this raw ratio times an extra constant factor per W-region equal to
+//     (N_region,GENIE / N_region,NuWro) -- i.e. it folds the two generators'
+//     disagreement on the OVERALL CC-inclusive rate into what is supposed to be
+//     a bin-by-bin CC-other shape uncertainty. Since the nuisance parameter
+//     this prior constrains scales the CC-other background prediction directly
+//     (not a fraction of CC-inclusive), the raw ratio is the correct quantity,
+//     and it is also what reproduces Stephen Dolan's numbers directly (checked
+//     against his "All W" curve to ~5% bin-by-bin).
 //
-// File coverage: GENIE fhc_Nu14 10/10, GENIE fhc_Nu-14 10/10 (an earlier
-// attempt hit unreadable files 1,2,6 before the user's re-download finished --
-// now clean), NuWro fhc_Nu14 10/10, NuWro fhc_Nu-14 9/10 (index 5 was never
-// produced, not a download gap -- confirmed absent both before and after the
-// GENIE re-download).
+// File coverage: GENIE fhc_Nu14 10/10, GENIE fhc_Nu-14 10/10, NuWro fhc_Nu14
+// 10/10, NuWro fhc_Nu-14 9/10 (index 5 was never produced, not a download gap).
 //
 // Result (computed once, not derived on the fly here):
-//   low-W  (bins 0-7):  0.427, 0.270, 0.225, 0.186, 0.155, 0.124, 0.089, 0.045
-//   high-W (bins 8-15): 0.613, 0.180, 0.025, 0.037, 0.061, 0.073, 0.082, 0.080
-// Both regions peak sharply at the lowest Q2 bin and fall toward mid-to-high
-// Q2, qualitatively matching the shape of Howard's own Fig. 104 (ratio
-// furthest from 1 at low Q2, converging toward 1 at higher Q2, high-W
-// diverging more than low-W at low Q2) -- unlike the all-W-collapsed attempt
-// at reproducing Fig. 104 in GENIE_NuWro.ipynb, which did not reproduce his
-// published shape at all.
+//   low-W  (bins 0-7):  0.4395, 0.3279, 0.2804, 0.2268, 0.1726, 0.1310, 0.0858, 0.0533
+//   high-W (bins 8-15): 0.0412, 0.2197, 0.3136, 0.3482, 0.3598, 0.3647, 0.3668, 0.3643
+// low-W falls off steadily from the lowest Q2 bin; high-W instead starts small
+// and rises then plateaus -- the opposite low/high shape from the previous,
+// uncorrected version of this file, and now qualitatively consistent with
+// Howard's own Fig. 104 (high-W varies more than low-W away from the lowest Q2
+// bin) and with Stephen Dolan's plot, which this derivation reproduces directly.
 //
 // Same caveats as the original Step 5: this is a generator-truth-level proxy
 // (no detector simulation, approximate category match), not a claim this exact
-// vector is final -- but it is the direct, W-aware, numu+numubar-complete
-// analog of what Howard's technote text describes for this specific variant.
+// vector is final -- but it is the direct, W-aware, numu+numubar-complete,
+// Stephen-Dolan-selection analog of what Howard's technote text describes for
+// this specific variant.
 //
 // NBins MUST match ../../binnings/binning_true_generator_w.txt (16: 2 W-regions
 // [0,1.4) and [1.4,inf) GeV, each split into 8 true_generator_q2 bins of 0.1
@@ -74,13 +84,15 @@ void GenerateBackgroundFitWBinByBinCov()
 {
   const int NBins = 16;
 
-  // GENIE-vs-NuWro |R-1|, numu+numubar combined (InputWeight*fScaleFactor
-  // weighted), split by true W (low-W bins 0-7, high-W bins 8-15) -- see
-  // derivation above. Replaces both the flat 40%/60% of GenerateBackgroundFitWCov.C
-  // and an earlier numu-only version of this same file.
+  // GENIE-vs-NuWro |R-1| (R = N_NuWro/N_GENIE, raw per-bin counts, no
+  // per-region normalization), numu+numubar combined (InputWeight*fScaleFactor
+  // weighted, abs(Mode) CC-RES selection), split by true W (low-W bins 0-7,
+  // high-W bins 8-15) -- see derivation above. Replaces both the flat 40%/60%
+  // of GenerateBackgroundFitWCov.C and the earlier, uncorrected version of this
+  // same file.
   const double fracUnc[16] = {
-    0.4274, 0.2699, 0.2245, 0.1861, 0.1548, 0.1238, 0.0888, 0.0450,
-    0.6134, 0.1804, 0.0246, 0.0365, 0.0607, 0.0729, 0.0819, 0.0799
+    0.4395, 0.3279, 0.2804, 0.2268, 0.1726, 0.1310, 0.0858, 0.0533,
+    0.0412, 0.2197, 0.3136, 0.3482, 0.3598, 0.3647, 0.3668, 0.3643
   };
 
   std::string outputname = "gundaminput_backgroundfit_w_binbybin.root";

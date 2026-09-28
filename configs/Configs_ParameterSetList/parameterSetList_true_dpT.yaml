@@ -16,7 +16,7 @@
 # variants do.
 # - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_q2.yaml"
 # - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_w.yaml"
-#- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_w_binbybin.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_w_binbybin.yaml"
 
 # GENIE
 - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/GENIE/parameterSet_GENIE.yaml"

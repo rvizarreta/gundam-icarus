@@ -114,6 +114,42 @@ def _extract_labels(hist, n_params):
     return labels
 
 
+def _extract_raw_labels(hist, n_params):
+    """
+    Return the RAW (un-prettified) per-parameter axis labels exactly as
+    GUNDAM wrote them, e.g.
+        'Cross section Systematics/#4_GENIEReWeight_SBN_v1_multisigma_RPA_CCQE'
+        'G4 Proton Fate (contained)/#0_eigen'
+
+    Unlike _extract_labels, nothing is stripped or remapped here -- this is
+    only used by the optional group_order reordering below, to recover
+    which ParameterSet each parameter in the COMBINED matrix belongs to.
+    """
+    try:
+        axis = hist.axis("x")
+        if hasattr(axis, "labels"):
+            return list(axis.labels())
+        raw = []
+        for i in range(1, n_params + 1):
+            try:
+                raw.append(axis.label(i))
+            except Exception:
+                raw.append(f"Param {i}")
+        return raw
+    except Exception as e:
+        print(f"Could not extract raw labels: {e}")
+        return [f"Param {i + 1}" for i in range(n_params)]
+
+
+def _group_prefix(raw_label):
+    """'Cross section Systematics/#4_...' -> 'Cross section Systematics'.
+
+    A label with no '/' (as in the per-group errors/<Group>/matrices/...
+    histograms) is returned unchanged.
+    """
+    return raw_label.split("/", 1)[0] if "/" in raw_label else raw_label
+
+
 def _title_color(title_line1):
     """Replicate the title colour logic from plot_fit_constraints."""
     if title_line1 is None:
@@ -154,6 +190,7 @@ def plot_both_matrices(
     label_name=None,
     annotate=False,
     annotate_threshold=0.3,
+    group_order=None,
 ):
     """
     Plot the covariance and correlation matrices stacked vertically.
@@ -186,6 +223,20 @@ def plot_both_matrices(
         exceeds annotate_threshold. Recommended only for small submatrices.
     annotate_threshold : float, optional
         Only cells with |rho| >= this value get a text annotation.
+    group_order : list of str, optional
+        Only meaningful for the COMBINED (all-ParameterSet) matrix, i.e.
+        cov_path/corr_path pointing at
+        "FitterEngine/postFit/Hesse/hessian/postfit{Covariance,Correlation}_TH2D".
+        Each parameter's owning ParameterSet is recovered from the raw axis
+        label's 'Group/param' prefix. Rows/columns are then permuted so
+        that groups appear in this order, preserving each group's original
+        internal parameter order (e.g. used to move BackgroundFit to the
+        end, after the G4 groups). Purely a reordering -- no boundary
+        lines or group labels are drawn; the plot otherwise looks exactly
+        like the ungrouped matrix. Every group actually present in the
+        matrix must appear in group_order, or a ValueError is raised
+        (rather than silently dropping/misplacing parameters). No-op for
+        a per-group matrix (there is only one group to begin with).
 
     Returns
     -------
@@ -203,6 +254,27 @@ def plot_both_matrices(
     print(f"Full matrix size: {n_full}×{n_full}")
 
     labels_full = _extract_labels(cov_hist, n_full)
+
+    # ── Optional reordering by ParameterSet group (no visual grouping,
+    #    just a permutation of rows/columns) ────────────────────────────────
+    if group_order is not None:
+        raw_labels_full = _extract_raw_labels(cov_hist, n_full)
+        group_full = [_group_prefix(rl) for rl in raw_labels_full]
+        order_index = {name: i for i, name in enumerate(group_order)}
+        present = set(group_full)
+        missing = sorted(present - set(group_order))
+        if missing:
+            raise ValueError(
+                f"group_order does not list every ParameterSet group present "
+                f"in this matrix. Missing: {missing}. Add them to group_order, "
+                f"or pass group_order=None to leave the matrix in its native "
+                f"(GUNDAM parameter-index) order."
+            )
+        # Stable sort: within a group, parameters keep their original order.
+        perm = sorted(range(n_full), key=lambda i: (order_index[group_full[i]], i))
+        cov_full    = cov_full[np.ix_(perm, perm)]
+        corr_full   = corr_full[np.ix_(perm, perm)]
+        labels_full = [labels_full[i] for i in perm]
 
     # ── Apply bin range slice ─────────────────────────────────────────────────
     if bin_range is not None:

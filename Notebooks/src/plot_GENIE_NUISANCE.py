@@ -25,6 +25,15 @@ def _read_nuisflat_dir(file_dir, generator_name, branches, signal_expr,
     if not files:
         raise FileNotFoundError(f'No files found in {file_dir}')
 
+    # Skip empty (0-byte) files, e.g. from an interrupted copy; n_files below
+    # counts only the files actually read so the normalization stays correct.
+    _empty = [f for f in files if os.path.getsize(f) == 0]
+    if _empty:
+        print(f'WARNING: skipping {len(_empty)} empty file(s) in {file_dir}')
+        files = [f for f in files if os.path.getsize(f) > 0]
+    if not files:
+        raise FileNotFoundError(f'All files in {file_dir} are empty')
+
     df_all = None
     flux_integral = None
 
@@ -667,6 +676,12 @@ def overlay_genie_nuisance_xsec(fig, ax,
         'InputWeight', 'fScaleFactor', 'ELep', 'MLep',
         'ICARUS_1muNp0pi_IsSignal', nuisance_var,
     ]
+    # Also read any ICARUS_* branch used in signal_expr, e.g. the
+    # ICARUS_1muNp0pi_IsSignal_Howard step branch.
+    import re
+    for _name in re.findall(r'ICARUS_[A-Za-z0-9_]+', signal_expr):
+        if _name not in branches:
+            branches.append(_name)
 
     bin_edges   = np.array(bin_edges)
     bin_widths  = np.diff(bin_edges)

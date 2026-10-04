@@ -187,8 +187,20 @@ def plot_fit_constraints(filename, directory_path,
                 transform=ax.get_yaxis_transform(),
                 ha='right', va='center', fontsize=8)
 
-    # Set x-axis limits
-    #ax.set_xlim(-1.25, 1.25)
+    # Set x-axis limits: force symmetric around the group's own nominal
+    # value, rather than relying on matplotlib's plain autoscale (which
+    # only looks symmetric when every plotted value happens to fall exactly
+    # on that nominal by coincidence). The nominal isn't always 1.0 -- e.g.
+    # "G4 ..." categories use a fractional convention centered at 1.0, but
+    # "Multisigma Flux Systematics" is centered at 0.0 (unit-sigma priors).
+    # Read it from the data itself instead of assuming either one.
+    center = np.mean(prefit_values)
+    max_dev = max(
+        np.max(np.abs(prefit_values - center) + prefit_errors),
+        np.max(np.abs(postfit_values - center) + postfit_errors),
+    )
+    half_width = 1.1 * max_dev  # matches matplotlib's default 5% margin
+    ax.set_xlim(center - half_width, center + half_width)
 
     # Set tick parameters
     ax.tick_params(axis='both', which='major',

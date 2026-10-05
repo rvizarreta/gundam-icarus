@@ -2,6 +2,11 @@ Asimov closure for the muon-angle contained/exiting simultaneous fit (4 samples:
 contained/exiting selection + contained/exiting sideband). Same chain as
 `RunConfigs/dpT/Asimov_Containment`. Run everything from the `configs` directory.
 
+### LOCAL FOLDERS (run once on your Mac before the scp commands)
+```bash
+mkdir -p "/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/data/Fitter/muon_angle/Asimov_Containment" "/Users/rvizarreta/Library/CloudStorage/GoogleDrive-rvizarreta14@gmail.com/My Drive/🏛 PhD Repository/🚀 Research/🤖 Experiments&Projects/ICARUS/ICARUS_CC0pi_GUNDAM/data/XSection/muon_angle/Asimov_Containment"
+```
+
 ### FITTER
 ```bash
 gundamFitter -c RunConfigs/muon_angle/Asimov_Containment/config_Fitter_FakeData_muon_angle.yaml -o asimov_muon_angle_containment.root -a

@@ -1,0 +1,32 @@
+# Config for gundamCalcXsec: opening-angle real data. Mirrors RunConfigs/dpT/RealData/config_CalcXSec_RealData_dpT.yaml
+# (BarlowLLH). Truth-level (signal tree), so independent of the containment split; kept in this folder
+# so the whole real-data chain lives in one place.
+#outputFolder: "${GUNDAM_CONFIG_DIR}/output/"
+minGundamVersion: 1.9.0
+
+xsecCalcConfig:
+  enableStatThrowInToys: true
+  enableEventMcThrow: true
+
+fitterEngineConfig:
+
+  # minimizer
+  minimizerConfig: "${GUNDAM_CONFIG_DIR}/Configs_Minimizer/default_minimizer.yaml"
+
+  # likelihoodInterface
+  likelihoodInterfaceConfig:
+
+    # jointProbability
+    jointProbabilityConfig:
+      #type: "PoissonLLH"
+      type: "BarlowLLH"
+
+    # dataSetManager
+    propagatorConfig:
+      parametersManagerConfig:
+        parameterSetList: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSetList/parameterSetList_true_opening_angle.yaml"
+      fitSampleSetConfig: "${GUNDAM_CONFIG_DIR}/Configs_FitSampleSet/fitSamples_true_opening_angle.yaml"
+
+    dataSetList: "${GUNDAM_CONFIG_DIR}/Configs_DataSetList/dataSetListConfig_True.yaml"
+      #plotGeneratorConfig: "${GUNDAM_CONFIG_DIR}/Configs_PlotGenerator/plotConfigs_TrueDeltaPT.yaml"
+

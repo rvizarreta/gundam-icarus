@@ -1,0 +1,20 @@
+fitSampleList:
+  - name: "True_dalphaT_muonP_XS"
+    isEnabled: true
+    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_true_dalphaT_deg_muonP.txt"
+
+    selectionCuts: ""
+
+    dataSets: ["ICARUS_NuMI_1muNp0pi_signal"]
+    parameterSetName: "Template Parameter true_dalphaT_deg_muonP"
+    yAxis: "#frac{d^{2} #sigma}{d #delta #alpha_{T} d p_{#mu}} #frac{cm^{2}}{deg (GeV/c) Ar}"
+    normaliseParameterList:
+      - name: "Constant flux"
+        isEnabled: true
+
+        meanValue: 5.191500e+11 # (numu+numubar)/cm², same value as fitSamples_true_dpT.yaml (observable independent)
+        stdDev: 1.436e+10     # 12.59% uncertainty
+
+      - name: "Number of targets"
+        meanValue: 4.721444e+30
+        stdDev: 9.4281120e+27

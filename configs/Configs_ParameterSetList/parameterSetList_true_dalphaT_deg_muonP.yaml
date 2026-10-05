@@ -1,0 +1,27 @@
+# Template
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/TemplateParameters/parameterSet_true_dalphaT_muonP.yaml"
+
+# BACKGROUND FIT -- same scheme as parameterSetList_true_dpT.yaml (bin-by-bin W/Q2 prior).
+# Built on true_generator_w / true_generator_q2, so it does not depend on the
+# measured observable and is shared with the dpT list. Only ONE of the three
+# background-fit variants may be enabled at a time (see the dpT list for details).
+# - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_q2.yaml"
+# - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_w.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_w_binbybin.yaml"
+
+# GENIE
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/GENIE/parameterSet_GENIE.yaml"
+
+# FLUX
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/Flux/parameterSet_Flux.yaml"
+
+# DETECTOR SYSTEMATICS
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/DetSys/parameterSet_DetSys.yaml"
+
+# GEANT4 hadron reinteraction ("fate") systematics, covariances binned in reco dalphaT
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Proton_dalphaT_contained.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Proton_dalphaT_exiting.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Piplus_dalphaT_contained.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Piplus_dalphaT_exiting.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Piminus_dalphaT_contained.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Piminus_dalphaT_exiting.yaml"

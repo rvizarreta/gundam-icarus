@@ -502,6 +502,96 @@ def _get_or_make_ratio_ax(fig, ax, height_frac=0.28, gap=0.08):
     return rax
 
 
+def _zoom_init(ax, zoom_range, inset_bounds):
+    """
+    One-time setup (cached on `ax`) for the zoom inset: a small axes inside
+    `ax` that shows only `zoom_range` on x. The main axes keeps its normal
+    range and binning.
+
+    Called at the start of the first overlay on `ax`, i.e. while the axes still
+    holds only what plot_scatter drew, so the data points and error bars are
+    copied into the inset here, and the tallest data point (with its error bar)
+    inside the zoom window is recorded to set the inset's y-range. Each later
+    overlay draws its curve into the inset too and raises that maximum.
+    """
+    state = getattr(ax, '_zoom_state', None)
+    if state is not None:
+        return state
+
+    from matplotlib.collections import LineCollection
+    from matplotlib.ticker import FormatStrFormatter
+
+    zlo, zhi = zoom_range
+    state = {'ymax': 0.0, 'inset': None}
+
+    def _bump(v):
+        if np.isfinite(v):
+            state['ymax'] = max(state['ymax'], float(v))
+
+    for line in ax.get_lines():
+        xd = np.asarray(line.get_xdata(), dtype=float)
+        yd = np.asarray(line.get_ydata(), dtype=float)
+        if xd.size and xd.size == yd.size:
+            m = (xd >= zlo) & (xd <= zhi)
+            if m.any():
+                _bump(np.nanmax(yd[m]))
+    for coll in ax.collections:
+        get_segments = getattr(coll, 'get_segments', None)
+        if get_segments is None:
+            continue
+        for seg in get_segments():
+            seg = np.asarray(seg, dtype=float)
+            if seg.size and ((seg[:, 0] >= zlo) & (seg[:, 0] <= zhi)).any():
+                _bump(np.nanmax(seg[:, 1]))
+
+    inset = ax.inset_axes(list(inset_bounds))
+    inset.set_facecolor('white')
+    # copy the data points / error bars that plot_scatter drew
+    for line in ax.get_lines():
+        inset.plot(line.get_xdata(), line.get_ydata(),
+                   color=line.get_color(), linestyle=line.get_linestyle(),
+                   linewidth=line.get_linewidth(),
+                   marker=line.get_marker(),
+                   markersize=max(line.get_markersize() * 0.6, 2),
+                   markeredgewidth=line.get_markeredgewidth(),
+                   zorder=line.get_zorder())
+    for coll in ax.collections:
+        if isinstance(coll, LineCollection):
+            inset.add_collection(LineCollection(
+                coll.get_segments(), colors=coll.get_colors(),
+                linewidths=coll.get_linewidths(), zorder=coll.get_zorder()))
+    inset.set_xlim(zlo, zhi)
+    inset.tick_params(axis='both', which='major', labelsize=7,
+                      direction='in', top=True, right=True)
+    inset.minorticks_on()
+    inset.tick_params(axis='both', which='minor', direction='in',
+                      top=True, right=True)
+    # major x ticks start and end exactly on the window limits
+    inset.set_xticks(np.linspace(zlo, zhi, 5))
+    inset.xaxis.set_major_formatter(FormatStrFormatter('%.4g'))
+    state['inset'] = inset
+
+    ax._zoom_state = state
+    return state
+
+
+def _zoom_apply(state, headroom=1.1, n_intervals=4):
+    """
+    Set the inset's y-range from the tallest data/curve value in its window.
+    The top is rounded up to a multiple of a 'nice' tick step so that the
+    major y ticks run from 0 exactly to the top limit.
+    """
+    inset = state['inset']
+    if inset is None or state['ymax'] <= 0:
+        return
+    raw_step = state['ymax'] * headroom / n_intervals
+    mag = 10 ** np.floor(np.log10(raw_step))
+    step = next(m * mag for m in (1, 2, 2.5, 5, 10) if m * mag >= raw_step)
+    top = step * np.ceil(state['ymax'] * headroom / step)
+    inset.set_ylim(0, top)
+    inset.set_yticks(np.arange(0, top + 0.5 * step, step))
+
+
 def overlay_genie_nuisance_xsec(fig, ax,
                                 nuisance_file_dir=None,
                                 bin_edges=None,
@@ -529,7 +619,12 @@ def overlay_genie_nuisance_xsec(fig, ax,
                                 ratio_ylim=(0.5, 1.5),
                                 draw_extracted_ratio=True,
                                 expected_xsec_file=None,
-                                expected_xsec_study=None):
+                                expected_xsec_study=None,
+                                zoom_range=None,
+                                inset_bounds=(0.13, 0.38, 0.52, 0.58),
+                                linewidth=1.5,
+                                linestyle='--',
+                                zorder=1):
     """
     Overlay a GENIE NUISANCE flat-tree cross-section -- OR an already-computed
     "expected fake-data" cross-section read from a text file -- on an
@@ -598,6 +693,20 @@ def overlay_genie_nuisance_xsec(fig, ax,
         Y-axis label for the ratio panel.
     ratio_ylim : tuple
         Y-limits for the ratio panel.
+    zoom_range : (float, float), optional
+        If given, add a zoom inset in the upper left of `ax` showing only this
+        x-range (data points plus every overlaid curve, y autoscaled to what
+        is inside the window). The main panel and the ratio panel keep their
+        normal range and binning. Pass the same value on every overlay call
+        on the same `ax`. Typical use: a variable whose cross section is
+        concentrated at one end (e.g. cos(theta_mu), zoom_range=(0.8, 1.0)).
+        The legend is placed outside the axes so it does not cover the inset.
+    linewidth, linestyle, zorder :
+        Style of the model curve (main panel, zoom inset and ratio panel). Defaults 1.5, '--', 1.
+        Giving overlapping models different widths/dash patterns (thickest and
+        lowest zorder first) keeps each one visible where they coincide.
+    inset_bounds : (x0, y0, width, height)
+        Inset position in axes-fraction coordinates.
     draw_extracted_ratio : bool
         If True, draw extracted_xsec / nominal as points with errors in the
         ratio panel. Drawn only once per ratio_ax.
@@ -799,19 +908,38 @@ def overlay_genie_nuisance_xsec(fig, ax,
             print(f"p-value = {p_value:.3f}")
 
     # ── plot ────────────────────────────────────────────────────────────────
-    if finer_binning:
-        # Smooth continuous curve through fine bin centers
-        ax.plot(fine_centers, xsec_fine,
-                color=color, linestyle='--', linewidth=1.5,
-                label=label_with_chi2, zorder=1)
-    else:
-        # Original step-style rendering on the coarse bins
-        left  = bin_centers - bin_widths / 2
-        right = bin_centers + bin_widths / 2
-        ax.hlines(xsec, left, right, colors=color, linestyles='--', linewidth=1.5,
-                  label=label_with_chi2, zorder=1)
-        ax.vlines(left,  0, xsec, colors=color, linestyles='--', linewidth=1.0, zorder=1)
-        ax.vlines(right, 0, xsec, colors=color, linestyles='--', linewidth=1.0, zorder=1)
+    zoom_state = None
+    if zoom_range is not None:
+        zoom_state = _zoom_init(ax, zoom_range, inset_bounds)
+        zlo, zhi = zoom_range
+        # Track the tallest curve value inside the zoom window (for the y-range)
+        if finer_binning and xsec_fine is not None:
+            in_win = (fine_centers >= zlo) & (fine_centers <= zhi)
+            vals = np.asarray(xsec_fine)[in_win]
+        else:
+            in_win = (bin_edges[1:] > zlo) & (bin_edges[:-1] < zhi)
+            vals = np.asarray(xsec)[in_win]
+        if vals.size and np.isfinite(vals).any():
+            zoom_state['ymax'] = max(zoom_state['ymax'], float(np.nanmax(vals)))
+
+    def _draw_curve(target, lab):
+        if finer_binning:
+            # Smooth continuous curve through fine bin centers
+            target.plot(fine_centers, xsec_fine,
+                        color=color, linestyle=linestyle, linewidth=linewidth,
+                        label=lab, zorder=zorder)
+        else:
+            # Original step-style rendering on the coarse bins
+            left  = bin_centers - bin_widths / 2
+            right = bin_centers + bin_widths / 2
+            target.hlines(xsec, left, right, colors=color, linestyles=linestyle,
+                          linewidth=linewidth, label=lab, zorder=zorder)
+            target.vlines(left,  0, xsec, colors=color, linestyles='--', linewidth=1.0, zorder=1)
+            target.vlines(right, 0, xsec, colors=color, linestyles='--', linewidth=1.0, zorder=1)
+
+    _draw_curve(ax, label_with_chi2)
+    if zoom_state is not None:
+        _draw_curve(zoom_state['inset'], None)
 
     # ── bottom ratio panel: this model / nominal model ──────────────────────
     if ratio_ax is None and add_ratio:
@@ -845,7 +973,8 @@ def overlay_genie_nuisance_xsec(fig, ax,
 
             if finer_binning and nominal_fine is not None:
                 ratio_ax.plot(fine_centers, _safe_ratio(xsec_fine, nominal_fine),
-                              color=color, linestyle='--', linewidth=1.5, zorder=1)
+                              color=color, linestyle=linestyle, linewidth=linewidth,
+                              zorder=zorder)
             else:
                 # Coarse step rendering (also the fallback when the nominal was
                 # cached without a fine grid).
@@ -853,7 +982,8 @@ def overlay_genie_nuisance_xsec(fig, ax,
                 left  = bin_centers - bin_widths / 2
                 right = bin_centers + bin_widths / 2
                 ratio_ax.hlines(ratio, left, right, colors=color,
-                                linestyles='--', linewidth=1.5, zorder=1)
+                                linestyles=linestyle, linewidth=linewidth,
+                                zorder=zorder)
 
             # Extracted GUNDAM xsec / nominal — points with errors, once only.
             if (draw_extracted_ratio
@@ -878,6 +1008,10 @@ def overlay_genie_nuisance_xsec(fig, ax,
 
     # Adaptive legend: shrinks fontsize with entry count and moves outside
     # the axes when entries are many or labels are long.
-    _adaptive_legend(ax)
+    # With a zoom inset in the upper left, the legend must not sit inside the axes.
+    _adaptive_legend(ax, max_models_inside=0 if zoom_state is not None else 2)
+
+    if zoom_state is not None:
+        _zoom_apply(zoom_state)
 
     return fig, ax, xsec, chi2_info

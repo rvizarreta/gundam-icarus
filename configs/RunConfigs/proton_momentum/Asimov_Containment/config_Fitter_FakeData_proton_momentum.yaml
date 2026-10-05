@@ -1,0 +1,54 @@
+# Config for gundamFitter: proton momentum contained/exiting simultaneous fit, Asimov closure.
+# Mirrors RunConfigs/dpT/Asimov_Containment/config_Fitter_FakeData_dpT.yaml.
+# Changes vs. that file: parameterSetList, fitSampleSet and plotGenerator point to
+# the proton-momentum versions (4-sample containment-split fitSampleSet).
+# enableStatThrowInToys stays false here -- this is the single un-thrown
+# closure check, not the toy ensemble.
+#outputFolder: "${GUNDAM_CONFIG_DIR}/output/"
+minGundamVersion: 1.9.0
+
+fitterEngineConfig:
+
+  # minimizer
+  minimizerConfig: "${GUNDAM_CONFIG_DIR}/Configs_Minimizer/default_minimizer.yaml"
+
+  # likelihoodInterface
+  likelihoodInterfaceConfig:
+
+    # jointProbability
+    jointProbabilityConfig:
+      type: "PoissonLLH"
+      #type: "BarlowLLH"
+
+    # dataSetManager
+    propagatorConfig:
+      parametersManagerConfig:
+        parameterSetList: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSetList/parameterSetList_true_proton_momentum.yaml"
+      fitSampleSetConfig: "${GUNDAM_CONFIG_DIR}/Configs_FitSampleSet/fitSamples_reco_proton_momentum_containment.yaml"
+
+      showEventBreakdown: true
+      debugPrintLoadedEvents: true
+
+    enableStatThrowInToys: false
+    enableEventMcThrow: false
+
+    dataSetList: "${GUNDAM_CONFIG_DIR}/Configs_DataSetList/dataSetListConfig_Asimov.yaml"
+    plotGeneratorConfig: "${GUNDAM_CONFIG_DIR}/Configs_PlotGenerator/plotConfigs_reco_proton_momentum.yaml"
+
+  # listing local configs
+
+  ## "_enablePca_" is set by {"enablePca"}, {"runPcaCheck"}, {"fixGhostFitParameters"}
+  ## - default: false
+  enablePca: true
+
+  ## "_pcaDeltaChi2Threshold_" is set by {"ghostParameterDeltaChi2Threshold"}, {"pcaDeltaChi2Threshold"}
+  ## - default: 1E-6
+  pcaDeltaChi2Threshold: 1E-4
+
+  ## "_enablePreFitScan_" is set by "enablePreFitScan"
+  ## - default: false
+  enablePreFitScan: false
+
+  ## "_enablePostFitScan_" is set by "enablePostFitScan"
+  ## - default: false
+  enablePostFitScan: false

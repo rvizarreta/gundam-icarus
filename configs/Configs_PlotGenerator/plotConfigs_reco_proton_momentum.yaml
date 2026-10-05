@@ -1,0 +1,39 @@
+varDictionnaries:
+  - name: "category"
+    dictionary:
+      # Signal (0: QE, 1: MEC, 2: pion absorption)
+      - { value: 0, title: "Signal", color: 418 }
+      - { value: 1, title: "Signal", color: 418 }
+      - { value: 2, title: "Signal", color: 418 }
+
+      # OOFV (type 3)
+      - { value: 3, title: "OOFV", color: 797 }
+
+      # Other CC (4: numuCC Np1pi, 5: uncontained fiducial, 6: uncontained, 7: nu CC)
+      - { value: 4, title: "Other CC", color: 807 }
+      - { value: 5, title: "Other CC", color: 807 }
+      - { value: 6, title: "Other CC", color: 807 }
+      - { value: 7, title: "Other CC", color: 807 }
+
+      # ν NC (type 8)
+      - { value: 8, title: "$\nu$ NC", color: 632 }
+
+      # Cosmic (type 9)
+      - { value: 9, title: "Cosmic", color: 880 }
+      - { value: 10, title: "In-time cosmics", color: 880 }
+
+histogramsDefinition:
+  - varToPlot: "reco_leading_proton_momentum"
+    splitVars: ["category"]
+    useSampleBinning: true
+    rescaleAsBinWidth: true
+    xTitle: "p_{p} (GeV/c)"
+    yTitle: "Slices"
+    xMin: 0.31
+    xMax: 1.2
+
+canvasParameters:
+  height: 800
+  width: 1000
+  nbXplots: 1
+  nbYplots: 1

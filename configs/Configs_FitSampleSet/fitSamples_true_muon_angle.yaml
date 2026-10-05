@@ -1,0 +1,20 @@
+fitSampleList:
+  - name: "True_muon_angle_XS"
+    isEnabled: true
+    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_true_muon_angle.txt"
+
+    selectionCuts: ""
+
+    dataSets: ["ICARUS_NuMI_1muNp0pi_signal"]
+    parameterSetName: "Template Parameter true_leading_muon_cos_theta_mu"
+    yAxis: "#frac{d #sigma}{d cos#theta_{#mu}} #frac{cm^{2}}{Ar}"
+    normaliseParameterList:
+      - name: "Constant flux"
+        isEnabled: true
+
+        meanValue: 5.191500e+11 # (numu+numubar)/cm², same value as fitSamples_true_dpT.yaml (observable independent)
+        stdDev: 1.436e+10     # 12.59% uncertainty
+
+      - name: "Number of targets"
+        meanValue: 4.721444e+30
+        stdDev: 9.4281120e+27

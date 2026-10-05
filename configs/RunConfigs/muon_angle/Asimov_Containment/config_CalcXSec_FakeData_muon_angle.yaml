@@ -1,0 +1,32 @@
+# Config for gundamCalcXsec: muon angle (cos theta_mu w.r.t. NuMI) Asimov. Mirrors RunConfigs/dpT/Asimov/config_CalcXSec_FakeData_dpT.yaml (copied here; truth-level, independent of containment).
+# Works at truth level (signal tree), so it is shared by the combined and
+# containment-split fits. The parameterSetList must be the same one used in the fitter.
+#outputFolder: "${GUNDAM_CONFIG_DIR}/output/"
+minGundamVersion: 1.9.0
+
+xsecCalcConfig:
+  enableStatThrowInToys: true
+  enableEventMcThrow: true
+
+fitterEngineConfig:
+
+  # minimizer
+  minimizerConfig: "${GUNDAM_CONFIG_DIR}/Configs_Minimizer/default_minimizer.yaml"
+
+  # likelihoodInterface
+  likelihoodInterfaceConfig:
+
+    # jointProbability
+    jointProbabilityConfig:
+      type: "PoissonLLH"
+      #type: "BarlowLLH"
+
+    # dataSetManager
+    propagatorConfig:
+      parametersManagerConfig:
+        parameterSetList: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSetList/parameterSetList_true_muon_angle.yaml"
+      fitSampleSetConfig: "${GUNDAM_CONFIG_DIR}/Configs_FitSampleSet/fitSamples_true_muon_angle.yaml"
+
+    dataSetList: "${GUNDAM_CONFIG_DIR}/Configs_DataSetList/dataSetListConfig_True.yaml"
+      #plotGeneratorConfig: "${GUNDAM_CONFIG_DIR}/Configs_PlotGenerator/plotConfigs_TrueMuonAngle.yaml"
+

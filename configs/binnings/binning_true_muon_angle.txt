@@ -1,0 +1,8 @@
+variables: true_leading_muon_cos_theta_mu true_leading_muon_cos_theta_mu
+-1.0000 0.0000
+0.0000 0.5566
+0.5566 0.7787
+0.7787 0.8823
+0.8823 0.9389
+0.9389 0.9734
+0.9734 1.0000

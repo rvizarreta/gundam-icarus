@@ -1,0 +1,37 @@
+# N-X run 'noBkg': parameter sets removed = ['bkg']. Copy of parameterSetList_true_dpT.yaml (do not edit that one).
+# Template
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/TemplateParameters/parameterSet_true_dpT.yaml"
+
+# BACKGROUND FIT -- swap between these to compare schemes. All three target the
+# same true_generator_w (W,Q2) 2D binning and the same categories 4-7, so only
+# ONE should ever be enabled at a time -- running more than one double-scales
+# the same events:
+#   - parameterSet_backgroundFit_true_w.yaml            : Howard's flat 40%(low-W)/60%(high-W)
+#   - parameterSet_backgroundFit_true_w_binbybin.yaml    : Howard's bin-by-bin-from-Fig.104 variant,
+#                                                            rederived from our own GENIE/NuWro flat
+#                                                            trees keeping the W split (see its own
+#                                                            header comments and GenerateBackgroundFitWBinByBinCov.C)
+# parameterSet_backgroundFit_true_q2.yaml (1D, true_generator_q2 only, no W
+# split at all) has been discarded from this comparison -- it predates
+# true_generator_w and doesn't test the same hypothesis Howard's own three
+# variants do.
+# - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_q2.yaml"
+# - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_w.yaml"
+# REMOVED: - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/BackgroundFit/parameterSet_backgroundFit_true_w_binbybin.yaml"
+
+# GENIE
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/GENIE/parameterSet_GENIE.yaml"
+
+# FLUX
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/Flux/parameterSet_Flux.yaml"
+
+# DETECTOR SYSTEMATICS
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/DetSys/parameterSet_DetSys.yaml"
+
+# GEANT4 hadron reinteraction ("fate") systematics
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Proton_contained.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Proton_exiting.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Piplus_contained.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Piplus_exiting.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Piminus_contained.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Piminus_exiting.yaml"

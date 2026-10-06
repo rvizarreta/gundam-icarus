@@ -1,0 +1,16 @@
+fitSampleList:
+  - name: "True_dpT_XS"
+    isEnabled: true
+    binning: "${GUNDAM_CONFIG_DIR}/binnings/binning_true_dpT.txt"
+
+    selectionCuts: ""
+
+    dataSets: ["ICARUS_NuMI_1muNp0pi_signal"]
+    parameterSetName: "Template Parameter true_dpT_lp_genie"
+    yAxis: "#frac{d #sigma}{d #delta p_{T}} #frac{cm^{2}}{(MeV/c)Ar}"
+    normaliseParameterList:
+      - name: "Constant flux"
+        isEnabled: true
+
+        meanValue: 5.191500e+11 # (numu+numubar)/cm², POT = 1.47e20 (old), 7.17839+20 (new) Before flux: 5.251900e+11 Now: 7.095833928884415e20
+        stdDev: 0 # N-X: flux-integral uncertainty switched off (Howard)

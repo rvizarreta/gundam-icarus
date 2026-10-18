@@ -102,7 +102,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NormCCMEC"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyOnDataSets: ["*"]
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_NormNCMEC"

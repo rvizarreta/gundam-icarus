@@ -4,7 +4,7 @@
      - dialType: Spline
        minimumSplineResponse: 0
        dialLeafName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b1"
-       applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+       applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
        applyCondition: "[is_nu]==1"
 
 - parameterName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b2"
@@ -13,7 +13,7 @@
      - dialType: Spline
        minimumSplineResponse: 0
        dialLeafName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b2"
-       applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+       applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
        applyCondition: "[is_nu]==1"
 
 - parameterName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b3"
@@ -22,7 +22,7 @@
      - dialType: Spline
        minimumSplineResponse: 0
        dialLeafName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b3"
-       applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+       applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
        applyCondition: "[is_nu]==1"
 
 - parameterName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b4"
@@ -31,7 +31,7 @@
      - dialType: Spline
        minimumSplineResponse: 0
        dialLeafName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b4"
-       applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+       applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
        applyCondition: "[is_nu]==1"
 
 #- parameterName: "ZExpPCAWeighter_SBNNuSyst_ZExpPCA_multisigma_b1"
@@ -84,7 +84,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_RPA_CCQE"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_CoulombCCQE"
@@ -93,7 +93,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_CoulombCCQE"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_NormCCMEC"
@@ -102,7 +102,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NormCCMEC"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_NormNCMEC"
@@ -111,7 +111,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NormNCMEC"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_MaNCEL"
@@ -390,7 +390,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_MFP_pi"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrCEx_pi"
@@ -399,7 +399,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrCEx_pi"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrInel_pi"
@@ -408,7 +408,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrInel_pi"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrAbs_pi"
@@ -417,7 +417,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrAbs_pi"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrPiProd_pi"
@@ -426,7 +426,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrPiProd_pi"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_MFP_N"
@@ -435,7 +435,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_MFP_N"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrCEx_N"
@@ -444,7 +444,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrCEx_N"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrInel_N"
@@ -453,7 +453,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrInel_N"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrAbs_N"
@@ -462,7 +462,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrAbs_N"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_FrPiProd_N"
@@ -471,7 +471,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_FrPiProd_N"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       applyCondition: "[is_nu]==1"
 
 - parameterName: "GENIEReWeight_SBN_v1_multisigma_CC1piTPi"
@@ -500,7 +500,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_VecFFCCQEshape"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       useMirrorDial: true
       mirrorLowEdge: -1
       mirrorHighEdge: 1
@@ -514,7 +514,7 @@
     - dialType: Spline
       minimumSplineResponse: 0
       dialLeafName: "GENIEReWeight_SBN_v1_multisigma_DecayAngMEC"
-      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband"]
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
       useMirrorDial: true
       mirrorLowEdge: -1
       mirrorHighEdge: 1

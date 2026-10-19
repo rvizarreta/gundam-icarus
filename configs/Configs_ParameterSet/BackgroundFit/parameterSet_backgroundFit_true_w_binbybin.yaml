@@ -47,6 +47,6 @@ dialSetDefinitions:
     applyCondition: "([category]==4) || ([category]==5) || ([category]==6) || ([category]==7)"
     printDialsSummary: true
 
-parameterLimits:
-  minValue: 0.
-  maxValue: 3.0
+# parameterLimits:
+#   minValue: 0.
+#   maxValue: 3.0

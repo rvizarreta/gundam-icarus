@@ -6,7 +6,7 @@
   "DialTree": {
     "TreeKey": "events/full/selected_multisimTree"
   },
-  "BinningFile": "/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4_reco_dpT_exiting.txt",
+  "BinningFile": "/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_dpT_exiting.txt",
 
   "JobName": "G4Piplus_exiting",
   "DialName": "reinteractions_piplus_Geant4",

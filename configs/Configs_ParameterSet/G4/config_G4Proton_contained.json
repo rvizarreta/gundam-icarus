@@ -6,7 +6,7 @@
   "DialTree": {
     "TreeKey": "events/full/selected_multisimTree"
   },
-  "BinningFile": "/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_reco_dpT_contained.txt",
+  "BinningFile": "/exp/icarus/app/users/rvizarr/gundam-icarus/configs/binnings/binning_G4_reco_dpT_contained.txt",
 
   "JobName": "G4Proton_contained",
   "DialName": "reinteractions_proton_Geant4",

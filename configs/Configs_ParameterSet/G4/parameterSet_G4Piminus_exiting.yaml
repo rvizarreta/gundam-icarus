@@ -19,6 +19,6 @@ useOnlyOneParameterPerEvent: true
 dialSetDefinitions:
   - name: G4 Piminus Fate (exiting) dialSetDefinitions
     applyOnDataSets: ["*"]
-    parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_reco_dpT_exiting.txt"
+    parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_G4_reco_dpT_exiting.txt"
     printDialsSummary: true
     applyCondition: "([is_nu]==1) && ([reco_leading_muon_containment]==0)"

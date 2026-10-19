@@ -17,8 +17,8 @@ fitterEngineConfig:
 
     # jointProbability
     jointProbabilityConfig:
-      #type: "PoissonLLH"
-      type: "BarlowLLH"
+      type: "PoissonLLH"
+      #type: "BarlowLLH"
 
     # dataSetManager
     propagatorConfig:

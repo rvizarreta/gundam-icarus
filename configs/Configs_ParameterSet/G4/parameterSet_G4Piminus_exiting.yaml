@@ -4,15 +4,15 @@ isEnabled: true
 printDialSetsSummary: true
 
 allowPca: true
-useEigenDecompInFit: true
-allowEigenDecompWithBounds: true
+# useEigenDecompInFit: true
+# allowEigenDecompWithBounds: true
 
 covarianceMatrixFilePath: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus_exiting.root"
 covarianceMatrixTMatrixD: "G4Piminus_exiting/G4Piminus_exiting_covariance"
 
-parameterLimits:
-  minValue: 0
-  maxValue: 30
+# parameterLimits:
+#   minValue: 0
+#   maxValue: 30
 
 useOnlyOneParameterPerEvent: true
 

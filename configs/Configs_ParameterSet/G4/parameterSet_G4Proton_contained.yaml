@@ -4,8 +4,8 @@ isEnabled: true
 printDialSetsSummary: true
 
 allowPca: true
-useEigenDecompInFit: true
-allowEigenDecompWithBounds: true
+# useEigenDecompInFit: true
+# allowEigenDecompWithBounds: true
 
 # Covariance matrix produced by calc_geant4_covariance.py from
 # config_G4Proton_contained.json (input: events/full/selected +
@@ -19,9 +19,9 @@ allowEigenDecompWithBounds: true
 covarianceMatrixFilePath: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton_contained.root"
 covarianceMatrixTMatrixD: "G4Proton_contained/G4Proton_contained_covariance"
 
-parameterLimits:
-  minValue: 0
-  maxValue: 30
+# parameterLimits:
+#   minValue: 0
+#   maxValue: 30
 
 useOnlyOneParameterPerEvent: true
 

@@ -1,0 +1,21 @@
+name: G4 Piminus KE2
+isEnabled: true
+
+printDialSetsSummary: true
+
+allowPca: true
+
+# G4 Piminus: 2 parameters binned in true KE of the leading particle (Kiyoung's "KE" variant),
+# replacing the 21+11 reco-dpT-binned parameters of parameterSet_G4Piminus_{contained,exiting}.yaml.
+# Covariance: calc_geant4_covariance.py with config_G4Piminus_KE2.json (fractional convention, same as the other G4 sets).
+covarianceMatrixFilePath: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus_KE2.root"
+covarianceMatrixTMatrixD: "G4Piminus_KE2/G4Piminus_KE2_covariance"
+
+useOnlyOneParameterPerEvent: true
+
+dialSetDefinitions:
+  - name: G4 Piminus KE2 dialSetDefinitions
+    applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+    parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_G4Piminus_KE2.txt"
+    printDialsSummary: true
+    applyCondition: "[is_nu]==1"

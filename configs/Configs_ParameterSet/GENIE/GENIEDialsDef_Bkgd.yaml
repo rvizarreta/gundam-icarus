@@ -1,0 +1,347 @@
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_MaNCEL"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_MaNCEL"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_EtaNCEL"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_EtaNCEL"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_MaCCRES"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_MaCCRES"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_MvCCRES"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_MvCCRES"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_MaNCRES"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_MaNCRES"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_MvNCRES"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_MvNCRES"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpCC1pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpCC1pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpCC2pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpCC2pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpNC1pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpNC1pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpNC2pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvpNC2pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnCC1pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnCC1pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnCC2pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnCC2pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnNC1pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnNC1pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnNC2pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvnNC2pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpCC1pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpCC1pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpCC2pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpCC2pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpNC1pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpNC1pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpNC2pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarpNC2pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnCC1pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnCC1pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnCC2pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnCC2pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnNC1pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnNC1pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnNC2pi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NonRESBGvbarnNC2pi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_RDecBR1gamma"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_RDecBR1gamma"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_RDecBR1eta"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_RDecBR1eta"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NormCCCOH"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NormCCCOH"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_NormNCCOH"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_NormNCCOH"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_AhtBY"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_AhtBY"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_BhtBY"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_BhtBY"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_CV1uBY"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_CV1uBY"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_CV2uBY"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_CV2uBY"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_CC1piTPi"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_CC1piTPi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_LowQ2Suppression"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_LowQ2Suppression"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_Theta_Delta2Npi"
+  isEnabled: true
+  #isFixed: true
+  #priorValue: 0.01
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_Theta_Delta2Npi"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      useMirrorDial: true
+      mirrorLowEdge: -1
+      mirrorHighEdge: 1
+      applyCondition: "[is_nu]==1"
+
+- parameterName: "GENIEReWeight_SBN_v1_multisigma_ThetaDelta2NRad"
+  isEnabled: true
+  dialSetDefinitions:
+    - dialType: Spline
+      minDialResponse: 0
+      maxDialResponse: 10
+      dialLeafName: "GENIEReWeight_SBN_v1_multisigma_ThetaDelta2NRad"
+      applyOnDataSets: ["ICARUS_NuMI_1muNp0pi_selection", "ICARUS_NuMI_1muNp0pi_sideband", "ICARUS_NuMI_1muNp0pi_signal"]
+      useMirrorDial: true
+      mirrorLowEdge: -1
+      mirrorHighEdge: 1
+      applyCondition: "[is_nu]==1"

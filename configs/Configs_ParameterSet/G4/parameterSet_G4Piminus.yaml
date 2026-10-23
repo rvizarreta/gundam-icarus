@@ -1,0 +1,30 @@
+name: G4 Piminus Fate
+isEnabled: true
+
+printDialSetsSummary: true
+
+allowPca: true
+# useEigenDecompInFit: true
+# allowEigenDecompWithBounds: true
+
+# GEANT4 pi- reinteraction ("fate") systematic, binned in the
+# true kinetic energy of the leading pion when it is a pi- (PDG -211), in MeV:
+# [0,200) [200,700) [700,inf). Same edges as Kiyoung's G4 KE binning.
+# Covariance from calc_geant4_covariance.py with config_G4Piminus.json: fractional and
+# CV-centered, built on the G4Reweight sample (selected + sideband, no cosmics: true_category != 9),
+# dial reinteractions_piminus_Geant4, 1000 universes. One set for contained and exiting muons.
+covarianceMatrixFilePath: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/outputs/output_CovMat_G4Piminus.root"
+covarianceMatrixTMatrixD: "G4Piminus/G4Piminus_covariance"
+
+# parameterLimits:
+#   minValue: 0
+#   maxValue: 30
+
+useOnlyOneParameterPerEvent: true
+
+dialSetDefinitions:
+  - name: G4 Piminus Fate dialSetDefinitions
+    applyOnDataSets: ["*"]
+    parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_G4Piminus.txt"
+    printDialsSummary: true
+    applyCondition: "[is_nu]==1"

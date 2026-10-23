@@ -26,16 +26,16 @@ Method, same as Kiyoung's:
   2. For every universe u, recompute the per-bin weighted yield using
      that universe's per-event reweight value.
   3. Covariance is the fractional bin-to-bin covariance of the universe
-     yields around the CV (mean-over-universes) yield:
-         Cov[i][j] = sum_u (N_u[i]-Nbar[i])(N_u[j]-Nbar[j]) / (NUniv-1)
-                     / Nbar[i] / Nbar[j]
-     This is Kiyoung's normalization convention (fractional, divided by
-     the universe MEAN, not the CV/nominal count) -- carried over as-is,
-     not re-derived independently. If GUNDAM expects the raw (non
-     -fractional) covariance of Eq. 12 in main.pdf instead, this needs to
-     change before it's usable as a parameter-set input; flag that back
-     to me once you know which convention the GEANT4 ParameterSet in
-     Configs_ParameterSet/GEANT4 actually consumes.
+     yields around the nominal (CV) yield, normalised to the CV yield:
+         Cov[i][j] = sum_u (N_u[i]-N_CV[i])(N_u[j]-N_CV[j]) / (NUniv-1)
+                     / N_CV[i] / N_CV[j]
+     This is the convention of Kiyoung's GUNDAM-side notebook
+     (gundam_configs_michel_wsideband/CovMat/CalcCov.ipynb), chosen because
+     GUNDAM applies the parameters relative to the CV. The mean-centered
+     version (CalcCov_test.ipynb) is still printed for reference.
+  4. MainTree.TreeKey and DialTree.TreeKey may be lists of the same length
+     (e.g. selected + sideband). Each pair is read and alignment-checked on
+     its own, then the events are concatenated before binning.
 
 Usage:
     python3 calc_geant4_covariance.py config_G4Proton.json
@@ -79,7 +79,7 @@ def load_config(config_path):
     return cfg
 
 
-def load_tree_and_universes(cfg):
+def _load_single(cfg):
     file_path = cfg["MainTree"]["FilePath"]
     tree_key = cfg["MainTree"]["TreeKey"]
     # DialTree can override FilePath if the universes ever live in a
@@ -181,6 +181,36 @@ def load_tree_and_universes(cfg):
     return df, all_RW
 
 
+def load_tree_and_universes(cfg):
+    """Load one or several (MainTree, DialTree) pairs and stack them.
+
+    MainTree.TreeKey and DialTree.TreeKey are either both strings (one
+    sample) or both lists of the same length (e.g. selected + sideband).
+    """
+    main_keys = cfg["MainTree"]["TreeKey"]
+    dial_keys = cfg["DialTree"]["TreeKey"]
+    if isinstance(main_keys, str) and isinstance(dial_keys, str):
+        return _load_single(cfg)
+    if isinstance(main_keys, str) or isinstance(dial_keys, str) or len(main_keys) != len(dial_keys):
+        raise ValueError(
+            "MainTree.TreeKey and DialTree.TreeKey must both be strings or "
+            "lists of the same length (one dial tree per main tree)."
+        )
+    dfs, rws = [], []
+    for main_key, dial_key in zip(main_keys, dial_keys):
+        sub_cfg = dict(cfg)
+        sub_cfg["MainTree"] = dict(cfg["MainTree"], TreeKey=main_key)
+        sub_cfg["DialTree"] = dict(cfg["DialTree"], TreeKey=dial_key)
+        df_i, rw_i = _load_single(sub_cfg)
+        dfs.append(df_i)
+        rws.append(rw_i)
+    df = pd.concat(dfs, ignore_index=True)
+    all_RW = np.concatenate(rws, axis=0)
+    print("Combined DataFrame shape:", df.shape)
+    print("Combined universe reweight array shape:", all_RW.shape)
+    return df, all_RW
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("config", help="Path to the per-dial JSON config (see config_*_TEMPLATE.json)")
@@ -240,15 +270,17 @@ def main():
         # h_univs[:, i_cut] = sum over selected events of weight * per-universe reweight
         h_univs[:, i_cut] = weights @ rw_selected  # (n_univ,)
 
-    # Fractional covariance / correlation (Kiyoung's convention -- see module docstring)
-    h_cov = np.zeros((n_bins, n_bins))
+    # Fractional covariance, CV-centered (see module docstring, step 3):
+    # deviations of each universe from the nominal yield, normalised to it.
     h_mean = np.mean(h_univs, axis=0)
-    for i in range(n_bins):
-        for j in range(n_bins):
-            h_cov[i][j] = (
-                np.sum((h_univs[:, i] - h_mean[i]) * (h_univs[:, j] - h_mean[j]))
-                / (n_univ - 1) / h_mean[i] / h_mean[j]
-            )
+    delta = h_univs - h_nom[np.newaxis, :]
+    h_cov = (delta.T @ delta) / (n_univ - 1) / np.outer(h_nom, h_nom)
+
+    # Reference only: previous mean-centered convention (CalcCov_test.ipynb)
+    delta_mean = h_univs - h_mean[np.newaxis, :]
+    h_cov_mean = (delta_mean.T @ delta_mean) / (n_univ - 1) / np.outer(h_mean, h_mean)
+    print("Fractional uncertainty per bin, CV-centered (written):", np.sqrt(np.diag(h_cov)))
+    print("Fractional uncertainty per bin, mean-centered (reference):", np.sqrt(np.diag(h_cov_mean)))
 
     h_corr = np.zeros((n_bins, n_bins))
     for i in range(n_bins):

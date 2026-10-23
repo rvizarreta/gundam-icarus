@@ -1,0 +1,31 @@
+name: G4 Proton Fate
+isEnabled: true
+
+printDialSetsSummary: true
+
+allowPca: true
+# useEigenDecompInFit: true
+# allowEigenDecompWithBounds: true
+
+# GEANT4 proton reinteraction ("fate") systematic, binned in the
+# true momentum of the leading proton (GeV/c): [0,0.4) [0.4,0.6) [0.6,0.8)
+# [0.8,1.0) [1.0,inf). Edges above 0.4 GeV/c follow Howard's proton binning; the
+# [0,0.4) bin covers the lower proton threshold of this analysis (50 MeV KE = 0.310 GeV/c).
+# Covariance from calc_geant4_covariance.py with config_G4Proton.json: fractional and
+# CV-centered, built on the G4Reweight sample (selected + sideband, no cosmics: true_category != 9),
+# dial reinteractions_proton_Geant4, 1000 universes. One set for contained and exiting muons.
+covarianceMatrixFilePath: "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/outputs/output_CovMat_G4Proton.root"
+covarianceMatrixTMatrixD: "G4Proton/G4Proton_covariance"
+
+# parameterLimits:
+#   minValue: 0
+#   maxValue: 30
+
+useOnlyOneParameterPerEvent: true
+
+dialSetDefinitions:
+  - name: G4 Proton Fate dialSetDefinitions
+    applyOnDataSets: ["*"]
+    parametersBinningPath: "${GUNDAM_CONFIG_DIR}/binnings/binning_G4Proton.txt"
+    printDialsSummary: true
+    applyCondition: "[is_nu]==1"

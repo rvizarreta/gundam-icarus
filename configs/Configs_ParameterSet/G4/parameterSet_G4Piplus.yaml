@@ -4,8 +4,8 @@ isEnabled: true
 printDialSetsSummary: true
 
 allowPca: true
-# useEigenDecompInFit: true
-# allowEigenDecompWithBounds: true
+useEigenDecompInFit: true
+allowEigenDecompWithBounds: true
 
 # GEANT4 pi+ reinteraction ("fate") systematic, binned in the
 # true kinetic energy of the leading pion when it is a pi+ (PDG 211), in MeV:

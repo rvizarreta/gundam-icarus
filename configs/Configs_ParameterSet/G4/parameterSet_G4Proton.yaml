@@ -4,8 +4,8 @@ isEnabled: true
 printDialSetsSummary: true
 
 allowPca: true
-# useEigenDecompInFit: true
-# allowEigenDecompWithBounds: true
+useEigenDecompInFit: true
+allowEigenDecompWithBounds: true
 
 # GEANT4 proton reinteraction ("fate") systematic, binned in the
 # true momentum of the leading proton (GeV/c): [0,0.4) [0.4,0.6) [0.6,0.8)

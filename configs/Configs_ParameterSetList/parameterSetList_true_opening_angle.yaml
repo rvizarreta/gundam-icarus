@@ -18,10 +18,7 @@
 # DETECTOR SYSTEMATICS
 - "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/DetSys/parameterSet_DetSys.yaml"
 
-# GEANT4 hadron reinteraction ("fate") systematics, covariances binned in reco opening angle
-- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Proton_opening_angle_contained.yaml"
-- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Proton_opening_angle_exiting.yaml"
-- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Piplus_opening_angle_contained.yaml"
-- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Piplus_opening_angle_exiting.yaml"
-- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Piminus_opening_angle_contained.yaml"
-- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Piminus_opening_angle_exiting.yaml"
+# GEANT4 hadron reinteraction ("fate") systematics
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Proton.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Piplus.yaml"
+- "${GUNDAM_CONFIG_DIR}/Configs_ParameterSet/G4/parameterSet_G4Piminus.yaml"

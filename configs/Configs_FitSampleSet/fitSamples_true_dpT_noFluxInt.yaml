@@ -13,4 +13,8 @@ fitSampleList:
         isEnabled: true
 
         meanValue: 5.191500e+11 # (numu+numubar)/cm², POT = 1.47e20 (old), 7.17839+20 (new) Before flux: 5.251900e+11 Now: 7.095833928884415e20
-        stdDev: 0 # N-X: flux-integral uncertainty switched off (Howard)
+        stdDev: 0 # N-X: flux-integral uncertainty switched off (Howard, Kiyoung)
+
+      - name: "Number of targets"
+        meanValue: 4.721444e+30
+        stdDev: 9.4281120e+27

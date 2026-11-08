@@ -1,4 +1,4 @@
-variables: reco_leading_proton_momentum reco_leading_proton_momentum
+variables: reco_leading_primary_proton_momentum reco_leading_primary_proton_momentum
 0.3100 0.3463
 0.3463 0.3827
 0.3827 0.4069

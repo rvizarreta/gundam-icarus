@@ -1,4 +1,4 @@
-variables: true_dalphaT_deg true_dalphaT_deg true_leading_muon_momentum true_leading_muon_momentum
+variables: true_dalphaT_deg true_dalphaT_deg true_leading_primary_muon_momentum true_leading_primary_muon_momentum
 0.000000 65.000000 0.000000 0.600000
 0.000000 65.000000 0.600000 99999.000000
 65.000000 114.000000 0.000000 0.600000

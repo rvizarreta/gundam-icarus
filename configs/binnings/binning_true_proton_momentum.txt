@@ -1,4 +1,4 @@
-variables: true_leading_proton_momentum true_leading_proton_momentum
+variables: true_leading_primary_proton_momentum true_leading_primary_proton_momentum
 0.3100 0.3927
 0.3927 0.4571
 0.4571 0.5239

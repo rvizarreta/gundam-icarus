@@ -1,4 +1,4 @@
-variables: reco_leading_muon_cos_theta_mu reco_leading_muon_cos_theta_mu
+variables: reco_leading_primary_muon_cos_theta_mu reco_leading_primary_muon_cos_theta_mu
 -1.0000 0.0000
 0.0000 0.3619
 0.3619 0.5166
